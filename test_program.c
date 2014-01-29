@@ -61,5 +61,7 @@ int main(void) {
   write_eeprom(address, reading1);  //write a value to the non-volatile eeprom (these values will be stored across resets)
   reading1 = read_eeprom(address);  //get a reading from the non-volatile eeprom
 
+  reading1 = button(); //read the state of the on-board button
+
   return 0;
 }
