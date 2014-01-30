@@ -363,7 +363,12 @@ Source: http://focus.ti.com/lit/ds/symlink/ads1271.pdf</description>
 <smd name="P$4" x="0.65" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
 <smd name="P$5" x="0" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
 <smd name="P$6" x="-0.65" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
-<text x="-1.27" y="-1.27" size="0.4064" layer="21" rot="R90">&gt;NAME</text>
+<text x="-1.51" y="-1.05" size="0.4064" layer="21" rot="R90">&gt;NAME</text>
+<wire x1="-0.93" y1="-0.64" x2="0.95" y2="-0.64" width="0.127" layer="21"/>
+<wire x1="0.95" y1="-0.64" x2="0.95" y2="0.58" width="0.127" layer="21"/>
+<wire x1="0.95" y1="0.58" x2="-0.93" y2="0.58" width="0.127" layer="21"/>
+<wire x1="-0.93" y1="0.58" x2="-0.93" y2="-0.63" width="0.127" layer="21"/>
+<circle x="-1.16" y="-0.71" radius="0.184390625" width="0.127" layer="21"/>
 </package>
 <package name="PWSON-N12">
 <smd name="P$1" x="-0.46" y="-0.32" dx="0.28" dy="0.5" layer="1" rot="R180"/>
@@ -449,6 +454,75 @@ manufacturer Siemens</description>
 <rectangle x1="5.08" y1="1.397" x2="5.715" y2="2.413" layer="21"/>
 <rectangle x1="-5.715" y1="-2.413" x2="-5.08" y2="-1.397" layer="21"/>
 </package>
+<package name="SOT-563">
+<description>&lt;b&gt;SOT-563, 6 LEAD CASE 463A-01 ISSUE F&lt;/b&gt;&lt;p&gt;
+Source: U6 OnSemi Inductive Load Driver MDC3105-D.PDF</description>
+<wire x1="-0.75" y1="0.55" x2="-0.75" y2="-0.55" width="0.1016" layer="21"/>
+<wire x1="-0.75" y1="-0.55" x2="0.75" y2="-0.55" width="0.1016" layer="51"/>
+<wire x1="0.75" y1="-0.55" x2="0.75" y2="0.55" width="0.1016" layer="21"/>
+<wire x1="0.75" y1="0.55" x2="-0.75" y2="0.55" width="0.1016" layer="51"/>
+<circle x="-0.525" y="-0.25" radius="0.1" width="0" layer="21"/>
+<smd name="1" x="-0.5" y="-0.675" dx="0.3" dy="0.45" layer="1" stop="no" cream="no"/>
+<smd name="2" x="0" y="-0.675" dx="0.3" dy="0.45" layer="1" stop="no" cream="no"/>
+<smd name="3" x="0.5" y="-0.675" dx="0.3" dy="0.45" layer="1" stop="no" cream="no"/>
+<smd name="4" x="0.5" y="0.675" dx="0.3" dy="0.45" layer="1" stop="no" cream="no"/>
+<smd name="5" x="0" y="0.675" dx="0.3" dy="0.45" layer="1" stop="no" cream="no"/>
+<smd name="6" x="-0.5" y="0.675" dx="0.3" dy="0.45" layer="1" stop="no" cream="no"/>
+<text x="-1" y="1" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1" y="-2.5" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-0.675" y1="0.425" x2="-0.325" y2="0.925" layer="29"/>
+<rectangle x1="-0.175" y1="0.425" x2="0.175" y2="0.925" layer="29"/>
+<rectangle x1="0.325" y1="0.425" x2="0.675" y2="0.925" layer="29"/>
+<rectangle x1="-0.625" y1="0.475" x2="-0.375" y2="0.875" layer="31"/>
+<rectangle x1="-0.125" y1="0.475" x2="0.125" y2="0.875" layer="31"/>
+<rectangle x1="0.375" y1="0.475" x2="0.625" y2="0.875" layer="31"/>
+<rectangle x1="0.325" y1="-0.925" x2="0.675" y2="-0.425" layer="29" rot="R180"/>
+<rectangle x1="-0.175" y1="-0.925" x2="0.175" y2="-0.425" layer="29" rot="R180"/>
+<rectangle x1="-0.675" y1="-0.925" x2="-0.325" y2="-0.425" layer="29" rot="R180"/>
+<rectangle x1="0.375" y1="-0.875" x2="0.625" y2="-0.475" layer="31" rot="R180"/>
+<rectangle x1="-0.125" y1="-0.875" x2="0.125" y2="-0.475" layer="31" rot="R180"/>
+<rectangle x1="-0.625" y1="-0.875" x2="-0.375" y2="-0.475" layer="31" rot="R180"/>
+</package>
+<package name="SOT23-M5">
+<smd name="P$1" x="-0.62" y="-0.35" dx="0.4" dy="0.7" layer="1"/>
+<smd name="P$2" x="0.33" y="-0.35" dx="0.4" dy="0.7" layer="1"/>
+<smd name="P$3" x="1.28" y="-0.35" dx="0.4" dy="0.7" layer="1"/>
+<smd name="P$4" x="1.28" y="1.94" dx="0.4" dy="0.7" layer="1"/>
+<smd name="P$5" x="0.33" y="1.94" dx="0.4" dy="0.7" layer="1"/>
+<smd name="P$6" x="-0.62" y="1.94" dx="0.4" dy="0.7" layer="1"/>
+<wire x1="-0.88" y1="1.44" x2="-0.88" y2="1.43" width="0.127" layer="21"/>
+<wire x1="-0.88" y1="1.43" x2="-0.88" y2="0.14" width="0.127" layer="21"/>
+<wire x1="-0.88" y1="0.14" x2="1.48" y2="0.14" width="0.127" layer="21"/>
+<wire x1="1.48" y1="0.14" x2="1.48" y2="1.45" width="0.127" layer="21"/>
+<wire x1="1.48" y1="1.45" x2="-0.88" y2="1.45" width="0.127" layer="21"/>
+<wire x1="-0.88" y1="1.45" x2="-0.88" y2="1.44" width="0.127" layer="21"/>
+<circle x="-0.55" y="0.49" radius="0.222034375" width="0.127" layer="21"/>
+<text x="-1.23" y="0.11" size="0.3048" layer="21" rot="R90">&gt;NAME</text>
+<text x="2.01" y="-0.06" size="0.3048" layer="21" rot="R90">&gt;VALUE</text>
+</package>
+<package name="QFN-COL">
+<smd name="P$1" x="-1.17" y="0.99" dx="0.67" dy="0.25" layer="1"/>
+<smd name="P$2" x="-1.17" y="0.49" dx="0.67" dy="0.25" layer="1"/>
+<smd name="P$3" x="-1.17" y="-0.01" dx="0.67" dy="0.25" layer="1"/>
+<smd name="P$4" x="-1.17" y="-0.51" dx="0.67" dy="0.25" layer="1"/>
+<smd name="P$5" x="-1.17" y="-1.01" dx="0.67" dy="0.25" layer="1"/>
+<smd name="P$6" x="-0.5" y="-1.26" dx="0.67" dy="0.25" layer="1" rot="R90"/>
+<smd name="P$7" x="0" y="-1.26" dx="0.67" dy="0.25" layer="1" rot="R90"/>
+<smd name="P$8" x="0.5" y="-1.26" dx="0.67" dy="0.25" layer="1" rot="R90"/>
+<smd name="P$9" x="1.16" y="-1" dx="0.67" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$10" x="1.16" y="-0.5" dx="0.67" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$11" x="1.16" y="0" dx="0.67" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$12" x="1.16" y="0.5" dx="0.67" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$13" x="1.16" y="1" dx="0.67" dy="0.25" layer="1" rot="R180"/>
+<smd name="P$14" x="0.5" y="1.26" dx="0.67" dy="0.25" layer="1" rot="R270"/>
+<smd name="P$15" x="0" y="1.26" dx="0.67" dy="0.25" layer="1" rot="R270"/>
+<smd name="P$16" x="-0.5" y="1.26" dx="0.67" dy="0.25" layer="1" rot="R270"/>
+<wire x1="-1.69" y1="-1.72" x2="1.67" y2="-1.72" width="0.127" layer="21"/>
+<wire x1="1.67" y1="-1.72" x2="1.67" y2="1.71" width="0.127" layer="21"/>
+<wire x1="1.67" y1="1.71" x2="-1.69" y2="1.71" width="0.127" layer="21"/>
+<wire x1="-1.69" y1="1.71" x2="-1.69" y2="-1.72" width="0.127" layer="21"/>
+<circle x="-1.24" y="1.55" radius="0.277846875" width="0.127" layer="21"/>
+</package>
 </packages>
 <symbols>
 <symbol name="NCP380-SYM">
@@ -509,22 +583,22 @@ manufacturer Siemens</description>
 <wire x1="17.78" y1="58.42" x2="17.78" y2="-25.4" width="0.254" layer="94"/>
 <wire x1="17.78" y1="-25.4" x2="-15.24" y2="-25.4" width="0.254" layer="94"/>
 <pin name="NC" x="-20.32" y="55.88" visible="pin" length="middle"/>
-<pin name="PE0" x="-20.32" y="53.34" visible="pin" length="middle"/>
-<pin name="PE1" x="-20.32" y="50.8" visible="pin" length="middle"/>
+<pin name="PE0(TXD)" x="-20.32" y="53.34" visible="pin" length="middle"/>
+<pin name="PE1(RXD)" x="-20.32" y="50.8" visible="pin" length="middle"/>
 <pin name="PE2" x="-20.32" y="48.26" visible="pin" length="middle"/>
 <pin name="PE3" x="-20.32" y="45.72" visible="pin" length="middle"/>
-<pin name="PE4" x="-20.32" y="43.18" visible="pin" length="middle"/>
-<pin name="PE5" x="-20.32" y="40.64" visible="pin" length="middle"/>
+<pin name="PE4(SCL)" x="-20.32" y="43.18" visible="pin" length="middle"/>
+<pin name="PE5(SDA)" x="-20.32" y="40.64" visible="pin" length="middle"/>
 <pin name="PE6" x="-20.32" y="38.1" visible="pin" length="middle"/>
 <pin name="PE7" x="-20.32" y="35.56" visible="pin" length="middle"/>
-<pin name="PB0" x="-20.32" y="33.02" visible="pin" length="middle"/>
-<pin name="PB1" x="-20.32" y="30.48" visible="pin" length="middle"/>
-<pin name="PB2" x="-20.32" y="27.94" visible="pin" length="middle"/>
-<pin name="PB3" x="-20.32" y="25.4" visible="pin" length="middle"/>
-<pin name="PB4" x="-20.32" y="22.86" visible="pin" length="middle"/>
-<pin name="PB5" x="-20.32" y="20.32" visible="pin" length="middle"/>
-<pin name="PB6" x="-20.32" y="17.78" visible="pin" length="middle"/>
-<pin name="PB7" x="-20.32" y="15.24" visible="pin" length="middle"/>
+<pin name="PB0(SS)" x="-20.32" y="33.02" visible="pin" length="middle"/>
+<pin name="PB1(SCK)" x="-20.32" y="30.48" visible="pin" length="middle"/>
+<pin name="PB2(MOSI)" x="-20.32" y="27.94" visible="pin" length="middle"/>
+<pin name="PB3(MISO)" x="-20.32" y="25.4" visible="pin" length="middle"/>
+<pin name="PB4(OC0A)" x="-20.32" y="22.86" visible="pin" length="middle"/>
+<pin name="PB5(OC1A)" x="-20.32" y="20.32" visible="pin" length="middle"/>
+<pin name="PB6(OC1B)" x="-20.32" y="17.78" visible="pin" length="middle"/>
+<pin name="PB7(OC2A)" x="-20.32" y="15.24" visible="pin" length="middle"/>
 <pin name="PG3" x="-20.32" y="12.7" visible="pin" length="middle"/>
 <pin name="PG4" x="-20.32" y="10.16" visible="pin" length="middle"/>
 <pin name="RESET/PG5" x="-20.32" y="7.62" visible="pin" length="middle"/>
@@ -561,14 +635,14 @@ manufacturer Siemens</description>
 <pin name="PA0" x="22.86" y="22.86" visible="pin" length="middle" rot="R180"/>
 <pin name="VCC2" x="22.86" y="25.4" visible="pin" length="middle" rot="R180"/>
 <pin name="GND2" x="22.86" y="27.94" visible="pin" length="middle" rot="R180"/>
-<pin name="PF7" x="22.86" y="30.48" visible="pin" length="middle" rot="R180"/>
-<pin name="PF6" x="22.86" y="33.02" visible="pin" length="middle" rot="R180"/>
-<pin name="PF5" x="22.86" y="35.56" visible="pin" length="middle" rot="R180"/>
-<pin name="PF4" x="22.86" y="38.1" visible="pin" length="middle" rot="R180"/>
-<pin name="PF3" x="22.86" y="40.64" visible="pin" length="middle" rot="R180"/>
-<pin name="PF2" x="22.86" y="43.18" visible="pin" length="middle" rot="R180"/>
-<pin name="PF1" x="22.86" y="45.72" visible="pin" length="middle" rot="R180"/>
-<pin name="PF0" x="22.86" y="48.26" visible="pin" length="middle" rot="R180"/>
+<pin name="PF7(ADC7)" x="22.86" y="30.48" visible="pin" length="middle" rot="R180"/>
+<pin name="PF6(ADC6)" x="22.86" y="33.02" visible="pin" length="middle" rot="R180"/>
+<pin name="PF5(ADC5)" x="22.86" y="35.56" visible="pin" length="middle" rot="R180"/>
+<pin name="PF4(ADC4)" x="22.86" y="38.1" visible="pin" length="middle" rot="R180"/>
+<pin name="PF3(ADC3)" x="22.86" y="40.64" visible="pin" length="middle" rot="R180"/>
+<pin name="PF2(ADC2)" x="22.86" y="43.18" visible="pin" length="middle" rot="R180"/>
+<pin name="PF1(ADC1)" x="22.86" y="45.72" visible="pin" length="middle" rot="R180"/>
+<pin name="PF0(ADC0)" x="22.86" y="48.26" visible="pin" length="middle" rot="R180"/>
 <pin name="AREF" x="22.86" y="50.8" visible="pin" length="middle" rot="R180"/>
 <pin name="GND3" x="22.86" y="53.34" visible="pin" length="middle" rot="R180"/>
 <pin name="AVCC" x="22.86" y="55.88" visible="pin" length="middle" rot="R180"/>
@@ -654,6 +728,40 @@ manufacturer Siemens</description>
 <pin name="NSLEEP" x="15.24" y="7.62" visible="pin" length="middle" rot="R180"/>
 <pin name="VCC" x="15.24" y="12.7" visible="pin" length="middle" rot="R180"/>
 </symbol>
+<symbol name="MIC2009A">
+<wire x1="-7.62" y1="12.7" x2="7.62" y2="12.7" width="0.254" layer="94"/>
+<wire x1="7.62" y1="12.7" x2="7.62" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-2.54" x2="-7.62" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-2.54" x2="-7.62" y2="12.7" width="0.254" layer="94"/>
+<pin name="VIN" x="-12.7" y="10.16" visible="pin" length="middle"/>
+<pin name="GND" x="-12.7" y="5.08" visible="pin" length="middle"/>
+<pin name="EN" x="-12.7" y="0" visible="pin" length="middle"/>
+<pin name="FAULT" x="12.7" y="0" visible="pin" length="middle" rot="R180"/>
+<pin name="ILIM" x="12.7" y="5.08" visible="pin" length="middle" rot="R180"/>
+<pin name="VOUT" x="12.7" y="10.16" visible="pin" length="middle" rot="R180"/>
+</symbol>
+<symbol name="MMA8453Q">
+<wire x1="-15.24" y1="12.7" x2="-15.24" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="-15.24" y1="-12.7" x2="15.24" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="15.24" y1="-12.7" x2="15.24" y2="12.7" width="0.254" layer="94"/>
+<wire x1="15.24" y1="12.7" x2="-15.24" y2="12.7" width="0.254" layer="94"/>
+<pin name="VDDIO" x="-20.32" y="10.16" visible="pin" length="middle"/>
+<pin name="BYP" x="-20.32" y="5.08" visible="pin" length="middle"/>
+<pin name="NC1" x="-20.32" y="0" visible="pin" length="middle"/>
+<pin name="SCL" x="-20.32" y="-5.08" visible="pin" length="middle"/>
+<pin name="GND1" x="-20.32" y="-10.16" visible="pin" length="middle"/>
+<pin name="SDA" x="-5.08" y="-17.78" visible="pin" length="middle" rot="R90"/>
+<pin name="SA0" x="0" y="-17.78" visible="pin" length="middle" rot="R90"/>
+<pin name="NC2" x="5.08" y="-17.78" visible="pin" length="middle" rot="R90"/>
+<pin name="INT2" x="20.32" y="-10.16" visible="pin" length="middle" rot="R180"/>
+<pin name="GND2" x="20.32" y="-5.08" visible="pin" length="middle" rot="R180"/>
+<pin name="INT1" x="20.32" y="0" visible="pin" length="middle" rot="R180"/>
+<pin name="GND3" x="20.32" y="5.08" visible="pin" length="middle" rot="R180"/>
+<pin name="NC3" x="20.32" y="10.16" visible="pin" length="middle" rot="R180"/>
+<pin name="VDD" x="5.08" y="17.78" visible="pin" length="middle" rot="R270"/>
+<pin name="NC4" x="0" y="17.78" visible="pin" length="middle" rot="R270"/>
+<pin name="NC5" x="-5.08" y="17.78" visible="pin" length="middle" rot="R270"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="NCP380">
@@ -677,7 +785,7 @@ manufacturer Siemens</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="TLV70233DBVR">
+<deviceset name="TLV70233">
 <description>TLV70233 - 3.3V 350mA regulator</description>
 <gates>
 <gate name="G$1" symbol="TLV70233DBVR-SYM" x="-7.62" y="-2.54"/>
@@ -754,14 +862,14 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <connect gate="G$1" pin="PA5" pad="46"/>
 <connect gate="G$1" pin="PA6" pad="45"/>
 <connect gate="G$1" pin="PA7" pad="44"/>
-<connect gate="G$1" pin="PB0" pad="10"/>
-<connect gate="G$1" pin="PB1" pad="11"/>
-<connect gate="G$1" pin="PB2" pad="12"/>
-<connect gate="G$1" pin="PB3" pad="13"/>
-<connect gate="G$1" pin="PB4" pad="14"/>
-<connect gate="G$1" pin="PB5" pad="15"/>
-<connect gate="G$1" pin="PB6" pad="16"/>
-<connect gate="G$1" pin="PB7" pad="17"/>
+<connect gate="G$1" pin="PB0(SS)" pad="10"/>
+<connect gate="G$1" pin="PB1(SCK)" pad="11"/>
+<connect gate="G$1" pin="PB2(MOSI)" pad="12"/>
+<connect gate="G$1" pin="PB3(MISO)" pad="13"/>
+<connect gate="G$1" pin="PB4(OC0A)" pad="14"/>
+<connect gate="G$1" pin="PB5(OC1A)" pad="15"/>
+<connect gate="G$1" pin="PB6(OC1B)" pad="16"/>
+<connect gate="G$1" pin="PB7(OC2A)" pad="17"/>
 <connect gate="G$1" pin="PC0" pad="35"/>
 <connect gate="G$1" pin="PC1" pad="36"/>
 <connect gate="G$1" pin="PC2" pad="37"/>
@@ -778,22 +886,22 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <connect gate="G$1" pin="PD5" pad="30"/>
 <connect gate="G$1" pin="PD6" pad="31"/>
 <connect gate="G$1" pin="PD7" pad="32"/>
-<connect gate="G$1" pin="PE0" pad="2"/>
-<connect gate="G$1" pin="PE1" pad="3"/>
+<connect gate="G$1" pin="PE0(TXD)" pad="2"/>
+<connect gate="G$1" pin="PE1(RXD)" pad="3"/>
 <connect gate="G$1" pin="PE2" pad="4"/>
 <connect gate="G$1" pin="PE3" pad="5"/>
-<connect gate="G$1" pin="PE4" pad="6"/>
-<connect gate="G$1" pin="PE5" pad="7"/>
+<connect gate="G$1" pin="PE4(SCL)" pad="6"/>
+<connect gate="G$1" pin="PE5(SDA)" pad="7"/>
 <connect gate="G$1" pin="PE6" pad="8"/>
 <connect gate="G$1" pin="PE7" pad="9"/>
-<connect gate="G$1" pin="PF0" pad="61"/>
-<connect gate="G$1" pin="PF1" pad="60"/>
-<connect gate="G$1" pin="PF2" pad="59"/>
-<connect gate="G$1" pin="PF3" pad="58"/>
-<connect gate="G$1" pin="PF4" pad="57"/>
-<connect gate="G$1" pin="PF5" pad="56"/>
-<connect gate="G$1" pin="PF6" pad="55"/>
-<connect gate="G$1" pin="PF7" pad="54"/>
+<connect gate="G$1" pin="PF0(ADC0)" pad="61"/>
+<connect gate="G$1" pin="PF1(ADC1)" pad="60"/>
+<connect gate="G$1" pin="PF2(ADC2)" pad="59"/>
+<connect gate="G$1" pin="PF3(ADC3)" pad="58"/>
+<connect gate="G$1" pin="PF4(ADC4)" pad="57"/>
+<connect gate="G$1" pin="PF5(ADC5)" pad="56"/>
+<connect gate="G$1" pin="PF6(ADC6)" pad="55"/>
+<connect gate="G$1" pin="PF7(ADC7)" pad="54"/>
 <connect gate="G$1" pin="PG0" pad="33"/>
 <connect gate="G$1" pin="PG1" pad="34"/>
 <connect gate="G$1" pin="PG2" pad="43"/>
@@ -889,12 +997,12 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <devices>
 <device name="" package="SC70T">
 <connects>
-<connect gate="G$1" pin="D1" pad="P$6"/>
-<connect gate="G$1" pin="D2" pad="P$3"/>
-<connect gate="G$1" pin="G1" pad="P$2"/>
-<connect gate="G$1" pin="G2" pad="P$5"/>
-<connect gate="G$1" pin="S1" pad="P$1"/>
-<connect gate="G$1" pin="S2" pad="P$4"/>
+<connect gate="G$1" pin="D1" pad="P$1"/>
+<connect gate="G$1" pin="D2" pad="P$4"/>
+<connect gate="G$1" pin="G1" pad="P$5"/>
+<connect gate="G$1" pin="G2" pad="P$2"/>
+<connect gate="G$1" pin="S1" pad="P$6"/>
+<connect gate="G$1" pin="S2" pad="P$3"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -955,6 +1063,56 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <connect gate="G$1" pin="VCC" pad="P$7"/>
 <connect gate="G$1" pin="VM1" pad="P$1"/>
 <connect gate="G$1" pin="VM2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MIC2009A">
+<gates>
+<gate name="G$1" symbol="MIC2009A" x="0" y="-2.54"/>
+</gates>
+<devices>
+<device name="" package="SOT23-M5">
+<connects>
+<connect gate="G$1" pin="EN" pad="P$3"/>
+<connect gate="G$1" pin="FAULT" pad="P$4"/>
+<connect gate="G$1" pin="GND" pad="P$2"/>
+<connect gate="G$1" pin="ILIM" pad="P$5"/>
+<connect gate="G$1" pin="VIN" pad="P$1"/>
+<connect gate="G$1" pin="VOUT" pad="P$6"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MMA8453Q">
+<gates>
+<gate name="G$1" symbol="MMA8453Q" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="QFN-COL">
+<connects>
+<connect gate="G$1" pin="BYP" pad="P$2"/>
+<connect gate="G$1" pin="GND1" pad="P$5"/>
+<connect gate="G$1" pin="GND2" pad="P$10"/>
+<connect gate="G$1" pin="GND3" pad="P$12"/>
+<connect gate="G$1" pin="INT1" pad="P$11"/>
+<connect gate="G$1" pin="INT2" pad="P$9"/>
+<connect gate="G$1" pin="NC1" pad="P$3"/>
+<connect gate="G$1" pin="NC2" pad="P$8"/>
+<connect gate="G$1" pin="NC3" pad="P$13"/>
+<connect gate="G$1" pin="NC4" pad="P$15"/>
+<connect gate="G$1" pin="NC5" pad="P$16"/>
+<connect gate="G$1" pin="SA0" pad="P$7"/>
+<connect gate="G$1" pin="SCL" pad="P$4"/>
+<connect gate="G$1" pin="SDA" pad="P$6"/>
+<connect gate="G$1" pin="VDD" pad="P$14"/>
+<connect gate="G$1" pin="VDDIO" pad="P$1"/>
 </connects>
 <technologies>
 <technology name=""/>
