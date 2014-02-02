@@ -1,0 +1,27 @@
+Current board specs:
+
+  -ATMega325PA 16MHz
+  -hardware FTDI USB-UART (FT232RL)
+  -8 character x 2 line LCD w/ backlight and adjustable contrast
+  -2 DC motors outputs (max 11V @ 1.8A each) - DRV8839 H-bridge
+  -4 RC servo outputs
+  -3 axis accelerometer (MMA8453Q)
+  -1 user button
+  -2 user LEDs
+  -1 power LED
+  -hardware PWM for DC motor outputs
+  -battery voltage monitoring
+  -servo power is unregulated (servo power is directly connected to Vin)
+  -3V-10V operation
+
+
+Protection:
+
+  -reverse power protection
+  -overall microcontroller current limited to 150mA
+  -overall system current limited to 2A
+  -USB current limited to 500mA
+  -all I/O pins protected against shorts to ground, 3.3V, 5V, and Vin
+  -3.3V pin protected against short to ground, 5V, and Vin
+  -5V pin protected against short to 3.3V, Vin, and ground (? verify)
+
