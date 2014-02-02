@@ -23,5 +23,5 @@ Protection:
   -USB current limited to 500mA
   -all I/O pins protected against shorts to ground, 3.3V, 5V, and Vin
   -3.3V pin protected against short to ground, 5V, and Vin
-  -5V pin protected against short to 3.3V, Vin, and ground (? verify)
+  -5V pin protected against short to 3.3V, Vin, and ground 
 
