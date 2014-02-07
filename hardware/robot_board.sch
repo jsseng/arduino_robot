@@ -17254,6 +17254,11 @@ Protection</text>
 <wire x1="101.6" y1="35.56" x2="101.6" y2="38.1" width="0.1524" layer="91"/>
 <label x="91.44" y="38.1" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="IR" gate="G$1" pin="2"/>
+<wire x1="335.28" y1="81.28" x2="332.74" y2="81.28" width="0.1524" layer="91"/>
+<label x="332.74" y="81.28" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="N$31" class="0">
 <segment>
@@ -17800,6 +17805,11 @@ Protection</text>
 <label x="246.38" y="86.36" size="1.778" layer="95"/>
 <junction x="261.62" y="86.36"/>
 </segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PC6"/>
+<wire x1="154.94" y1="15.24" x2="160.02" y2="15.24" width="0.1524" layer="91"/>
+<label x="154.94" y="15.24" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="D9_IN" class="0">
 <segment>
@@ -17808,6 +17818,11 @@ Protection</text>
 <wire x1="261.62" y1="76.2" x2="246.38" y2="76.2" width="0.1524" layer="91"/>
 <label x="246.38" y="76.2" size="1.778" layer="95"/>
 <junction x="261.62" y="76.2"/>
+</segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PC7"/>
+<wire x1="154.94" y1="17.78" x2="160.02" y2="17.78" width="0.1524" layer="91"/>
+<label x="154.94" y="17.78" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="D2_IN" class="0">
@@ -17887,6 +17902,11 @@ Protection</text>
 <wire x1="261.62" y1="-50.8" x2="246.38" y2="-50.8" width="0.1524" layer="91"/>
 <label x="246.38" y="-50.8" size="1.778" layer="95"/>
 <junction x="261.62" y="-50.8"/>
+</segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PC5"/>
+<wire x1="154.94" y1="12.7" x2="160.02" y2="12.7" width="0.1524" layer="91"/>
+<label x="154.94" y="12.7" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="PWR_SW" class="0">
@@ -18090,11 +18110,6 @@ Protection</text>
 <wire x1="309.88" y1="76.2" x2="312.42" y2="76.2" width="0.1524" layer="91"/>
 <label x="309.88" y="76.2" size="1.778" layer="95"/>
 <pinref part="U$1" gate="G$1" pin="5"/>
-</segment>
-<segment>
-<pinref part="IR" gate="G$1" pin="2"/>
-<wire x1="335.28" y1="81.28" x2="332.74" y2="81.28" width="0.1524" layer="91"/>
-<label x="332.74" y="81.28" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$28" class="0">
