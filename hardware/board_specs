@@ -9,11 +9,13 @@ Current board specs:
   -1 user button
   -2 user LEDs
   -1 power LED
+  -on/off switch
   -hardware PWM for DC motor outputs
   -battery voltage monitoring
   -servo power is unregulated (servo power is directly connected to Vin)
   -3V-10V operation
-
+  -2 digital 3-pin male headers (shared with Digital 0 & 1 pins)
+  -2 analog 3-pin male headers (shared with Analog 0 & 1 pins)
 
 Protection:
 
