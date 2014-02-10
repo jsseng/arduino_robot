@@ -353,20 +353,20 @@ Source: http://focus.ti.com/lit/ds/symlink/ads1271.pdf</description>
 <rectangle x1="-2.5" y1="2.25" x2="-2.05" y2="3.6" layer="29" rot="R180"/>
 </package>
 <package name="SC70T">
-<rectangle x1="-0.77" y1="-0.5" x2="-0.16" y2="0.45" layer="1"/>
-<rectangle x1="0.16" y1="-0.5" x2="0.77" y2="0.45" layer="1"/>
-<smd name="P$1" x="-0.65" y="0.89" dx="0.3" dy="0.35" layer="1"/>
-<smd name="P$2" x="0" y="0.89" dx="0.3" dy="0.35" layer="1"/>
-<smd name="P$3" x="0.65" y="0.89" dx="0.3" dy="0.35" layer="1"/>
-<smd name="P$4" x="0.65" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
-<smd name="P$5" x="0" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
-<smd name="P$6" x="-0.65" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
+<smd name="D1" x="-0.65" y="0.89" dx="0.3" dy="0.35" layer="1"/>
+<smd name="G2" x="0" y="0.89" dx="0.3" dy="0.35" layer="1"/>
+<smd name="S2" x="0.65" y="0.89" dx="0.3" dy="0.35" layer="1"/>
+<smd name="D2" x="0.65" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
+<smd name="G1" x="0" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
+<smd name="S1" x="-0.65" y="-0.94" dx="0.3" dy="0.35" layer="1"/>
 <text x="-1.51" y="-1.05" size="0.4064" layer="21" rot="R90">&gt;NAME</text>
 <wire x1="-0.93" y1="-0.64" x2="0.95" y2="-0.64" width="0.127" layer="21"/>
 <wire x1="0.95" y1="-0.64" x2="0.95" y2="0.58" width="0.127" layer="21"/>
 <wire x1="0.95" y1="0.58" x2="-0.93" y2="0.58" width="0.127" layer="21"/>
 <wire x1="-0.93" y1="0.58" x2="-0.93" y2="-0.63" width="0.127" layer="21"/>
 <circle x="-1.16" y="-0.71" radius="0.184390625" width="0.127" layer="21"/>
+<smd name="D1@" x="-0.47" y="-0.02" dx="0.6" dy="0.95" layer="1"/>
+<smd name="D2@" x="0.46" y="-0.02" dx="0.6" dy="0.95" layer="1"/>
 </package>
 <package name="PWSON-N12">
 <smd name="P$1" x="-0.46" y="-0.32" dx="0.28" dy="0.5" layer="1" rot="R180"/>
@@ -381,12 +381,12 @@ Source: http://focus.ti.com/lit/ds/symlink/ads1271.pdf</description>
 <smd name="P$10" x="1.04" y="1.58" dx="0.28" dy="0.5" layer="1"/>
 <smd name="P$11" x="1.54" y="1.58" dx="0.28" dy="0.5" layer="1"/>
 <smd name="P$12" x="2.04" y="1.58" dx="0.28" dy="0.5" layer="1"/>
-<rectangle x1="-0.18" y1="0.18" x2="1.82" y2="1.08" layer="1"/>
 <wire x1="-0.6" y1="0.02" x2="2.18" y2="0.02" width="0.127" layer="21"/>
 <wire x1="2.18" y1="0.02" x2="2.18" y2="1.23" width="0.127" layer="21"/>
 <wire x1="2.18" y1="1.23" x2="-0.6" y2="1.23" width="0.127" layer="21"/>
 <wire x1="-0.6" y1="1.23" x2="-0.6" y2="0.02" width="0.127" layer="21"/>
 <circle x="-0.47" y="0.26" radius="0.196975" width="0.127" layer="21"/>
+<smd name="GND" x="0.82" y="0.63" dx="2" dy="0.9" layer="1"/>
 </package>
 <package name="TAIYO-NRS">
 <smd name="P$1" x="-2.3" y="0" dx="1.6" dy="5.7" layer="1"/>
@@ -687,12 +687,13 @@ Source: U6 OnSemi Inductive Load Driver MDC3105-D.PDF</description>
 <pin name="VINT" x="15.24" y="7.62" visible="pin" length="middle" rot="R180"/>
 <pin name="AIN2" x="15.24" y="12.7" visible="pin" length="middle" rot="R180"/>
 <pin name="AIN1" x="15.24" y="17.78" visible="pin" length="middle" rot="R180"/>
+<pin name="GND_PPAD" x="0" y="-25.4" length="middle" rot="R90"/>
 </symbol>
 <symbol name="SIA907EDJT-SYM">
 <wire x1="-5.08" y1="7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
-<wire x1="7.62" y1="7.62" x2="7.62" y2="-7.62" width="0.254" layer="94"/>
-<wire x1="7.62" y1="-7.62" x2="-5.08" y2="-7.62" width="0.254" layer="94"/>
-<wire x1="-5.08" y1="-7.62" x2="-5.08" y2="7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="7.62" x2="7.62" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-10.16" x2="-5.08" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="-10.16" x2="-5.08" y2="7.62" width="0.254" layer="94"/>
 <pin name="S1" x="-10.16" y="5.08" visible="pin" length="middle"/>
 <pin name="G1" x="-10.16" y="0" visible="pin" length="middle"/>
 <pin name="D2" x="-10.16" y="-5.08" visible="pin" length="middle"/>
@@ -701,6 +702,8 @@ Source: U6 OnSemi Inductive Load Driver MDC3105-D.PDF</description>
 <pin name="S2" x="12.7" y="-5.08" visible="pin" length="middle" rot="R180"/>
 <text x="-2.54" y="10.16" size="1.778" layer="95">&gt;NAME</text>
 <text x="-2.54" y="-12.7" size="1.778" layer="95">&gt;VALUE</text>
+<pin name="D1@" x="-10.16" y="-7.62" length="middle"/>
+<pin name="D2@" x="12.7" y="-10.16" length="middle" rot="R180"/>
 </symbol>
 <symbol name="DRK">
 <wire x1="-3.81" y1="1.651" x2="3.81" y2="1.651" width="0.254" layer="94"/>
@@ -727,6 +730,7 @@ Source: U6 OnSemi Inductive Load Driver MDC3105-D.PDF</description>
 <pin name="IN1" x="15.24" y="2.54" visible="pin" length="middle" rot="R180"/>
 <pin name="NSLEEP" x="15.24" y="7.62" visible="pin" length="middle" rot="R180"/>
 <pin name="VCC" x="15.24" y="12.7" visible="pin" length="middle" rot="R180"/>
+<pin name="GND_PPAD" x="2.54" y="-20.32" length="middle" rot="R90"/>
 </symbol>
 <symbol name="MIC2009A">
 <wire x1="-7.62" y1="12.7" x2="7.62" y2="12.7" width="0.254" layer="94"/>
@@ -999,12 +1003,14 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <devices>
 <device name="" package="SC70T">
 <connects>
-<connect gate="G$1" pin="D1" pad="P$1"/>
-<connect gate="G$1" pin="D2" pad="P$4"/>
-<connect gate="G$1" pin="G1" pad="P$5"/>
-<connect gate="G$1" pin="G2" pad="P$2"/>
-<connect gate="G$1" pin="S1" pad="P$6"/>
-<connect gate="G$1" pin="S2" pad="P$3"/>
+<connect gate="G$1" pin="D1" pad="D1"/>
+<connect gate="G$1" pin="D1@" pad="D1@"/>
+<connect gate="G$1" pin="D2" pad="D2"/>
+<connect gate="G$1" pin="D2@" pad="D2@"/>
+<connect gate="G$1" pin="G1" pad="G1"/>
+<connect gate="G$1" pin="G2" pad="G2"/>
+<connect gate="G$1" pin="S1" pad="S1"/>
+<connect gate="G$1" pin="S2" pad="S2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -1057,6 +1063,7 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <connect gate="G$1" pin="EN2" pad="P$12"/>
 <connect gate="G$1" pin="GND1" pad="P$5"/>
 <connect gate="G$1" pin="GND2" pad="P$6"/>
+<connect gate="G$1" pin="GND_PPAD" pad="GND"/>
 <connect gate="G$1" pin="IN1" pad="P$9"/>
 <connect gate="G$1" pin="IN2" pad="P$11"/>
 <connect gate="G$1" pin="NSLEEP" pad="P$8"/>
