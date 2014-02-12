@@ -15677,6 +15677,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="R63" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="U$2" library="r_cubed" deviceset="POT" device=""/>
 <part name="D34" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="POWER"/>
+<part name="R64" library="resistor" deviceset="R-US_" device="R1206" value="10"/>
 </parts>
 <sheets>
 <sheet>
@@ -15859,6 +15860,7 @@ Protection</text>
 <instance part="R63" gate="G$1" x="231.14" y="154.94" rot="R180"/>
 <instance part="U$2" gate="G$1" x="325.12" y="76.2" rot="R180"/>
 <instance part="D34" gate="G$1" x="228.6" y="139.7" rot="R270"/>
+<instance part="R64" gate="G$1" x="289.56" y="68.58"/>
 </instances>
 <busses>
 </busses>
@@ -17708,11 +17710,6 @@ Protection</text>
 <pinref part="D25" gate="G$1" pin="A"/>
 </segment>
 <segment>
-<pinref part="U$1" gate="G$1" pin="2"/>
-<wire x1="294.64" y1="71.12" x2="292.1" y2="71.12" width="0.1524" layer="91"/>
-<label x="287.02" y="71.12" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="C6" gate="G$1" pin="1"/>
 <wire x1="294.64" y1="193.04" x2="294.64" y2="195.58" width="0.1524" layer="91"/>
 <label x="292.1" y="195.58" size="1.778" layer="95"/>
@@ -17726,6 +17723,11 @@ Protection</text>
 <pinref part="R57" gate="G$1" pin="1"/>
 <wire x1="243.84" y1="139.7" x2="246.38" y2="139.7" width="0.1524" layer="91"/>
 <label x="243.84" y="139.7" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R64" gate="G$1" pin="1"/>
+<wire x1="284.48" y1="68.58" x2="281.94" y2="68.58" width="0.1524" layer="91"/>
+<label x="281.94" y="68.58" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$28" class="0">
@@ -18360,6 +18362,13 @@ Protection</text>
 <wire x1="233.68" y1="139.7" x2="231.14" y2="139.7" width="0.1524" layer="91"/>
 </segment>
 </net>
+<net name="N$16" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="2"/>
+<pinref part="R64" gate="G$1" pin="2"/>
+<wire x1="294.64" y1="71.12" x2="294.64" y2="68.58" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
@@ -18375,7 +18384,6 @@ Protection</text>
 <approved hash="104,1,193.04,139.7,U1,GND3,GND,,,"/>
 <approved hash="104,1,193.04,154.94,U1,VCCIO,USB_5V,,,"/>
 <approved hash="104,1,193.04,147.32,U1,AGND,GND,,,"/>
-<approved hash="202,1,193.04,149.86,U1,TEST,,,,"/>
 <approved hash="104,1,193.04,160.02,U1,VCC,USB_5V,,,"/>
 <approved hash="202,1,58.42,96.52,U3,BP,,,,"/>
 <approved hash="113,1,297.857,-5.27473,JP1,,,,,"/>
