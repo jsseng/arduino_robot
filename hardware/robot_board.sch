@@ -15816,8 +15816,8 @@ Protection</text>
 <instance part="R52" gate="G$1" x="231.14" y="66.04" rot="R90"/>
 <instance part="U8" gate="G$1" x="233.68" y="106.68"/>
 <instance part="R53" gate="G$1" x="254" y="106.68" rot="R90"/>
-<instance part="R54" gate="G$1" x="167.64" y="15.24" rot="R90"/>
-<instance part="R55" gate="G$1" x="162.56" y="20.32" rot="R180"/>
+<instance part="R54" gate="G$1" x="172.72" y="15.24" rot="R90"/>
+<instance part="R55" gate="G$1" x="167.64" y="20.32" rot="R180"/>
 <instance part="U7" gate="G$1" x="129.54" y="101.6" rot="R180"/>
 <instance part="U$8" gate="G$1" x="337.82" y="121.92"/>
 <instance part="R28" gate="G$1" x="17.78" y="134.62" rot="R90"/>
@@ -16249,8 +16249,8 @@ Protection</text>
 </segment>
 <segment>
 <pinref part="R54" gate="G$1" pin="1"/>
-<wire x1="167.64" y1="10.16" x2="167.64" y2="7.62" width="0.1524" layer="91"/>
-<label x="167.64" y="7.62" size="1.778" layer="95"/>
+<wire x1="172.72" y1="10.16" x2="172.72" y2="7.62" width="0.1524" layer="91"/>
+<label x="172.72" y="7.62" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="S2" gate="S" pin="2"/>
@@ -16397,6 +16397,11 @@ Protection</text>
 <pinref part="U$2" gate="G$1" pin="E"/>
 <wire x1="325.12" y1="71.12" x2="325.12" y2="68.58" width="0.1524" layer="91"/>
 <label x="325.12" y="66.04" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U4" gate="G$1" pin="GND1"/>
+<wire x1="365.76" y1="2.54" x2="365.76" y2="0" width="0.1524" layer="91"/>
+<label x="363.22" y="-2.54" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="D8" class="0">
@@ -16786,12 +16791,6 @@ Protection</text>
 <wire x1="246.38" y1="116.84" x2="261.62" y2="116.84" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="JP8" gate="G$1" pin="2"/>
-<wire x1="193.04" y1="109.22" x2="195.58" y2="109.22" width="0.1524" layer="91"/>
-<wire x1="195.58" y1="109.22" x2="195.58" y2="111.76" width="0.1524" layer="91"/>
-<label x="193.04" y="111.76" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="U17" gate="G$1" pin="VCC1"/>
 <wire x1="111.76" y1="22.86" x2="106.68" y2="22.86" width="0.1524" layer="91"/>
 <label x="106.68" y="22.86" size="1.778" layer="95"/>
@@ -16809,7 +16808,7 @@ Protection</text>
 <segment>
 <pinref part="R40" gate="G$1" pin="1"/>
 <wire x1="101.6" y1="35.56" x2="101.6" y2="38.1" width="0.1524" layer="91"/>
-<label x="91.44" y="38.1" size="1.778" layer="95"/>
+<label x="96.52" y="38.1" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="IR" gate="G$1" pin="2"/>
@@ -17246,10 +17245,10 @@ Protection</text>
 </segment>
 <segment>
 <pinref part="R54" gate="G$1" pin="2"/>
-<wire x1="167.64" y1="20.32" x2="172.72" y2="20.32" width="0.1524" layer="91"/>
-<label x="167.64" y="20.32" size="1.778" layer="95"/>
+<wire x1="172.72" y1="20.32" x2="177.8" y2="20.32" width="0.1524" layer="91"/>
+<label x="172.72" y="20.32" size="1.778" layer="95"/>
 <pinref part="R55" gate="G$1" pin="1"/>
-<junction x="167.64" y="20.32"/>
+<junction x="172.72" y="20.32"/>
 </segment>
 <segment>
 <pinref part="U16" gate="G1" pin="V+"/>
@@ -17729,6 +17728,12 @@ Protection</text>
 <wire x1="284.48" y1="68.58" x2="281.94" y2="68.58" width="0.1524" layer="91"/>
 <label x="281.94" y="68.58" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="JP8" gate="G$1" pin="2"/>
+<wire x1="193.04" y1="109.22" x2="195.58" y2="109.22" width="0.1524" layer="91"/>
+<wire x1="195.58" y1="109.22" x2="195.58" y2="111.76" width="0.1524" layer="91"/>
+<label x="193.04" y="111.76" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="N$28" class="0">
 <segment>
@@ -17805,6 +17810,11 @@ Protection</text>
 <label x="88.9" y="-22.86" size="1.778" layer="95"/>
 <junction x="106.68" y="-22.86"/>
 </segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PC2"/>
+<wire x1="154.94" y1="5.08" x2="160.02" y2="5.08" width="0.1524" layer="91"/>
+<label x="154.94" y="5.08" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="SERVO1_IN" class="0">
 <segment>
@@ -17813,6 +17823,11 @@ Protection</text>
 <wire x1="106.68" y1="-35.56" x2="93.98" y2="-35.56" width="0.1524" layer="91"/>
 <label x="88.9" y="-35.56" size="1.778" layer="95"/>
 <junction x="106.68" y="-35.56"/>
+</segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PC3"/>
+<wire x1="154.94" y1="7.62" x2="160.02" y2="7.62" width="0.1524" layer="91"/>
+<label x="154.94" y="7.62" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="SERVO2_IN" class="0">
@@ -17823,6 +17838,11 @@ Protection</text>
 <label x="88.9" y="-50.8" size="1.778" layer="95"/>
 <junction x="106.68" y="-50.8"/>
 </segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PC4"/>
+<wire x1="154.94" y1="10.16" x2="160.02" y2="10.16" width="0.1524" layer="91"/>
+<label x="154.94" y="10.16" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="SERVO3_IN" class="0">
 <segment>
@@ -17831,6 +17851,11 @@ Protection</text>
 <wire x1="106.68" y1="-63.5" x2="93.98" y2="-63.5" width="0.1524" layer="91"/>
 <label x="88.9" y="-63.5" size="1.778" layer="95"/>
 <junction x="106.68" y="-63.5"/>
+</segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PF7(ADC7)"/>
+<wire x1="154.94" y1="48.26" x2="160.02" y2="48.26" width="0.1524" layer="91"/>
+<label x="154.94" y="48.26" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="M0_EN" class="0">
@@ -18151,7 +18176,7 @@ Protection</text>
 <segment>
 <pinref part="R55" gate="G$1" pin="2"/>
 <pinref part="U17" gate="G$1" pin="PG2"/>
-<wire x1="157.48" y1="20.32" x2="154.94" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="162.56" y1="20.32" x2="154.94" y2="20.32" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="SW1" class="0">
