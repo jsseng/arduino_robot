@@ -2737,15 +2737,15 @@ design rules under a new name.</description>
 <element name="U11" library="SparkFun-AnalogIC" package="SO08" value="LM393" x="62.484" y="40.132" rot="R180"/>
 <element name="U12" library="SparkFun-AnalogIC" package="SO08" value="LM393" x="81.788" y="34.544"/>
 <element name="C3" library="SparkFun-Capacitors" package="PANASONIC_D" value="100uF" x="76.327" y="51.3334" rot="R270"/>
-<element name="R34" library="resistor" package="R1206" value="10K" x="85.2424" y="22.225" rot="R270"/>
+<element name="R34" library="resistor" package="R1206" value="20K 1%" x="85.2424" y="22.225" rot="R270"/>
 <element name="Q1" library="jseng" package="SOT23" value="DMP2035U" x="84.582" y="15.748" smashed="yes" rot="R180">
 <attribute name="NAME" x="81.407" y="15.875" size="1.27" layer="25" rot="R270"/>
 </element>
 <element name="U16" library="SparkFun-AnalogIC" package="SO08" value="LM393" x="61.722" y="18.034" rot="R180"/>
-<element name="R35" library="resistor" package="R1206" value="10K" x="54.864" y="14.732" rot="R270"/>
-<element name="R36" library="resistor" package="R1206" value="20K" x="57.15" y="16.51" rot="R90"/>
-<element name="JP8" library="SparkFun-Connectors" package="2X3" value="ISP" x="64.77" y="63.5"/>
-<element name="R39" library="resistor" package="R1206" value="1k" x="70.358" y="58.928" rot="R90"/>
+<element name="R35" library="resistor" package="R1206" value="5K 1%" x="54.864" y="14.732" rot="R270"/>
+<element name="R36" library="resistor" package="R1206" value="20K 1%" x="57.15" y="16.51" rot="R90"/>
+<element name="JP8" library="SparkFun-Connectors" package="2X3" value="" x="64.77" y="63.5"/>
+<element name="R39" library="resistor" package="R1206" value="1K" x="70.358" y="58.928" rot="R90"/>
 <element name="R41" library="resistor" package="R1206" value="330" x="3.7846" y="65.786" rot="R180"/>
 <element name="D25" library="SparkFun-LED" package="LED-1206" value="POWER" x="2.5146" y="61.722" rot="R90">
 <attribute name="PROD_ID" value="DIO-09910" x="2.5146" y="61.722" size="1.778" layer="27" rot="R90" display="off"/>
@@ -2791,7 +2791,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="85.725" y="65.3542" size="1.27" layer="25"/>
 </element>
 <element name="U17" library="jseng" package="TQFP64" value="ATMEGA325PA" x="17.272" y="33.782" rot="R270"/>
-<element name="R42" library="resistor" package="R1206" value="10K" x="63.5" y="23.368"/>
+<element name="R42" library="resistor" package="R1206" value="10K 1%" x="63.5" y="23.368"/>
 <element name="Q2" library="jseng" package="SOT23" value="DMP2035U" x="81.9658" y="21.5646" smashed="yes">
 <attribute name="NAME" x="80.0608" y="21.4376" size="1.27" layer="25" rot="R90"/>
 </element>
@@ -2842,7 +2842,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="70.739" y="51.435" size="1.27" layer="25" rot="R180"/>
 <attribute name="VALUE" x="71.501" y="51.435" size="1.27" layer="27" rot="R180"/>
 </element>
-<element name="R54" library="resistor" package="R1206" value="10K" x="44.196" y="12.7"/>
+<element name="R54" library="resistor" package="R1206" value="10K 1%" x="44.196" y="12.7"/>
 <element name="R55" library="resistor" package="R1206" value="1K" x="29.464" y="11.176" smashed="yes" rot="R180">
 <attribute name="NAME" x="25.527" y="12.065" size="1.27" layer="25" rot="R270"/>
 <attribute name="VALUE" x="30.861" y="13.589" size="1.27" layer="27" rot="R180"/>
@@ -2856,19 +2856,19 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="56.261" y="41.529" size="1.27" layer="27" rot="R270"/>
 </element>
 <element name="R29" library="resistor" package="R1206" value="15K 1%" x="62.23" y="45.72"/>
-<element name="R32" library="resistor" package="R1206" value="10K" x="62.484" y="32.004"/>
-<element name="R33" library="resistor" package="R1206" value="10K" x="66.802" y="40.132" rot="R90"/>
-<element name="R23" library="resistor" package="R1206" value="10K" x="74.93" y="38.608" rot="R90"/>
-<element name="R24" library="resistor" package="R1206" value="12K 1%" x="86.6648" y="38.6334"/>
-<element name="R25" library="resistor" package="R1206" value="10K" x="83.058" y="44.704" rot="R90"/>
-<element name="R26" library="resistor" package="R1206" value="7.68K 1%" x="81.28" y="40.894"/>
+<element name="R32" library="resistor" package="R1206" value="20K 1%" x="62.484" y="32.004"/>
+<element name="R33" library="resistor" package="R1206" value="20K 1%" x="66.802" y="40.132" rot="R90"/>
+<element name="R23" library="resistor" package="R1206" value="20K 1%" x="74.93" y="38.608" rot="R90"/>
+<element name="R24" library="resistor" package="R1206" value="27K 1%" x="86.6648" y="38.6334"/>
+<element name="R25" library="resistor" package="R1206" value="20K 1%" x="83.058" y="44.704" rot="R90"/>
+<element name="R26" library="resistor" package="R1206" value="20K 1%" x="81.28" y="40.894"/>
 <element name="R27" library="resistor" package="R1206" value="10K 1%" x="85.8012" y="34.2392" rot="R270"/>
-<element name="R30" library="resistor" package="R1206" value="10K" x="77.4446" y="29.7942" rot="R270"/>
-<element name="R31" library="resistor" package="R1206" value="15K 1%" x="83.2104" y="28.067" rot="R180"/>
+<element name="R30" library="resistor" package="R1206" value="20K 1%" x="77.4446" y="29.7942" rot="R270"/>
+<element name="R31" library="resistor" package="R1206" value="20K 1%" x="83.2104" y="28.067" rot="R180"/>
 <element name="R37" library="resistor" package="R1206" value="4.7K" x="2.7686" y="56.388" rot="R270"/>
 <element name="R38" library="resistor" package="R1206" value="4.7K" x="2.7686" y="51.0794" rot="R90"/>
 <element name="C4" library="resistor" package="C1206" value=".1uF" x="52.578" y="14.732" rot="R90"/>
-<element name="R40" library="resistor" package="R1206" value="10K" x="2.7686" y="40.4876" rot="R90"/>
+<element name="R40" library="resistor" package="R1206" value="10K 1%" x="2.7686" y="40.4876" rot="R90"/>
 <element name="R56" library="resistor" package="R1206" value="1K" x="91.948" y="28.448" rot="R90"/>
 <element name="C5" library="resistor" package="C1206" value=".1uF" x="2.7686" y="45.8216" rot="R270"/>
 <element name="JP9" library="SparkFun-Connectors" package="USB-B-PTH" value="USB-B" x="63.5" y="10.16" rot="R90">
@@ -2892,7 +2892,7 @@ design rules under a new name.</description>
 <element name="R59" library="resistor" package="R1206" value="1K" x="44.704" y="16.002"/>
 <element name="C6" library="resistor" package="C1206" value=".1uF" x="29.21" y="61.722" rot="R90"/>
 <element name="D33" library="diode" package="SOT23" value="BAT54C" x="72.644" y="23.114" rot="R90"/>
-<element name="R60" library="resistor" package="R1206" value="300K" x="57.912" y="23.368"/>
+<element name="R60" library="resistor" package="R1206" value="300K 1%" x="57.912" y="23.368"/>
 <element name="C7" library="resistor" package="C1206" value="22uF" x="63.5" y="55.118" rot="R90"/>
 <element name="R61" library="resistor" package="R1206" value="1K" x="14.224" y="19.812" smashed="yes" rot="R270">
 <attribute name="NAME" x="11.557" y="21.209" size="1.27" layer="25" rot="R270"/>
@@ -2907,7 +2907,7 @@ design rules under a new name.</description>
 <element name="C9" library="resistor" package="C1206" value="1uF" x="61.214" y="55.118" rot="R90"/>
 <element name="R63" library="resistor" package="R1206" value="1K" x="50.292" y="14.732" rot="R270"/>
 <element name="U$2" library="r_cubed" package="POT" value="POT" x="37.592" y="2.794"/>
-<element name="D34" library="SparkFun-LED" package="LED-1206" value="POWER" x="42.9514" y="3.7338" rot="R270">
+<element name="D34" library="SparkFun-LED" package="LED-1206" value="RX" x="42.9514" y="3.7338" rot="R270">
 <attribute name="PROD_ID" value="DIO-09910" x="42.9514" y="3.7338" size="1.016" layer="27" font="vector" rot="R270" display="off"/>
 </element>
 <element name="R64" library="resistor" package="R1206" value="10" x="25.7556" y="7.7216"/>
@@ -4007,7 +4007,7 @@ design rules under a new name.</description>
 <wire x1="89.7382" y1="27.7114" x2="81.534" y2="27.7114" width="0.2032" layer="16"/>
 <wire x1="81.534" y1="27.7114" x2="79.2734" y2="29.972" width="0.2032" layer="16"/>
 </signal>
-<signal name="2.1V">
+<signal name="2.4V">
 <contactref element="U11" pad="5"/>
 <contactref element="U12" pad="6"/>
 <contactref element="U11" pad="2"/>

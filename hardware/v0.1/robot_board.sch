@@ -15572,13 +15572,13 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="U11" library="SparkFun-AnalogIC" deviceset="LM393" device=""/>
 <part name="U12" library="SparkFun-AnalogIC" deviceset="LM393" device=""/>
 <part name="C3" library="SparkFun-Capacitors" deviceset="CAP_POL" device="D" value="100uF"/>
-<part name="R34" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
+<part name="R34" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="Q1" library="jseng" deviceset="DMP2035U" device=""/>
 <part name="U16" library="SparkFun-AnalogIC" deviceset="LM393" device=""/>
-<part name="R35" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
-<part name="R36" library="resistor" deviceset="R-US_" device="R1206" value="20K"/>
-<part name="JP8" library="SparkFun-Connectors" deviceset="M03X2" device="2X3_SILK_SM" value="ISP"/>
-<part name="R39" library="resistor" deviceset="R-US_" device="R1206" value="1k"/>
+<part name="R35" library="resistor" deviceset="R-US_" device="R1206" value="5K 1%"/>
+<part name="R36" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
+<part name="JP8" library="SparkFun-Connectors" deviceset="M03X2" device="2X3_SILK_SM"/>
+<part name="R39" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="R41" library="resistor" deviceset="R-US_" device="R1206" value="330"/>
 <part name="D25" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="POWER"/>
 <part name="R1" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
@@ -15604,7 +15604,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="R21" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
 <part name="R22" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
 <part name="U17" library="jseng" deviceset="ATMEGA325PA" device=""/>
-<part name="R42" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
+<part name="R42" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="Q2" library="jseng" deviceset="DMP2035U" device=""/>
 <part name="POWER" library="r_cubed" deviceset="SW" device=""/>
 <part name="R43" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
@@ -15633,25 +15633,25 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="R52" library="resistor" deviceset="R-US_" device="R1206" value="330"/>
 <part name="U8" library="jseng" deviceset="MIC2009A" device=""/>
 <part name="R53" library="resistor" deviceset="R-US_" device="R1206" value="1.5K"/>
-<part name="R54" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
+<part name="R54" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="R55" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="U7" library="jseng" deviceset="TLV70233" device=""/>
 <part name="U$8" library="jseng" deviceset="MMA8453Q" device=""/>
 <part name="R28" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="R29" library="resistor" deviceset="R-US_" device="R1206" value="15K 1%"/>
-<part name="R32" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
-<part name="R33" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
-<part name="R23" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
-<part name="R24" library="resistor" deviceset="R-US_" device="R1206" value="12K 1%"/>
-<part name="R25" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
-<part name="R26" library="resistor" deviceset="R-US_" device="R1206" value="7.68K 1%"/>
+<part name="R32" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
+<part name="R33" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
+<part name="R23" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
+<part name="R24" library="resistor" deviceset="R-US_" device="R1206" value="27K 1%"/>
+<part name="R25" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
+<part name="R26" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R27" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
-<part name="R30" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
-<part name="R31" library="resistor" deviceset="R-US_" device="R1206" value="15K 1%"/>
+<part name="R30" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
+<part name="R31" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R37" library="resistor" deviceset="R-US_" device="R1206" value="4.7K"/>
 <part name="R38" library="resistor" deviceset="R-US_" device="R1206" value="4.7K"/>
 <part name="C4" library="resistor" deviceset="C-US" device="C1206" value=".1uF"/>
-<part name="R40" library="resistor" deviceset="R-US_" device="R1206" value="10K"/>
+<part name="R40" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="R56" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="C5" library="resistor" deviceset="C-US" device="C1206" value=".1uF"/>
 <part name="JP9" library="SparkFun-Connectors" deviceset="USB" device="PTH" value="USB-B"/>
@@ -15667,7 +15667,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="R59" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="C6" library="resistor" deviceset="C-US" device="C1206" value=".1uF"/>
 <part name="D33" library="diode" deviceset="BAT54C" device=""/>
-<part name="R60" library="resistor" deviceset="R-US_" device="R1206" value="300K"/>
+<part name="R60" library="resistor" deviceset="R-US_" device="R1206" value="300K 1%"/>
 <part name="C7" library="resistor" deviceset="C-US" device="C1206" value="22uF"/>
 <part name="R61" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="R62" library="resistor" deviceset="R-US_" device="R1206" value="2K"/>
@@ -15676,7 +15676,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="C9" library="resistor" deviceset="C-US" device="C1206" value="1uF"/>
 <part name="R63" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="U$2" library="r_cubed" deviceset="POT" device=""/>
-<part name="D34" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="POWER"/>
+<part name="D34" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="RX"/>
 <part name="R64" library="resistor" deviceset="R-US_" device="R1206" value="10"/>
 </parts>
 <sheets>
@@ -16990,7 +16990,7 @@ Protection</text>
 <wire x1="48.26" y1="-60.96" x2="53.34" y2="-60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="2.1V" class="0">
+<net name="2.4V" class="0">
 <segment>
 <wire x1="30.48" y1="-33.02" x2="25.4" y2="-33.02" width="0.1524" layer="91"/>
 <label x="25.4" y="-33.02" size="1.778" layer="95"/>
