@@ -9,7 +9,7 @@
 /*  Arduino production envionment get moved from the      */
 /*  optiboot project to the arduino project in "lumps."   */
 /*                                                        */
-/* Heavily optimised bootloader that is faster and        */
+/* Heavily optimized bootloader that is faster and        */
 /* smaller than the Arduino standard bootloader           */
 /*                                                        */
 /* Enhancements:                                          */
@@ -57,13 +57,6 @@
 /*     UART and Timer 1 are set to their reset state      */
 /*     SP points to RAMEND                                */
 /*                                                        */
-/* Code builds on code, libraries and optimisations from: */
-/*   stk500boot.c          by Jason P. Kyle               */
-/*   Arduino bootloader    http://arduino.cc              */
-/*   Spiff's 1K bootloader http://spiffie.org/know/arduino_1k_bootloader/bootloader.shtml */
-/*   avr-libc project      http://nongnu.org/avr-libc     */
-/*   Adaboot               http://www.ladyada.net/library/arduino/bootloader.html */
-/*   AVR305                Atmel Application Note         */
 /*                                                        */
 /* This program is free software; you can redistribute it */
 /* and/or modify it under the terms of the GNU General    */
@@ -128,70 +121,6 @@
 /*                                                        */
 /**********************************************************/
 
-/**********************************************************/
-/* Version Numbers!                                       */
-/*                                                        */
-/* Arduino Optiboot now includes this Version number in   */
-/* the source and object code.                            */
-/*                                                        */
-/* Version 3 was released as zip from the optiboot        */
-/*  repository and was distributed with Arduino 0022.     */
-/* Version 4 starts with the arduino repository commit    */
-/*  that brought the arduino repository up-to-date with   */
-/*  the optiboot source tree changes since v3.            */
-/* Version 5 was created at the time of the new Makefile  */
-/*  structure (Mar, 2013), even though no binaries changed*/
-/* It would be good if versions implemented outside the   */
-/*  official repository used an out-of-seqeunce version   */
-/*  number (like 104.6 if based on based on 4.5) to       */
-/*  prevent collisions.                                   */
-/*                                                        */
-/**********************************************************/
-
-/**********************************************************/
-/* Edit History:					  */
-/*							  */
-/* Mar 2013                                               */
-/* 5.0 WestfW: Major Makefile restructuring.              */
-/*             See Makefile and pin_defs.h                */
-/*             (no binary changes)                        */
-/*                                                        */
-/* 4.6 WestfW/Pito: Add ATmega32 support                  */
-/* 4.6 WestfW/radoni: Don't set LED_PIN as an output if   */
-/*                    not used. (LED_START_FLASHES = 0)   */
-/* Jan 2013						  */
-/* 4.6 WestfW/dkinzer: use autoincrement lpm for read     */
-/* 4.6 WestfW/dkinzer: pass reset cause to app in R2      */
-/* Mar 2012                                               */
-/* 4.5 WestfW: add infrastructure for non-zero UARTS.     */
-/* 4.5 WestfW: fix SIGNATURE_2 for m644 (bad in avr-libc) */
-/* Jan 2012:                                              */
-/* 4.5 WestfW: fix NRWW value for m1284.                  */
-/* 4.4 WestfW: use attribute OS_main instead of naked for */
-/*             main().  This allows optimizations that we */
-/*             count on, which are prohibited in naked    */
-/*             functions due to PR42240.  (keeps us less  */
-/*             than 512 bytes when compiler is gcc4.5     */
-/*             (code from 4.3.2 remains the same.)        */
-/* 4.4 WestfW and Maniacbug:  Add m1284 support.  This    */
-/*             does not change the 328 binary, so the     */
-/*             version number didn't change either. (?)   */
-/* June 2011:                                             */
-/* 4.4 WestfW: remove automatic soft_uart detect (didn't  */
-/*             know what it was doing or why.)  Added a   */
-/*             check of the calculated BRG value instead. */
-/*             Version stays 4.4; existing binaries are   */
-/*             not changed.                               */
-/* 4.4 WestfW: add initialization of address to keep      */
-/*             the compiler happy.  Change SC'ed targets. */
-/*             Return the SW version via READ PARAM       */
-/* 4.3 WestfW: catch framing errors in getch(), so that   */
-/*             AVRISP works without HW kludges.           */
-/*  http://code.google.com/p/arduino/issues/detail?id=368n*/
-/* 4.2 WestfW: reduce code size, fix timeouts, change     */
-/*             verifySpace to use WDT instead of appstart */
-/* 4.1 WestfW: put version number in binary.		  */
-/**********************************************************/
 
 #define OPTIBOOT_MAJVER 5
 #define OPTIBOOT_MINVER 0
@@ -210,7 +139,6 @@ asm("  .section .version\n"
 // <avr/boot.h> uses sts instructions, but this version uses out instructions
 // This saves cycles and program memory.
 #include "boot.h"
-
 
 // We don't use <avr/wdt.h> as those routines have interrupt overhead we don't need.
 
@@ -256,7 +184,7 @@ asm("  .section .version\n"
 #warning BAUD_RATE error greater than -2%
 #endif
 
-#if 0
+#if 1
 /* Switch in soft UART for hard baud rates */
 /*
  * I don't understand what this was supposed to accomplish, where the
@@ -326,80 +254,14 @@ void appStart(uint8_t rstFlags) __attribute__ ((naked));
  * RAMSTART should be self-explanatory.  It's bigger on parts with a
  * lot of peripheral registers.
  */
-#if defined(__AVR_ATmega168__)
-#define RAMSTART (0x100)
-#define NRWWSTART (0x3800)
-#elif defined(__AVR_ATmega328P__) || defined(__AVR_ATmega32__)
-#define RAMSTART (0x100)
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega32__) || defined(__AVR_ATmega325PA__)
 #define NRWWSTART (0x7000)
-#elif defined (__AVR_ATmega644P__)
-#define RAMSTART (0x100)
-#define NRWWSTART (0xE000)
-// correct for a bug in avr-libc
-#undef SIGNATURE_2
-#define SIGNATURE_2 0x0A
-#elif defined (__AVR_ATmega1284P__)
-#define RAMSTART (0x100)
-#define NRWWSTART (0xE000)
-#elif defined(__AVR_ATtiny84__)
-#define RAMSTART (0x100)
-#define NRWWSTART (0x0000)
-#elif defined(__AVR_ATmega1280__)
-#define RAMSTART (0x200)
-#define NRWWSTART (0xE000)
-#elif defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)
-#define RAMSTART (0x100)
-#define NRWWSTART (0x1800)
 #endif
 
 /* C zero initialises all global variables. However, that requires */
-/* These definitions are NOT zero initialised, but that doesn't matter */
+/* These definitions are NOT zero initialized, but that doesn't matter */
 /* This allows us to drop the zero init code, saving us memory */
 #define buff    ((uint8_t*)(RAMSTART))
-#ifdef VIRTUAL_BOOT_PARTITION
-#define rstVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+4))
-#define wdtVect (*(uint16_t*)(RAMSTART+SPM_PAGESIZE*2+6))
-#endif
-
-/*
- * Handle devices with up to 4 uarts (eg m1280.)  Rather inelegantly.
- * Note that mega8/m32 still needs special handling, because ubrr is handled
- * differently.
- */
-#if UART == 0
-# define UART_SRA UCSR0A
-# define UART_SRB UCSR0B
-# define UART_SRC UCSR0C
-# define UART_SRL UBRR0L
-# define UART_UDR UDR0
-#elif UART == 1
-#if !defined(UDR1)
-#error UART == 1, but no UART1 on device
-#endif
-# define UART_SRA UCSR1A
-# define UART_SRB UCSR1B
-# define UART_SRC UCSR1C
-# define UART_SRL UBRR1L
-# define UART_UDR UDR1
-#elif UART == 2
-#if !defined(UDR2)
-#error UART == 2, but no UART2 on device
-#endif
-# define UART_SRA UCSR2A
-# define UART_SRB UCSR2B
-# define UART_SRC UCSR2C
-# define UART_SRL UBRR2L
-# define UART_UDR UDR2
-#elif UART == 3
-#if !defined(UDR1)
-#error UART == 3, but no UART3 on device
-#endif
-# define UART_SRA UCSR3A
-# define UART_SRB UCSR3B
-# define UART_SRC UCSR3C
-# define UART_SRL UBRR3L
-# define UART_UDR UDR3
-#endif
 
 /* main program starts here */
 int main(void) {
@@ -436,19 +298,6 @@ int main(void) {
 #if LED_START_FLASHES > 0
   // Set up Timer 1 for timeout counter
   TCCR1B = _BV(CS12) | _BV(CS10); // div 1024
-#endif
-#ifndef SOFT_UART
-#if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__)
-  UCSRA = _BV(U2X); //Double speed mode USART
-  UCSRB = _BV(RXEN) | _BV(TXEN);  // enable Rx & Tx
-  UCSRC = _BV(URSEL) | _BV(UCSZ1) | _BV(UCSZ0);  // config USART; 8N1
-  UBRRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );
-#else
-  UART_SRA = _BV(U2X0); //Double speed mode USART0
-  UART_SRB = _BV(RXEN0) | _BV(TXEN0);
-  UART_SRC = _BV(UCSZ00) | _BV(UCSZ01);
-  UART_SRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );
-#endif
 #endif
 
   // Set up watchdog to trigger after 500ms
@@ -549,25 +398,6 @@ int main(void) {
       // So check that here
       boot_spm_busy_wait();
 
-#ifdef VIRTUAL_BOOT_PARTITION
-      if ((uint16_t)(void*)address == 0) {
-        // This is the reset vector page. We need to live-patch the code so the
-        // bootloader runs.
-        //
-        // Move RESET vector to WDT vector
-        uint16_t vect = buff[0] | (buff[1]<<8);
-        rstVect = vect;
-        wdtVect = buff[8] | (buff[9]<<8);
-        vect -= 4; // Instruction is a relative jump (rjmp), so recalculate.
-        buff[8] = vect & 0xff;
-        buff[9] = vect >> 8;
-
-        // Add jump to bootloader at RESET vector
-        buff[0] = 0x7f;
-        buff[1] = 0xce; // rjmp 0x1d00 instruction
-      }
-#endif
-
       // Copy buffer into programming buffer
       bufPtr = buff;
       addrPtr = (uint16_t)(void*)address;
@@ -644,10 +474,6 @@ int main(void) {
 }
 
 void putch(char ch) {
-#ifndef SOFT_UART
-  while (!(UART_SRA & _BV(UDRE0)));
-  UART_UDR = ch;
-#else
   __asm__ __volatile__ (
     "   com %[ch]\n" // ones complement, carry set
     "   sec\n"
@@ -670,7 +496,6 @@ void putch(char ch) {
     :
       "r25"
   );
-#endif
 }
 
 uint8_t getch(void) {
@@ -684,7 +509,6 @@ uint8_t getch(void) {
 #endif
 #endif
 
-#ifdef SOFT_UART
   __asm__ __volatile__ (
     "1: sbic  %[uartPin],%[uartBit]\n"  // Wait for start edge
     "   rjmp  1b\n"
@@ -708,23 +532,6 @@ uint8_t getch(void) {
     :
       "r25"
 );
-#else
-  while(!(UART_SRA & _BV(RXC0)))
-    ;
-  if (!(UART_SRA & _BV(FE0))) {
-      /*
-       * A Framing Error indicates (probably) that something is talking
-       * to us at the wrong bit rate.  Assume that this is because it
-       * expects to be talking to the application, and DON'T reset the
-       * watchdog.  This should cause the bootloader to abort and run
-       * the application "soon", if it keeps happening.  (Note that we
-       * don't care that an invalid char is returned...)
-       */
-    watchdogReset();
-  }
-  
-  ch = UART_UDR;
-#endif
 
 #ifdef LED_DATA_FLASH
 #if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__)
@@ -794,8 +601,8 @@ void watchdogReset() {
 }
 
 void watchdogConfig(uint8_t x) {
-  WDTCSR = _BV(WDCE) | _BV(WDE);
-  WDTCSR = x;
+  WDTCR = _BV(WDCE) | _BV(WDE);
+  WDTCR = x;
 }
 
 void appStart(uint8_t rstFlags) {
@@ -806,15 +613,9 @@ void appStart(uint8_t rstFlags) {
 
   watchdogConfig(WATCHDOG_OFF);
   __asm__ __volatile__ (
-#ifdef VIRTUAL_BOOT_PARTITION
-    // Jump to WDT vector
-    "ldi r30,4\n"
-    "clr r31\n"
-#else
     // Jump to RST vector
     "clr r30\n"
     "clr r31\n"
-#endif
     "ijmp\n"
   );
 }

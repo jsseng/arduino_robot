@@ -1,12 +1,11 @@
 # 1 "baudcheck.c"
-# 1 "/Users/jseng/optiboot/optiboot/bootloaders/optiboot//"
-# 1 "<built-in>"
+# 1 "/Users/jseng/Dropbox/arduino_robot/firmware/optiboot//"
 # 1 "<command-line>"
 # 1 "baudcheck.c"
 # 20 "baudcheck.c"
 bpsx=115200
 bps=${bpsx/L/}
-fcpux=16000000L
+fcpux=20000000L
 fcpu=${fcpux/L/}
 
 
