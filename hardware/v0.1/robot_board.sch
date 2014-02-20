@@ -15575,7 +15575,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="R34" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="Q1" library="jseng" deviceset="DMP2035U" device=""/>
 <part name="U16" library="SparkFun-AnalogIC" deviceset="LM393" device=""/>
-<part name="R35" library="resistor" deviceset="R-US_" device="R1206" value="5K 1%"/>
+<part name="R35" library="resistor" deviceset="R-US_" device="R1206" value="5.11K 1%"/>
 <part name="R36" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="JP8" library="SparkFun-Connectors" deviceset="M03X2" device="2X3_SILK_SM"/>
 <part name="R39" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
@@ -15638,7 +15638,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <part name="U7" library="jseng" deviceset="TLV70233" device=""/>
 <part name="U$8" library="jseng" deviceset="MMA8453Q" device=""/>
 <part name="R28" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
-<part name="R29" library="resistor" deviceset="R-US_" device="R1206" value="15K 1%"/>
+<part name="R29" library="resistor" deviceset="R-US_" device="R1206" value="12K 1%"/>
 <part name="R32" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R33" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R23" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
