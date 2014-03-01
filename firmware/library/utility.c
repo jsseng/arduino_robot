@@ -5,8 +5,8 @@
 
 u08 get_sw1(void) {
    if (PORTE & _BV(SW1_PIN))
-      return 1;
-   return 0;
+      return 0;
+   return 1;
 }
 
 u08 digital(u08 num) {
@@ -71,8 +71,14 @@ void led_off(u08 num) {
 }
 
 void init(void) {
-  init_adc();
-  init_lcd();
-  init_servo();
-  init_motor();
+   //make LED0 and LED1 outputs
+   DDRG |= _BV(LED1_PIN) | _BV(LED0_PIN);
+
+   //enable SW1 pull
+   PORTE |= _BV(SW1_PIN);
+
+   init_adc();
+   init_lcd();
+   init_servo();
+   init_motor();
 }

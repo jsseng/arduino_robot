@@ -3,7 +3,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define F_CPU 16000000UL //16MHz clock
+#define F_CPU 20000000UL //16MHz clock
 
 typedef unsigned char u08;
 typedef unsigned int u16;

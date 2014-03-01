@@ -29,6 +29,9 @@ void write_data(u08 data) {
 }
 
 void init_lcd(void) {
+   DDRC |= _BV(LCD_E_PIN) | _BV(LCD_RS_PIN);
+   DDRA = 0xFF; //make all the data pins output
+   /*
   write_control(0x38);  //function set
   _delay_ms(5);
 
@@ -45,6 +48,7 @@ void init_lcd(void) {
   _delay_us(4000);
   write_control(0x06);  //set entry mode
   _delay_us(160);
+  */
 }
 
 void print_string(char* string, u08 num_bytes) {
