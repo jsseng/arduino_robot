@@ -1,5 +1,6 @@
 # 1 "baudcheck.c"
 # 1 "/Users/jseng/Dropbox/arduino_robot/firmware/optiboot//"
+# 1 "<built-in>"
 # 1 "<command-line>"
 # 1 "baudcheck.c"
 # 20 "baudcheck.c"

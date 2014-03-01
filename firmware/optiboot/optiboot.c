@@ -184,7 +184,7 @@ asm("  .section .version\n"
 #warning BAUD_RATE error greater than -2%
 #endif
 
-#if 1
+#if 0
 /* Switch in soft UART for hard baud rates */
 /*
  * I don't understand what this was supposed to accomplish, where the
@@ -258,7 +258,7 @@ void appStart(uint8_t rstFlags) __attribute__ ((naked));
 #define NRWWSTART (0x7000)
 #endif
 
-/* C zero initialises all global variables. However, that requires */
+/* C zero initializes all global variables. However, that requires */
 /* These definitions are NOT zero initialized, but that doesn't matter */
 /* This allows us to drop the zero init code, saving us memory */
 #define buff    ((uint8_t*)(RAMSTART))

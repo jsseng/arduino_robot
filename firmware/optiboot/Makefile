@@ -214,14 +214,6 @@ atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7c00 -Wl,--section-start=
 atmega325pa: $(PROGRAM)_atmega325pa.hex
 atmega325pa: $(PROGRAM)_atmega325pa.lst
 
-atmega328: TARGET = atmega328
-atmega328: MCU_TARGET = atmega328p
-atmega328: CFLAGS += $(COMMON_OPTIONS)
-atmega328: AVR_FREQ ?= 16000000L
-atmega328: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
-atmega328: $(PROGRAM)_atmega328.hex
-atmega328: $(PROGRAM)_atmega328.lst
-
 atmega328_isp: atmega328
 atmega328_isp: TARGET = atmega328
 atmega328_isp: MCU_TARGET = atmega328p
@@ -232,25 +224,6 @@ atmega328_isp: LFUSE ?= FF
 # 2.7V brownout
 atmega328_isp: EFUSE ?= FD
 atmega328_isp: isp
-
-atmega32: TARGET = atmega32
-atmega32: MCU_TARGET = atmega32
-atmega32: CFLAGS += $(COMMON_OPTIONS)
-atmega32: AVR_FREQ ?= 11059200L
-atmega32: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
-atmega32: $(PROGRAM)_atmega32.hex
-atmega32: $(PROGRAM)_atmega32.lst
-
-atmega32_isp: atmega32
-atmega32_isp: TARGET = atmega32
-atmega32_isp: MCU_TARGET = atmega32
-# No OCD or JTAG, SPIEN, CKOPT (for full swing xtal), Bootsize=512B
-atmega32_isp: HFUSE ?= CE
-# 2.7V brownout, 16MHz Xtal, 16KCK/14CK+65ms
-atemga32_isp: LFUSE ?= BF
-atmega32_isp: isp
-
-
 
 #---------------------------------------------------------------------------
 # "Board-level Platform" targets.
@@ -282,32 +255,6 @@ pro20_isp: LFUSE ?= C6
 pro20_isp: EFUSE ?= 04
 pro20_isp: isp
 
-# 16MHz clocked platforms
-#
-# These are capable of 230400 baud, or 115200 baud on PC (Arduino Avrdude issue)
-#
-
-pro16: TARGET = pro_16MHz
-pro16: CHIP = atmega168
-pro16:
-	$(MAKE) $(CHIP) AVR_FREQ=16000000L LED_START_FLASHES=3
-	mv $(PROGRAM)_$(CHIP).hex $(PROGRAM)_$(TARGET).hex
-	mv $(PROGRAM)_$(CHIP).lst $(PROGRAM)_$(TARGET).lst
-
-pro16_isp: pro16
-pro16_isp: TARGET = pro_16MHz
-# 2.7V brownout
-pro16_isp: HFUSE ?= DD
-# Full swing xtal (20MHz) 258CK/14CK+4.1ms
-pro16_isp: LFUSE ?= C6
-# 512 byte boot
-pro16_isp: EFUSE ?= 04
-pro16_isp: isp
-
-#---------------------------------------------------------------------------
-#
-# Generic build instructions
-#
 
 FORCE:
 
@@ -325,6 +272,7 @@ isp-stk500: $(PROGRAM)_$(TARGET).hex
 %.elf: $(OBJ) baudcheck $(dummy)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS)
 	$(SIZE) $@
+	cp $@ test.elf
 
 clean:
 	rm -rf *.o *.elf *.lst *.map *.sym *.lss *.eep *.srec *.bin *.hex *.tmp.sh

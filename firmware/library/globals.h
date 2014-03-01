@@ -8,8 +8,8 @@
 typedef unsigned char u08;
 typedef unsigned int u16;
 
-#define sbi(a, b) (a) |= (1 << (b))
-#define cbi(a, b) (a) &= ~(1 << (b))
+#define sbi(a, b) (a) |= _BV(b)
+#define cbi(a, b) (a) &= ~_BV(b)
 
 #define LCD_E_PIN 0  //PC0
 #define LCD_RS_PIN 1 //PC1
