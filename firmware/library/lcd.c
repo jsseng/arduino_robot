@@ -5,27 +5,26 @@
 
 void e_Clk(void) {
   _delay_us(1);
-  sbi(PORTB,0);
+  sbi(PORTC,LCD_E_PIN);
   _delay_us(1);
-  cbi(PORTB,0);
+  cbi(PORTC,LCD_E_PIN);
   _delay_us(1);
 }
 
 void write_lcd(u08 data) {
   cli();
-  DDRC = 0xff;
-  PORTC = data;
+  LCD_DATA_PORT = data;
   e_Clk();
   sei();
 }
 
 void write_control(u08 data) {
-  cbi(PORTB,1); //set RS low
+  cbi(PORTC,LCD_RS_PIN); //set RS low
   write_lcd(data);
 }
 
 void write_data(u08 data) {
-  sbi(PORTB,1); //set RS high
+  sbi(PORTC,LCD_RS_PIN); //set RS high
   write_lcd(data);
 }
 
