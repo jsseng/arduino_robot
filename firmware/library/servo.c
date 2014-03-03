@@ -13,6 +13,8 @@ void set_position(u08 servo_num, u08 position) {
 }
 
 void init_servo(void) {
+   DDRC |= _BV(SERVO0_PIN) | _BV(SERVO1_PIN) | (SERVO2_PIN);
+   DDRF |= _BV(SERVO3_PIN);
 }
 
 void write_servo_output(void) {

@@ -4,7 +4,7 @@
 #include <util/delay.h>
 
 u08 get_sw1(void) {
-   if (PORTE & _BV(SW1_PIN))
+   if (PINE & _BV(SW1_PIN))
       return 0;
    return 1;
 }
@@ -75,7 +75,10 @@ void init(void) {
    DDRG |= _BV(LED1_PIN) | _BV(LED0_PIN);
 
    //enable SW1 pull
-   PORTE |= _BV(SW1_PIN);
+   sbi(PORTE,SW1_PIN);
+
+   //set i2c pins to outputs for testing
+   //DDRE |= _BV(4) | _BV(5);
 
    init_adc();
    init_lcd();
