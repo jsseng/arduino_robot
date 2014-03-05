@@ -5,11 +5,15 @@
 
 
 int main(void) {
+   u08 i2cMessageBuf[2];
    u16 i;
    int j=0;
 
    init();
    USI_TWI_Master_Initialize();
+   i2cMessageBuf[0] = 0x1c + 1; // Odd numbers for read
+   i2cMessageBuf[1] = 0x0d; // Register 0 contains version number
+   USI_TWI_Start_Read_Write( i2cMessageBuf, 2 );
 
    while(get_sw1() == 0) {}
 
@@ -19,7 +23,7 @@ int main(void) {
    led_on(0);
 
    clear_screen();
-   print_string("test",4);
+   print_num((int)i2cMessageBuf[1]);
 
    while(1) {
       _delay_ms(1500);

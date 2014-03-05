@@ -80,7 +80,8 @@ void print_num(u16 number) {
   } else {
     size = 1;
   }
-  //print_string(*(utoa(number,test,10)),size);
+  itoa(number,test,10);
+  print_string(test,size);
 }
 
 void clear_screen(void) {
