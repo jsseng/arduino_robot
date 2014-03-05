@@ -4,11 +4,11 @@
 #include <util/delay.h>
 
 void e_Clk(void) {
-  _delay_us(1);
+  _delay_us(2);
   sbi(PORTC,LCD_E_PIN);
-  _delay_us(1);
+  _delay_us(2);
   cbi(PORTC,LCD_E_PIN);
-  _delay_us(1);
+  _delay_us(2);
 }
 
 void write_lcd(u08 data) {
@@ -32,7 +32,7 @@ void init_lcd(void) {
    DDRC |= _BV(LCD_E_PIN) | _BV(LCD_RS_PIN);
    DDRA = 0xFF; //make all the data pins output
 
-   write_control(0x38);  //function set
+/*   write_control(0x38);  //function set
    _delay_ms(5);
 
    write_control(0x38);  //function set
@@ -47,7 +47,12 @@ void init_lcd(void) {
    write_control(0x01);  //clear display
    _delay_us(4000);
    write_control(0x06);  //set entry mode
-   _delay_us(160);
+   _delay_us(160);*/
+
+   write_control(0x38); //function set
+   _delay_us(100);
+   write_control(0x0C);
+   _delay_us(100);
    
 }
 

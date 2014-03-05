@@ -1,5 +1,5 @@
 main: main.c adc.c servo.c motor.c lcd.c utility.c
-	avr-gcc -mmcu=atmega325pa -O2 -o main.elf main.c adc.c servo.c motor.c lcd.c utility.c
+	avr-gcc -mmcu=atmega325pa -O2 -o main.elf main.c adc.c servo.c motor.c lcd.c utility.c USI_TWI_Master.cpp
 	avr-objcopy -O ihex main.elf main.hex
 	avr-size main.elf
 

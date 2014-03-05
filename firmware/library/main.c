@@ -1,12 +1,15 @@
 #include "globals.h"
 #include <util/delay.h>
 #include <avr/io.h>
+#include "USI_TWI_Master.h"
+
 
 int main(void) {
    u16 i;
    int j=0;
 
    init();
+   USI_TWI_Master_Initialize();
 
    while(get_sw1() == 0) {}
 
@@ -15,17 +18,20 @@ int main(void) {
    led_on(1);
    led_on(0);
 
+   clear_screen();
    print_string("test",4);
 
    while(1) {
       _delay_ms(1500);
 
       if (j) {
+         clear_screen();
+         print_string("test",4);
          led_on(1);
          led_off(0);
-         sbi(PORTC,LCD_E_PIN);
-         sbi(PORTC,LCD_RS_PIN);
-         PORTA = 0xff;
+         //sbi(PORTC,LCD_E_PIN);
+         //sbi(PORTC,LCD_RS_PIN);
+         //PORTA = 0xff;
 
          sbi(PORTD,IR_PIN); //turn on IR pin
 
@@ -49,10 +55,12 @@ int main(void) {
       } else {
          led_off(1);
          led_on(0);
+         clear_screen();
+         print_string("program",7);
          j=1;
-         cbi(PORTC,LCD_E_PIN);
-         cbi(PORTC,LCD_RS_PIN);
-         PORTA = 0;
+         //cbi(PORTC,LCD_E_PIN);
+         //cbi(PORTC,LCD_RS_PIN);
+         //PORTA = 0;
 
          cbi(PORTD,IR_PIN); //turn off IR pin
 
