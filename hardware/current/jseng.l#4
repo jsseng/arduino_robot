@@ -574,17 +574,16 @@ Source: U6 OnSemi Inductive Load Driver MDC3105-D.PDF</description>
 <wire x1="1.5" y1="1.5" x2="-1.5" y2="1.5" width="0.127" layer="21"/>
 <wire x1="-1.5" y1="1.5" x2="-1.5" y2="-1.5" width="0.127" layer="21"/>
 <wire x1="-1.5" y1="-1.5" x2="1.5" y2="-1.5" width="0.127" layer="21"/>
-<smd name="P$8" x="0" y="1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$7" x="0.5" y="1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$6" x="1" y="1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$9" x="-0.5" y="1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$10" x="-1" y="1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$3" x="0" y="-1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$2" x="-0.5" y="-1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$1" x="-1" y="-1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$4" x="0.5" y="-1.4" dx="0.25" dy="0.7" layer="1"/>
-<smd name="P$5" x="1" y="-1.39" dx="0.25" dy="0.7" layer="1"/>
-<rectangle x1="-1.08" y1="-0.85" x2="1.08" y2="0.85" layer="1"/>
+<smd name="P$8" x="0" y="1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$7" x="0.5" y="1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$6" x="1" y="1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$9" x="-0.5" y="1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$10" x="-1" y="1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$3" x="0" y="-1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$2" x="-0.5" y="-1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$1" x="-1" y="-1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$4" x="0.5" y="-1.44" dx="0.25" dy="0.7" layer="1"/>
+<smd name="P$5" x="1" y="-1.43" dx="0.25" dy="0.7" layer="1"/>
 <smd name="GND@N7" x="1.43" y="-0.2" dx="0.25" dy="0.7" layer="1" rot="R90"/>
 <smd name="GND@N6" x="1.43" y="0.2" dx="0.25" dy="0.7" layer="1" rot="R90"/>
 <smd name="GND@N5" x="1.43" y="0.6" dx="0.25" dy="0.7" layer="1" rot="R90"/>
@@ -594,6 +593,7 @@ Source: U6 OnSemi Inductive Load Driver MDC3105-D.PDF</description>
 <smd name="GND@N2" x="-1.43" y="0.2" dx="0.25" dy="0.7" layer="1" rot="R90"/>
 <smd name="GND@N1" x="-1.43" y="0.6" dx="0.25" dy="0.7" layer="1" rot="R90"/>
 <circle x="-1.75" y="-1.38" radius="0.364003125" width="0.127" layer="21"/>
+<smd name="P$11" x="0" y="0" dx="1.7" dy="2.16" layer="1" rot="R90"/>
 </package>
 <package name="TAIYO4012">
 <smd name="P$1" x="1.4" y="0" dx="1.2" dy="3.7" layer="1"/>
@@ -878,6 +878,15 @@ Source: U6 OnSemi Inductive Load Driver MDC3105-D.PDF</description>
 <text x="2.54" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="1" x="0" y="7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R270"/>
 <pin name="2" x="0" y="-7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R90"/>
+</symbol>
+<symbol name="AP431SAG-7">
+<wire x1="-7.62" y1="7.62" x2="7.62" y2="7.62" width="0.254" layer="94"/>
+<wire x1="7.62" y1="7.62" x2="7.62" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-10.16" x2="-7.62" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-10.16" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+<pin name="CATHODE" x="-12.7" y="5.08" visible="pin" length="middle"/>
+<pin name="REF" x="-12.7" y="-7.62" visible="pin" length="middle"/>
+<pin name="ANODE" x="12.7" y="0" visible="pin" length="middle" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -1254,7 +1263,7 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <connect gate="G$1" pin="L1" pad="P$1"/>
 <connect gate="G$1" pin="L2" pad="P$10"/>
 <connect gate="G$1" pin="PG" pad="P$5"/>
-<connect gate="G$1" pin="PGND" pad="GND@N1 GND@N2 GND@N3 GND@N4 GND@N5 GND@N6 GND@N7 GND@N8"/>
+<connect gate="G$1" pin="PGND" pad="GND@N1 GND@N2 GND@N3 GND@N4 GND@N5 GND@N6 GND@N7 GND@N8 P$11"/>
 <connect gate="G$1" pin="PS/SYNC" pad="P$4"/>
 <connect gate="G$1" pin="VAUX" pad="P$6"/>
 <connect gate="G$1" pin="VIN" pad="P$2"/>
@@ -1275,6 +1284,23 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <connects>
 <connect gate="G$1" pin="1" pad="P$1"/>
 <connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="AP431SAG-7">
+<gates>
+<gate name="G$1" symbol="AP431SAG-7" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SOT23">
+<connects>
+<connect gate="G$1" pin="ANODE" pad="3"/>
+<connect gate="G$1" pin="CATHODE" pad="1"/>
+<connect gate="G$1" pin="REF" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>
