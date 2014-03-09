@@ -15674,13 +15674,13 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="R55" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="U7" library="jseng" deviceset="TLV70233" device=""/>
 <part name="U$8" library="jseng" deviceset="MMA8453Q" device=""/>
-<part name="R23" library="resistor" deviceset="R-US_" device="R1206" value="1K 1%"/>
-<part name="R24" library="resistor" deviceset="R-US_" device="R1206" value="27K 1%"/>
+<part name="R23" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
+<part name="R24" library="resistor" deviceset="R-US_" device="R1206" value="24K 1%"/>
 <part name="R25" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R26" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R27" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="R30" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
-<part name="R31" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
+<part name="R31" library="resistor" deviceset="R-US_" device="R1206" value="24K 1%"/>
 <part name="R37" library="resistor" deviceset="R-US_" device="R1206" value="4.7K"/>
 <part name="R38" library="resistor" deviceset="R-US_" device="R1206" value="4.7K"/>
 <part name="C4" library="resistor" deviceset="C-US" device="C1206" value=".1uF"/>
@@ -15722,6 +15722,8 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="D23" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="RX"/>
 <part name="R29" library="resistor" deviceset="R-US_" device="R1206" value="330"/>
 <part name="C13" library="resistor" deviceset="C-US" device="C1206" value="22uF"/>
+<part name="R33" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
+<part name="R34" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
 </parts>
 <sheets>
 <sheet>
@@ -15894,6 +15896,8 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <instance part="D23" gate="G$1" x="228.6" y="147.32" rot="R270"/>
 <instance part="R29" gate="G$1" x="238.76" y="147.32" rot="R180"/>
 <instance part="C13" gate="G$1" x="30.48" y="96.52"/>
+<instance part="R33" gate="G$1" x="287.02" y="76.2"/>
+<instance part="R34" gate="G$1" x="320.04" y="91.44" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -16878,11 +16882,6 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <junction x="30.48" y="99.06"/>
 </segment>
 <segment>
-<pinref part="U12" gate="G1" pin="V+"/>
-<wire x1="35.56" y1="-53.34" x2="35.56" y2="-50.8" width="0.1524" layer="91"/>
-<label x="33.02" y="-50.8" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="R45" gate="G$1" pin="2"/>
 <wire x1="170.18" y1="60.96" x2="170.18" y2="63.5" width="0.1524" layer="91"/>
 <label x="167.64" y="63.5" size="1.778" layer="95"/>
@@ -17041,14 +17040,14 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 </net>
 <net name="LCD0" class="0">
 <segment>
-<wire x1="309.88" y1="81.28" x2="312.42" y2="81.28" width="0.1524" layer="91"/>
-<label x="309.88" y="81.28" size="1.778" layer="95"/>
-<pinref part="U$1" gate="G$1" pin="9"/>
-</segment>
-<segment>
 <pinref part="U17" gate="G$1" pin="PA0"/>
 <wire x1="154.94" y1="40.64" x2="160.02" y2="40.64" width="0.1524" layer="91"/>
 <label x="154.94" y="40.64" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R34" gate="G$1" pin="2"/>
+<wire x1="320.04" y1="96.52" x2="314.96" y2="96.52" width="0.1524" layer="91"/>
+<label x="309.88" y="96.52" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="LCD2" class="0">
@@ -17149,14 +17148,14 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 </net>
 <net name="RS" class="0">
 <segment>
-<wire x1="294.64" y1="76.2" x2="292.1" y2="76.2" width="0.1524" layer="91"/>
-<label x="287.02" y="76.2" size="1.778" layer="95"/>
-<pinref part="U$1" gate="G$1" pin="6"/>
-</segment>
-<segment>
 <pinref part="U17" gate="G$1" pin="PF7(ADC7)"/>
 <wire x1="154.94" y1="48.26" x2="160.02" y2="48.26" width="0.1524" layer="91"/>
 <label x="154.94" y="48.26" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R33" gate="G$1" pin="1"/>
+<wire x1="281.94" y1="76.2" x2="281.94" y2="71.12" width="0.1524" layer="91"/>
+<label x="281.94" y="68.58" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$30" class="0">
@@ -17613,6 +17612,11 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="F3" gate="G$1" pin="2"/>
 <wire x1="101.6" y1="106.68" x2="104.14" y2="106.68" width="0.1524" layer="91"/>
 <label x="101.6" y="106.68" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U12" gate="G1" pin="V+"/>
+<wire x1="35.56" y1="-53.34" x2="35.56" y2="-50.8" width="0.1524" layer="91"/>
+<label x="33.02" y="-50.8" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="SERVO0" class="0">
@@ -18381,12 +18385,29 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <wire x1="223.52" y1="147.32" x2="223.52" y2="142.24" width="0.1524" layer="91"/>
 </segment>
 </net>
+<net name="N$25" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="6"/>
+<wire x1="294.64" y1="76.2" x2="292.1" y2="76.2" width="0.1524" layer="91"/>
+<pinref part="R33" gate="G$1" pin="2"/>
+</segment>
+</net>
+<net name="N$26" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="9"/>
+<wire x1="309.88" y1="81.28" x2="320.04" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="81.28" x2="320.04" y2="86.36" width="0.1524" layer="91"/>
+<pinref part="R34" gate="G$1" pin="1"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
 <errors>
-<approved hash="104,1,35.56,-53.34,U12G1,V+,VIN_F,,,"/>
+<approved hash="104,1,35.56,-53.34,U12G1,V+,5V,,,"/>
 <approved hash="104,1,35.56,-68.58,U12G1,V-,GND,,,"/>
+<approved hash="104,1,-38.1,43.18,U16G1,V+,USB_5V,,,"/>
+<approved hash="104,1,-38.1,27.94,U16G1,V-,GND,,,"/>
 <approved hash="104,1,193.04,144.78,U1,GND1,GND,,,"/>
 <approved hash="104,1,193.04,142.24,U1,GND2,GND,,,"/>
 <approved hash="104,1,193.04,139.7,U1,GND3,GND,,,"/>
@@ -18401,6 +18422,7 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <approved hash="113,1,142.917,-58.6147,JP7,,,,,"/>
 <approved hash="113,1,218.44,45.3305,RESET,,,,,"/>
 <approved hash="113,1,218.44,32.6305,S2,,,,,"/>
+<approved hash="113,1,185.42,107.717,JP8,,,,,"/>
 <approved hash="113,1,-25.4,140.737,JP10,,,,,"/>
 <approved hash="113,1,-25.4,153.437,JP11,,,,,"/>
 <approved hash="113,1,338.497,79.8153,IR,,,,,"/>

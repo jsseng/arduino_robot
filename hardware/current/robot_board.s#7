@@ -15719,6 +15719,9 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="U$6" library="jseng" deviceset="SIA907EDJT" device=""/>
 <part name="R32" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="Q1" library="jseng" deviceset="DMP2035U" device=""/>
+<part name="D23" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="RX"/>
+<part name="R29" library="resistor" deviceset="R-US_" device="R1206" value="330"/>
+<part name="C13" library="resistor" deviceset="C-US" device="C1206" value="22uF"/>
 </parts>
 <sheets>
 <sheet>
@@ -15876,7 +15879,7 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <instance part="D34" gate="G$1" x="228.6" y="139.7" rot="R270"/>
 <instance part="R65" gate="G$1" x="213.36" y="106.68" rot="R180"/>
 <instance part="D24" gate="G$1" x="-2.54" y="58.42" rot="R180"/>
-<instance part="R28" gate="G$1" x="38.1" y="91.44"/>
+<instance part="R28" gate="G$1" x="43.18" y="86.36" rot="R90"/>
 <instance part="C10" gate="G$1" x="76.2" y="88.9"/>
 <instance part="F3" gate="G$1" x="96.52" y="106.68"/>
 <instance part="U$4" gate="G$1" x="60.96" y="119.38" rot="R90"/>
@@ -15888,6 +15891,9 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <instance part="U$6" gate="G$1" x="-45.72" y="93.98"/>
 <instance part="R32" gate="G$1" x="-76.2" y="58.42" rot="R90"/>
 <instance part="Q1" gate="G$1" x="-63.5" y="73.66" rot="R180"/>
+<instance part="D23" gate="G$1" x="228.6" y="147.32" rot="R270"/>
+<instance part="R29" gate="G$1" x="238.76" y="147.32" rot="R180"/>
+<instance part="C13" gate="G$1" x="30.48" y="96.52"/>
 </instances>
 <busses>
 </busses>
@@ -16429,6 +16435,17 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="U16" gate="G2" pin="-IN"/>
 <wire x1="63.5" y1="55.88" x2="60.96" y2="55.88" width="0.1524" layer="91"/>
 <label x="53.34" y="53.34" size="1.778" layer="95"/>
+<junction x="60.96" y="55.88"/>
+</segment>
+<segment>
+<pinref part="C13" gate="G$1" pin="2"/>
+<wire x1="30.48" y1="91.44" x2="30.48" y2="88.9" width="0.1524" layer="91"/>
+<label x="25.4" y="86.36" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R32" gate="G$1" pin="1"/>
+<wire x1="-76.2" y1="53.34" x2="-76.2" y2="48.26" width="0.1524" layer="91"/>
+<label x="-76.2" y="48.26" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="D8" class="0">
@@ -16857,6 +16874,8 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <wire x1="45.72" y1="101.6" x2="33.02" y2="101.6" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="101.6" x2="33.02" y2="106.68" width="0.1524" layer="91"/>
 <junction x="33.02" y="106.68"/>
+<pinref part="C13" gate="G$1" pin="1"/>
+<junction x="30.48" y="99.06"/>
 </segment>
 <segment>
 <pinref part="U12" gate="G1" pin="V+"/>
@@ -16906,6 +16925,11 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <junction x="137.16" y="-45.72"/>
 <junction x="137.16" y="-43.18"/>
 <junction x="137.16" y="-40.64"/>
+</segment>
+<segment>
+<pinref part="JP4" gate="G$1" pin="6"/>
+<wire x1="226.06" y1="-55.88" x2="220.98" y2="-55.88" width="0.1524" layer="91"/>
+<label x="220.98" y="-55.88" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="5V_OUT" class="0">
@@ -17206,13 +17230,6 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="U$7" gate="G$1" pin="S1"/>
 <wire x1="48.26" y1="30.48" x2="40.64" y2="30.48" width="0.1524" layer="91"/>
 <label x="40.64" y="30.48" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="N$33" class="0">
-<segment>
-<pinref part="JP4" gate="G$1" pin="6"/>
-<wire x1="226.06" y1="-55.88" x2="220.98" y2="-55.88" width="0.1524" layer="91"/>
-<label x="220.98" y="-55.88" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$39" class="0">
@@ -17583,11 +17600,14 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="R57" gate="G$1" pin="1"/>
 <wire x1="243.84" y1="139.7" x2="246.38" y2="139.7" width="0.1524" layer="91"/>
 <label x="243.84" y="139.7" size="1.778" layer="95"/>
+<pinref part="R29" gate="G$1" pin="1"/>
+<wire x1="243.84" y1="147.32" x2="246.38" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="147.32" x2="246.38" y2="139.7" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R28" gate="G$1" pin="1"/>
-<wire x1="33.02" y1="91.44" x2="27.94" y2="91.44" width="0.1524" layer="91"/>
-<label x="27.94" y="88.9" size="1.778" layer="95"/>
+<wire x1="43.18" y1="81.28" x2="38.1" y2="81.28" width="0.1524" layer="91"/>
+<label x="38.1" y="78.74" size="1.778" layer="95"/>
 </segment>
 <segment>
 <pinref part="F3" gate="G$1" pin="2"/>
@@ -18240,6 +18260,7 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <wire x1="-58.42" y1="71.12" x2="-22.86" y2="71.12" width="0.1524" layer="91"/>
 <wire x1="-22.86" y1="71.12" x2="-22.86" y2="50.8" width="0.1524" layer="91"/>
 <junction x="-22.86" y="50.8"/>
+<junction x="-5.08" y="50.8"/>
 </segment>
 </net>
 <net name="N$16" class="0">
@@ -18346,23 +18367,32 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <junction x="-76.2" y="68.58"/>
 </segment>
 </net>
+<net name="N$12" class="0">
+<segment>
+<pinref part="R29" gate="G$1" pin="2"/>
+<pinref part="D23" gate="G$1" pin="A"/>
+<wire x1="233.68" y1="147.32" x2="231.14" y2="147.32" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$22" class="0">
+<segment>
+<pinref part="D23" gate="G$1" pin="C"/>
+<pinref part="U1" gate="G$1" pin="TXLED"/>
+<wire x1="223.52" y1="147.32" x2="223.52" y2="142.24" width="0.1524" layer="91"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
 <errors>
-<approved hash="104,1,33.02,149.86,U11G1,V+,VIN_F,,,"/>
-<approved hash="104,1,33.02,134.62,U11G1,V-,GND,,,"/>
 <approved hash="104,1,35.56,-53.34,U12G1,V+,VIN_F,,,"/>
 <approved hash="104,1,35.56,-68.58,U12G1,V-,GND,,,"/>
-<approved hash="104,1,22.86,35.56,U16G1,V+,USB_5V,,,"/>
-<approved hash="104,1,22.86,20.32,U16G1,V-,GND,,,"/>
 <approved hash="104,1,193.04,144.78,U1,GND1,GND,,,"/>
 <approved hash="104,1,193.04,142.24,U1,GND2,GND,,,"/>
 <approved hash="104,1,193.04,139.7,U1,GND3,GND,,,"/>
 <approved hash="104,1,193.04,154.94,U1,VCCIO,USB_5V,,,"/>
 <approved hash="104,1,193.04,147.32,U1,AGND,GND,,,"/>
 <approved hash="104,1,193.04,160.02,U1,VCC,USB_5V,,,"/>
-<approved hash="202,1,58.42,96.52,U3,BP,,,,"/>
 <approved hash="113,1,297.857,-5.27473,JP1,,,,,"/>
 <approved hash="113,1,229.277,-50.9947,JP4,,,,,"/>
 <approved hash="113,1,229.277,-5.27473,JP5,,,,,"/>

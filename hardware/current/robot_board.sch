@@ -8443,6 +8443,16 @@ Updated from atml.lbr 17.01.2005 alf@cadsoft.de</description>
 <text x="-2.54" y="10.16" size="1.778" layer="95">&gt;NAME</text>
 <text x="-2.54" y="-12.7" size="1.778" layer="95">&gt;VALUE</text>
 </symbol>
+<symbol name="BSS138">
+<description>BSS138 - N-channel MOSFET</description>
+<wire x1="-5.08" y1="5.08" x2="5.08" y2="5.08" width="0.254" layer="94"/>
+<wire x1="5.08" y1="5.08" x2="5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="5.08" y1="-5.08" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="-5.08" x2="-5.08" y2="5.08" width="0.254" layer="94"/>
+<pin name="D" x="-10.16" y="2.54" visible="pin" length="middle"/>
+<pin name="G" x="-10.16" y="-2.54" visible="pin" length="middle"/>
+<pin name="S" x="10.16" y="0" visible="pin" length="middle" rot="R180"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="DMP2035U-7">
@@ -8762,6 +8772,23 @@ Source: &lt;a href="http://www.farnell.com/datasheets/13482.pdf"&gt;Data sheet&l
 <connect gate="G$1" pin="G2" pad="G2"/>
 <connect gate="G$1" pin="S1" pad="S1"/>
 <connect gate="G$1" pin="S2" pad="S2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="BSS138">
+<gates>
+<gate name="G$1" symbol="BSS138" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SOT23">
+<connects>
+<connect gate="G$1" pin="D" pad="3"/>
+<connect gate="G$1" pin="G" pad="1"/>
+<connect gate="G$1" pin="S" pad="2"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -15680,8 +15707,8 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="R27" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="R30" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R31" library="resistor" deviceset="R-US_" device="R1206" value="24K 1%"/>
-<part name="R37" library="resistor" deviceset="R-US_" device="R1206" value="4.7K"/>
-<part name="R38" library="resistor" deviceset="R-US_" device="R1206" value="4.7K"/>
+<part name="R37" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
+<part name="R38" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="C4" library="resistor" deviceset="C-US" device="C1206" value=".1uF"/>
 <part name="R40" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="R56" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
@@ -15724,6 +15751,10 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="R33" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
 <part name="R34" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
 <part name="JP4" library="SparkFun-Connectors" deviceset="M08" device="1X08"/>
+<part name="R58" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
+<part name="R60" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
+<part name="U$9" library="jseng" deviceset="BSS138" device=""/>
+<part name="U$10" library="jseng" deviceset="BSS138" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15898,6 +15929,10 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <instance part="R33" gate="G$1" x="287.02" y="76.2"/>
 <instance part="R34" gate="G$1" x="320.04" y="91.44" rot="R90"/>
 <instance part="JP4" gate="G$1" x="233.68" y="-45.72" rot="R180"/>
+<instance part="R58" gate="G$1" x="124.46" y="167.64" rot="R90"/>
+<instance part="R60" gate="G$1" x="132.08" y="167.64" rot="R90"/>
+<instance part="U$9" gate="G$1" x="129.54" y="149.86"/>
+<instance part="U$10" gate="G$1" x="160.02" y="149.86"/>
 </instances>
 <busses>
 </busses>
@@ -16693,6 +16728,16 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <wire x1="332.74" y1="12.7" x2="330.2" y2="12.7" width="0.1524" layer="91"/>
 <label x="327.66" y="12.7" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="U$9" gate="G$1" pin="G"/>
+<wire x1="119.38" y1="147.32" x2="116.84" y2="147.32" width="0.1524" layer="91"/>
+<label x="114.3" y="147.32" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$10" gate="G$1" pin="G"/>
+<wire x1="149.86" y1="147.32" x2="147.32" y2="147.32" width="0.1524" layer="91"/>
+<label x="144.78" y="147.32" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="RESET" class="0">
 <segment>
@@ -16862,6 +16907,16 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="IR" gate="G$1" pin="2"/>
 <wire x1="335.28" y1="81.28" x2="332.74" y2="81.28" width="0.1524" layer="91"/>
 <label x="332.74" y="81.28" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R58" gate="G$1" pin="2"/>
+<wire x1="124.46" y1="172.72" x2="124.46" y2="175.26" width="0.1524" layer="91"/>
+<label x="121.92" y="175.26" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R60" gate="G$1" pin="2"/>
+<wire x1="132.08" y1="172.72" x2="132.08" y2="175.26" width="0.1524" layer="91"/>
+<label x="132.08" y="175.26" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VIN_F" class="0">
@@ -17947,12 +18002,6 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 </net>
 <net name="SCL_IN" class="0">
 <segment>
-<pinref part="U17" gate="G$1" pin="PE4(SCL)"/>
-<wire x1="111.76" y1="60.96" x2="106.68" y2="60.96" width="0.1524" layer="91"/>
-<label x="106.68" y="60.96" size="1.778" layer="95"/>
-<label x="106.68" y="60.96" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="D7" gate="G$1" pin="C"/>
 <pinref part="R7" gate="G$1" pin="1"/>
 <wire x1="261.62" y1="25.4" x2="246.38" y2="25.4" width="0.1524" layer="91"/>
@@ -17969,13 +18018,13 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <wire x1="317.5" y1="116.84" x2="312.42" y2="116.84" width="0.1524" layer="91"/>
 <label x="312.42" y="116.84" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="U$10" gate="G$1" pin="S"/>
+<wire x1="170.18" y1="149.86" x2="172.72" y2="149.86" width="0.1524" layer="91"/>
+<label x="170.18" y="149.86" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="SDA_IN" class="0">
-<segment>
-<pinref part="U17" gate="G$1" pin="PE5(SDA)"/>
-<wire x1="111.76" y1="58.42" x2="106.68" y2="58.42" width="0.1524" layer="91"/>
-<label x="106.68" y="58.42" size="1.778" layer="95"/>
-</segment>
 <segment>
 <pinref part="D8" gate="G$1" pin="C"/>
 <pinref part="R8" gate="G$1" pin="1"/>
@@ -17992,6 +18041,11 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="U$8" gate="G$1" pin="SDA"/>
 <wire x1="332.74" y1="104.14" x2="325.12" y2="104.14" width="0.1524" layer="91"/>
 <label x="322.58" y="104.14" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$9" gate="G$1" pin="S"/>
+<wire x1="139.7" y1="149.86" x2="142.24" y2="149.86" width="0.1524" layer="91"/>
+<label x="139.7" y="149.86" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="D9" class="0">
@@ -18400,6 +18454,41 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="R34" gate="G$1" pin="1"/>
 </segment>
 </net>
+<net name="SCL_5V" class="0">
+<segment>
+<pinref part="U$10" gate="G$1" pin="D"/>
+<wire x1="149.86" y1="152.4" x2="147.32" y2="152.4" width="0.1524" layer="91"/>
+<label x="144.78" y="152.4" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R60" gate="G$1" pin="1"/>
+<wire x1="132.08" y1="162.56" x2="132.08" y2="160.02" width="0.1524" layer="91"/>
+<label x="129.54" y="157.48" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PE4(SCL)"/>
+<wire x1="111.76" y1="60.96" x2="106.68" y2="60.96" width="0.1524" layer="91"/>
+<label x="106.68" y="60.96" size="1.778" layer="95"/>
+<label x="106.68" y="60.96" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="SDA_5V" class="0">
+<segment>
+<pinref part="U$9" gate="G$1" pin="D"/>
+<wire x1="119.38" y1="152.4" x2="116.84" y2="152.4" width="0.1524" layer="91"/>
+<label x="114.3" y="152.4" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R58" gate="G$1" pin="1"/>
+<wire x1="124.46" y1="162.56" x2="124.46" y2="160.02" width="0.1524" layer="91"/>
+<label x="119.38" y="157.48" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U17" gate="G$1" pin="PE5(SDA)"/>
+<wire x1="111.76" y1="58.42" x2="106.68" y2="58.42" width="0.1524" layer="91"/>
+<label x="106.68" y="58.42" size="1.778" layer="95"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
@@ -18415,7 +18504,6 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <approved hash="104,1,193.04,147.32,U1,AGND,GND,,,"/>
 <approved hash="104,1,193.04,160.02,U1,VCC,USB_5V,,,"/>
 <approved hash="113,1,297.857,-5.27473,JP1,,,,,"/>
-<approved hash="113,1,229.277,-50.9947,JP4,,,,,"/>
 <approved hash="113,1,229.277,-5.27473,JP5,,,,,"/>
 <approved hash="113,1,142.917,-28.1347,JP3,,,,,"/>
 <approved hash="113,1,142.917,-43.3747,JP6,,,,,"/>
@@ -18426,6 +18514,7 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <approved hash="113,1,-25.4,140.737,JP10,,,,,"/>
 <approved hash="113,1,-25.4,153.437,JP11,,,,,"/>
 <approved hash="113,1,338.497,79.8153,IR,,,,,"/>
+<approved hash="113,1,231.817,-48.4547,JP4,,,,,"/>
 </errors>
 </schematic>
 </drawing>
