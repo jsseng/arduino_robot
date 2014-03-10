@@ -135,6 +135,7 @@ asm("  .section .version\n"
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/pgmspace.h>
+#include <util/delay.h>
 
 // <avr/boot.h> uses sts instructions, but this version uses out instructions
 // This saves cycles and program memory.
@@ -144,6 +145,7 @@ asm("  .section .version\n"
 
 #include "pin_defs.h"
 #include "stk500.h"
+#include "globals.h"
 
 #ifndef LED_START_FLASHES
 #define LED_START_FLASHES 0
@@ -225,7 +227,8 @@ asm("  .section .version\n"
 /* The main function is in init9, which removes the interrupt vector table */
 /* we don't need. It is also 'naked', which means the compiler does not    */
 /* generate any entry or exit code itself. */
-int main(void) __attribute__ ((OS_main)) __attribute__ ((section (".init9")));
+//int main(void) __attribute__ ((OS_main)) __attribute__ ((section (".init9")));
+int main(void);
 void putch(char);
 uint8_t getch(void);
 static inline void getNch(uint8_t); /* "static inline" is a compiler hint to reduce code size */
@@ -273,8 +276,8 @@ int main(void) {
    * (initializing address keeps the compiler happy, but isn't really
    *  necessary, and uses 4 bytes of flash.)
    */
-  register uint16_t address = 0;
-  register uint8_t  length;
+  uint16_t address = 0;
+  uint8_t  length;
 
   // After the zero init loop, this is the first code to run.
   //
@@ -286,7 +289,7 @@ int main(void) {
   // If not, uncomment the following instructions:
   // cli();
   asm volatile ("clr __zero_reg__");
-#if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__)
+#if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) //|| defined (__AVR_ATmega325PA__)
   SP=RAMEND;  // This is done by hardware reset
 #endif
 
@@ -317,6 +320,17 @@ int main(void) {
   /* Flash onboard LED to signal entering of bootloader */
   flash_led(LED_START_FLASHES * 2);
 #endif
+
+  init();
+  led_on(0);
+  clear_screen();
+  /*clear_screen();
+  while(1){
+     print_string("testing", 7);
+     _delay_ms(500);
+     clear_screen();
+     _delay_ms(500);
+  }*/
 
   /* Forever loop */
   for (;;) {
@@ -350,6 +364,7 @@ int main(void) {
       getNch(5);
     }
     else if(ch == STK_LOAD_ADDRESS) {
+      watchdogReset();
       // LOAD ADDRESS
       uint16_t newAddress;
       newAddress = getch();
@@ -422,6 +437,7 @@ int main(void) {
     }
     /* Read memory block mode, length is big endian.  */
     else if(ch == STK_READ_PAGE) {
+      watchdogReset();
       // READ PAGE - we only read flash
       getch();			/* getlen() */
       length = getch();
@@ -462,8 +478,9 @@ int main(void) {
     }
     else if (ch == STK_LEAVE_PROGMODE) { /* 'Q' */
       // Adaboot no-wait mod
-      watchdogConfig(WATCHDOG_16MS);
       verifySpace();
+      putch(STK_OK);
+      watchdogConfig(WATCHDOG_16MS);
     }
     else {
       // This covers the response to commands like STK_ENTER_PROGMODE
@@ -501,6 +518,7 @@ void putch(char ch) {
 uint8_t getch(void) {
   uint8_t ch;
 
+  /*
 #ifdef LED_DATA_FLASH
 #if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__)
   LED_PORT ^= _BV(LED);
@@ -508,6 +526,7 @@ uint8_t getch(void) {
   LED_PIN |= _BV(LED);
 #endif
 #endif
+*/
 
   __asm__ __volatile__ (
     "1: sbic  %[uartPin],%[uartBit]\n"  // Wait for start edge
@@ -533,6 +552,7 @@ uint8_t getch(void) {
       "r25"
 );
 
+  /*
 #ifdef LED_DATA_FLASH
 #if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__)
   LED_PORT ^= _BV(LED);
@@ -540,6 +560,7 @@ uint8_t getch(void) {
   LED_PIN |= _BV(LED);
 #endif
 #endif
+*/
 
   return ch;
 }
@@ -564,13 +585,18 @@ void uartDelay() {
 #endif
 
 void getNch(uint8_t count) {
-  do getch(); while (--count);
+  do {
+     //led_on(1);
+     getch();
+     //led_off(1);
+  } while (--count);
   verifySpace();
 }
 
 void verifySpace() {
   if (getch() != CRC_EOP) {
     watchdogConfig(WATCHDOG_16MS);    // shorten WD timeout
+    //watchdogConfig(WATCHDOG_32MS);    // shorten WD timeout
     while (1)			      // and busy-loop so that WD causes
       ;				      //  a reset and app start.
   }

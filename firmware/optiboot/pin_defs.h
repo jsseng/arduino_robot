@@ -8,10 +8,6 @@
 #define LED B5
 #endif
 
-#define SW1_PIN x
-#define LED0_PIN x
-#define LED1_PIN x
-
 /* Ports for soft UART */
 #ifdef SOFT_UART
 #define UART_PORT   PORTD

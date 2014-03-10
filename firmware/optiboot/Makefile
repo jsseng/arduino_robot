@@ -102,7 +102,7 @@ STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 # End of build environment code.
 
 
-OBJ        = $(PROGRAM).o
+OBJ        = $(PROGRAM).o lcd.o utility.o servo.o motor.o adc.o
 OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types
 
 DEFS       = 
@@ -113,7 +113,8 @@ CC         = $(GCCROOT)avr-gcc
 # Override is only needed by avr-lib build system.
 
 override CFLAGS        = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) -DF_CPU=$(AVR_FREQ) $(DEFS)
-override LDFLAGS       = $(LDSECTIONS) -Wl,--relax -nostartfiles -nostdlib
+#override LDFLAGS       = $(LDSECTIONS) -Wl,--relax -nostartfiles -nostdlib
+override LDFLAGS       = $(LDSECTIONS) -Wl,--relax 
 #-Wl,--gc-sections
 
 OBJCOPY        = $(GCCROOT)avr-objcopy
@@ -132,6 +133,7 @@ BAUD_RATE_CMD = -DBAUD_RATE=$(BAUD_RATE)
 dummy = FORCE
 else
 BAUD_RATE_CMD = -DBAUD_RATE=115200
+#BAUD_RATE_CMD = -DBAUD_RATE=38400
 endif
 
 ifdef LED_START_FLASHES
@@ -207,23 +209,19 @@ endif
 
 atmega325pa: TARGET = atmega325pa
 atmega325pa: MCU_TARGET = atmega325pa
-atmega325pa: CFLAGS += $(COMMON_OPTIONS) '-DSOFT_UART=1'
+atmega325pa: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART=1
 atmega325pa: AVR_FREQ ?= 20000000L
 #atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
-atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7c00 -Wl,--section-start=.version=0x7ffe
+atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
 atmega325pa: $(PROGRAM)_atmega325pa.hex
 atmega325pa: $(PROGRAM)_atmega325pa.lst
 
-atmega328_isp: atmega328
-atmega328_isp: TARGET = atmega328
-atmega328_isp: MCU_TARGET = atmega328p
-# 512 byte boot, SPIEN
-atmega328_isp: HFUSE ?= DE
-# Low power xtal (16MHz) 16KCK/14CK+65ms
-atmega328_isp: LFUSE ?= FF
-# 2.7V brownout
-atmega328_isp: EFUSE ?= FD
-atmega328_isp: isp
+fuse:
+	avrdude -F -pm325 -cusbtiny -E noreset -U lfuse:w:0xef:m
+	avrdude -F -pm325 -cusbtiny -E noreset -U hfuse:w:0xd8:m #use bootloader
+
+program:
+	avrdude -F -pm325 -cusbtiny -E noreset -U flash:w:optiboot_atmega325pa.hex
 
 #---------------------------------------------------------------------------
 # "Board-level Platform" targets.
@@ -237,24 +235,6 @@ atmega328_isp: isp
 #
 # These are capable of 230400 baud, or 115200 baud on PC (Arduino Avrdude issue)
 #
-
-pro20: TARGET = pro_20mhz
-pro20: CHIP = atmega168
-pro20:
-	$(MAKE) atmega168 AVR_FREQ=20000000L LED_START_FLASHES=3
-	mv $(PROGRAM)_$(CHIP).hex $(PROGRAM)_$(TARGET).hex
-	mv $(PROGRAM)_$(CHIP).lst $(PROGRAM)_$(TARGET).lst
-
-pro20_isp: pro20
-pro20_isp: TARGET = pro_20mhz
-# 2.7V brownout
-pro20_isp: HFUSE ?= DD
-# Full swing xtal (20MHz) 258CK/14CK+4.1ms
-pro20_isp: LFUSE ?= C6
-# 512 byte boot
-pro20_isp: EFUSE ?= 04
-pro20_isp: isp
-
 
 FORCE:
 
@@ -270,7 +250,7 @@ isp-stk500: $(PROGRAM)_$(TARGET).hex
 	$(STK500-2)
 
 %.elf: $(OBJ) baudcheck $(dummy)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS) lcd.o utility.o servo.o motor.o adc.o
 	$(SIZE) $@
 	cp $@ test.elf
 
