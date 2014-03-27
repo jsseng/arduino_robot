@@ -2,6 +2,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <stdlib.h>
 
 void e_Clk(void) {
   _delay_us(2);
@@ -19,17 +20,33 @@ void write_lcd(u08 data) {
 }
 
 void write_control(u08 data) {
-  cbi(PORTC,LCD_RS_PIN); //set RS low
+  cbi(PORTF,LCD_RS_PIN); //set RS low
   write_lcd(data);
 }
 
 void write_data(u08 data) {
-  sbi(PORTC,LCD_RS_PIN); //set RS high
+  sbi(PORTF,LCD_RS_PIN); //set RS high
   write_lcd(data);
 }
 
+// Other Constants
+#define _HOME_ADDR      0x80
+#define _LINE_INCR      0x40
+
+void lcd_cursor(uint8_t col, uint8_t row)
+{
+   if (col >= 16 || row >= 2)
+   {
+      return;
+   }
+
+   u08 addr = _HOME_ADDR + row * _LINE_INCR + col;
+   write_control(addr);
+}
+
 void init_lcd(void) {
-   DDRC |= _BV(LCD_E_PIN) | _BV(LCD_RS_PIN);
+   DDRC |= _BV(LCD_E_PIN);
+   DDRF |= _BV(LCD_RS_PIN);
    DDRA = 0xFF; //make all the data pins output
 
 /*   write_control(0x38);  //function set
@@ -66,7 +83,7 @@ void print_string(char* string, u08 num_bytes) {
 }
 
 void print_num(u16 number) {
-  u08 test[5];
+  char test[5];
   u08 size;
 
   if (number>9999) {
@@ -80,8 +97,8 @@ void print_num(u16 number) {
   } else {
     size = 1;
   }
-  //itoa(number,test,10);
-  print_string((char*)test,size);
+  itoa(number,test,10);
+  print_string(test,size);
 }
 
 void clear_screen(void) {

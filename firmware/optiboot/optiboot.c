@@ -324,6 +324,7 @@ int main(void) {
   init();
   led_on(0);
   clear_screen();
+  //print_string("testing",7);
   /*clear_screen();
   while(1){
      print_string("testing", 7);

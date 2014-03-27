@@ -199,19 +199,11 @@ endif
 
 # Test platforms
 # Virtual boot block test
-#virboot328: TARGET = atmega328
-#virboot328: MCU_TARGET = atmega328p
-#virboot328: CFLAGS += $(COMMON_OPTIONS) '-DVIRTUAL_BOOT'
-#virboot328: AVR_FREQ ?= 16000000L
-#virboot328: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
-#virboot328: $(PROGRAM)_atmega328.hex
-#virboot328: $(PROGRAM)_atmega328.lst
 
 atmega325pa: TARGET = atmega325pa
 atmega325pa: MCU_TARGET = atmega325pa
 atmega325pa: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART=1
 atmega325pa: AVR_FREQ ?= 20000000L
-#atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
 atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
 atmega325pa: $(PROGRAM)_atmega325pa.hex
 atmega325pa: $(PROGRAM)_atmega325pa.lst
@@ -223,18 +215,6 @@ fuse:
 program:
 	avrdude -F -pm325 -cusbtiny -E noreset -U flash:w:optiboot_atmega325pa.hex
 
-#---------------------------------------------------------------------------
-# "Board-level Platform" targets.
-# A "Board-level Platform" implies a manufactured platform with a particular
-# AVR_FREQ, LED, and so on.  Parameters are not particularly changable from
-# the "make" command line.
-# Most of the board-level platform builds should envoke make recursively
-#  appropriate specific options
-#---------------------------------------------------------------------------
-# 20MHz clocked platforms
-#
-# These are capable of 230400 baud, or 115200 baud on PC (Arduino Avrdude issue)
-#
 
 FORCE:
 
