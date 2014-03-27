@@ -25,7 +25,9 @@
 #define SYS_CLK   20000.0  // [kHz]	Default for ATtiny2313
 
 // For use with _delay_us()
+//#define T2_TWI    6 		// >4,7us
 #define T2_TWI    5 		// >4,7us
+//#define T4_TWI    6 		// >4,0us
 #define T4_TWI    4 		// >4,0us
 
 // Defines error code generating

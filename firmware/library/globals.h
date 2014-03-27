@@ -3,7 +3,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define F_CPU 20000000UL //16MHz clock
+#define F_CPU 20000000UL //20MHz clock
 
 typedef unsigned char u08;
 typedef unsigned int u16;
@@ -11,13 +11,13 @@ typedef unsigned int u16;
 #define sbi(a, b) (a) |= _BV(b)
 #define cbi(a, b) (a) &= ~_BV(b)
 
-#define LCD_E_PIN 0  //PC0
-#define LCD_RS_PIN 1 //PC1
+#define LCD_E_PIN 4  //PC4
+#define LCD_RS_PIN 7 //PF7
 #define LCD_DATA_PORT PORTA
 
 #define SW1_PIN 7  //PE7
-#define LED0_PIN 0 //PG0
-#define LED1_PIN 1 //PG1
+#define LED0_PIN 1 //PG0
+#define LED1_PIN 0 //PG1
 #define USB_DETECT_PIN 2 //PG2
 #define IR_PIN 0 //PD0
 #define ACCEL_INT_PIN 1 //PD1
@@ -52,9 +52,30 @@ typedef unsigned int u16;
 #define ANALOG5_PIN 5 //PF5
 #define BATTERY_PIN 6 //PF6
 
-#define SERVO0_PIN 2 //PC2
-#define SERVO1_PIN 3 //PC3
-#define SERVO2_PIN 4 //PC4
-#define SERVO3_PIN 7 //PF7
+#define SERVO0_PIN 0 //PC0
+#define SERVO1_PIN 1 //PC1
+#define SERVO2_PIN 2 //PC2
+#define SERVO3_PIN 3 //PF3
+
+#define SDA_PIN 5
+#define SCL_PIN 4
+#define I2C_DDR DDRE
+#define I2C_PORT PORTE
+#define I2C_PIN PINE
+#define SDA_HI I2C_DDR &= ~_BV(SDA_PIN); //make as input to set high
+#define SCL_HI I2C_DDR &= ~_BV(SCL_PIN); //make as input to set high
+#define SDA_LO I2C_DDR |= _BV(SDA_PIN); I2C_PORT &= ~_BV(SDA_PIN); //set as output and write low
+#define SCL_LO I2C_DDR |= _BV(SCL_PIN); I2C_PORT &= ~_BV(SCL_PIN); //set as output and write low
+#define I2C_DELAY 1
+#define MMA8453_ADDR 0x1C
+
+void print_string(char* string, u08 num_bytes);
+void i2c_start(void);
+void i2c_stop(void);
+void unlock_bus(void);
+void clock_scl();
+void send_address(u08 reg, u08 read);
+void write_register(u08* data, u08 num);
+void read_register(u08* data, u08 num);
 
 #endif

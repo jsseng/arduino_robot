@@ -2,19 +2,70 @@
 #include <util/delay.h>
 #include <avr/io.h>
 #include "USI_TWI_Master.h"
-
+#include <avr/interrupt.h>
 
 int main(void) {
-   u08 i2cMessageBuf[2];
    u16 i;
+   u08 data[2];
    int j=0;
 
    init();
-   USI_TWI_Master_Initialize();
-   i2cMessageBuf[0] = 0x1c + 1; // Odd numbers for read
-   i2cMessageBuf[1] = 0x0d; // Register 0 contains version number
-   USI_TWI_Start_Read_Write( i2cMessageBuf, 2 );
+   test_motor();
+   clear_screen();
 
+   _delay_ms(100);
+
+   data[0] = 0x1; //change to WAKE mode
+   send_address(0x2A,0);
+   write_register(&data[0], 1);
+   _delay_ms(100);
+   unlock_bus();
+   //send_address(0x2);
+   //read_register(&data[1], 1);
+   print_num(data[0]);
+   //while(1) {}
+   while(1) {
+      //X
+      send_address(0x1,1);
+      read_register(&(data[0]), 1);
+      print_num(data[0]);
+      print_string(" ",1);
+
+      //Y
+      send_address(0x3,1);
+      read_register(&(data[0]), 1);
+      print_num(data[0]);
+      print_string(" ", 1);
+
+      //Z
+      lcd_cursor(0,1);
+      send_address(0x5,1);
+      read_register(&(data[0]), 1);
+      print_num(data[0]);
+      print_string(" ",1);
+      print_num(SP);
+      _delay_ms(150);
+      clear_screen();
+      OCR2A = 28;
+
+   }
+
+
+
+
+
+/*
+
+
+
+   USI_TWI_Master_Initialize();
+   i2cMessageBuf[0] = 0x1c << 1; // Odd numbers for read
+   i2cMessageBuf[1] = 0x0d; // Register 0 contains version number
+   i2cMessageBuf[2] = (0x1c << 1) + 1; // Odd numbers for read
+   i2cMessageBuf[3] = 0x00; // Register 0 contains version number
+   USI_TWI_Start_Read_Write( i2cMessageBuf, 1 );
+
+   */
    while(get_sw1() == 0) {}
 
    DDRD |= _BV(IR_PIN);
@@ -23,7 +74,6 @@ int main(void) {
    led_on(0);
 
    clear_screen();
-   print_num((int)i2cMessageBuf[1]);
 
    while(1) {
       _delay_ms(1500);
