@@ -241,6 +241,7 @@ void watchdogConfig(uint8_t x);
 void uartDelay() __attribute__ ((naked));
 #endif
 void appStart(uint8_t rstFlags) __attribute__ ((naked));
+void debug_mode();
 
 /*
  * NRWW memory
@@ -269,6 +270,7 @@ void appStart(uint8_t rstFlags) __attribute__ ((naked));
 /* main program starts here */
 int main(void) {
   uint8_t ch;
+  uint8_t temp; 
 
   /*
    * Making these local and in registers prevents the need for initializing
@@ -288,7 +290,7 @@ int main(void) {
   //
   // If not, uncomment the following instructions:
   // cli();
-  asm volatile ("clr __zero_reg__");
+  //asm volatile ("clr __zero_reg__");
 #if defined(__AVR_ATmega8__) || defined (__AVR_ATmega32__) //|| defined (__AVR_ATmega325PA__)
   SP=RAMEND;  // This is done by hardware reset
 #endif
@@ -308,7 +310,7 @@ int main(void) {
 
 #if (LED_START_FLASHES > 0) || defined(LED_DATA_FLASH)
   /* Set LED pin as output */
-  LED_DDR |= _BV(LED);
+  //LED_DDR |= _BV(LED);
 #endif
 
 #ifdef SOFT_UART
@@ -322,6 +324,19 @@ int main(void) {
 #endif
 
   init();
+  if(get_sw1()) {
+     /* Get MCUCR*/ 
+     temp = MCUCR; 
+     /* Enable change of Interrupt Vectors */ 
+     MCUCR = temp|(1<<IVCE); 
+     /* Move interrupts to Boot Flash section */ 
+     MCUCR = temp|(1<<IVSEL);
+
+     watchdogConfig(WATCHDOG_OFF);
+     init_servo();
+     debug_mode();
+  }
+
   led_on(0);
   clear_screen();
   //print_string("testing",7);
@@ -611,9 +626,9 @@ void flash_led(uint8_t count) {
     TIFR1 = _BV(TOV1);
     while(!(TIFR1 & _BV(TOV1)));
 #if defined(__AVR_ATmega8__)  || defined (__AVR_ATmega32__)
-    LED_PORT ^= _BV(LED);
+    //LED_PORT ^= _BV(LED);
 #else
-    LED_PIN |= _BV(LED);
+    //LED_PIN |= _BV(LED);
 #endif
     watchdogReset();
   } while (--count);
@@ -645,4 +660,180 @@ void appStart(uint8_t rstFlags) {
     "clr r31\n"
     "ijmp\n"
   );
+}
+
+void debug_mode() {
+   u08 data[2];
+   u08 x_reading;
+   u08 option,i;
+   u08 speed;
+   unsigned long int battery;
+   u16 battery1;
+   u08 test_motor=0;
+
+   led_on(1);
+   clear_screen();
+   print_string("Debug");
+
+   //initialize the accelerometer
+   data[0] = 0x1; //change to WAKE mode
+   send_address(0x2A,0);
+   write_register(&data[0], 1);
+   _delay_ms(100);
+   unlock_bus();
+
+   while(get_sw1()) {}
+   
+   while(1) {
+      lcd_cursor(0,1);
+      send_address(0x1,1);
+      read_register(&x_reading, 1);
+
+      option = (x_reading / 10) % 6;
+
+      switch(option) {
+      case 0:
+         print_string("Digital");
+         break;
+      case 1:
+         print_string("Analog ");
+         break;
+      case 2:
+         print_string("Motor  ");
+         break;
+      case 3:
+         print_string("Servo  ");
+         break;
+      case 4:
+         print_string("Accel  ");
+         break;
+      case 5:
+         print_string("Battery");
+         break;
+      }
+
+      if (get_sw1())
+         break;
+
+      _delay_ms(50);
+   }
+
+   switch(option) {
+   case 0: //digital
+      while(1) {
+         clear_screen();
+         for(i=0;i<8;i++) {
+            print_num(digital(i));
+
+         }
+         lcd_cursor(0,1);
+         for(i=8;i<14;i++) {
+            print_num(digital(i));
+
+         }
+         _delay_ms(200);
+      }
+      break;
+   case 1: //analog
+      test_motor = 0;
+      while(1) {
+         if(get_sw1()) {
+            test_motor ^= 1;
+            while(get_sw1()) {}
+         }
+         clear_screen();
+
+         if (test_motor) {
+            print_num(analog(0));
+            lcd_cursor(4,0);
+            print_num(analog(1));
+            lcd_cursor(0,1);
+            print_num(analog(2));
+            lcd_cursor(4,1);
+            print_num(analog(3));
+         } else {
+            print_num(analog(4));
+            lcd_cursor(4,0);
+            print_num(analog(5));
+            lcd_cursor(0,1);
+         }
+         _delay_ms(100);
+      }
+      break;
+   case 2: //motor
+      clear_screen();
+      print_string("Motor ");
+      while(1) {
+         send_address(0x1,1);
+         read_register(&x_reading, 1);
+         if (x_reading > 100)
+            x_reading = 255 - x_reading;
+         speed = x_reading * 100 / 64;
+
+         if (test_motor == 0) {
+            OCR2A = speed * 255 / 100;
+            OCR0A = 0;
+         } else  {
+            OCR0A = speed * 255 / 100;
+            OCR2A = 0;
+         }
+
+         lcd_cursor(6,0);
+         print_num(test_motor);
+         print_string(":");
+         lcd_cursor(0,1);
+         print_num(speed);
+         print_string(" ");
+
+         if (get_sw1()) {
+            test_motor ^= 1;
+            while(get_sw1()) {}
+         }
+
+         _delay_ms(50);
+      }
+      break;
+   case 3:  //servo
+      while(1) {
+         send_address(0x1,1);
+         read_register(&x_reading, 1);
+         if (x_reading > 100)
+            x_reading = 255 - x_reading;
+         speed = x_reading * 255 / 64;
+
+         clear_screen();
+         print_num(speed);
+         set_position(0,speed);
+         set_position(1,speed);
+         set_position(2,speed);
+         set_position(3,speed);
+         _delay_ms(100);
+         /*
+         set_position(0,250);
+         set_position(1,250);
+         set_position(2,250);
+         set_position(3,250);
+         _delay_ms(1000);*/
+      }
+      break;
+   case 5:  //battery
+      while(1) {
+         clear_screen();
+         battery = analog(6);
+         battery = battery * 391 / 10000;
+         print_num(battery);
+         print_string(".");
+         battery = analog(6);
+         battery = (battery * 391 / 100) % 100;
+         if (battery < 10)
+            print_num(0);
+         print_num(battery);
+         print_string("V");
+         lcd_cursor(0,1);
+         
+         //print_num(analog(6));
+         _delay_ms(200);
+      }
+      break;
+   }
 }

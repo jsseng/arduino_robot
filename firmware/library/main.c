@@ -4,6 +4,8 @@
 #include "USI_TWI_Master.h"
 #include <avr/interrupt.h>
 
+extern u16 count;
+
 int main(void) {
    u16 i;
    u08 data[2];
@@ -43,8 +45,8 @@ int main(void) {
       read_register(&(data[0]), 1);
       print_num(data[0]);
       print_string(" ",1);
-      print_num(SP);
-      _delay_ms(150);
+      print_num(count);
+      _delay_ms(50);
       clear_screen();
       OCR2A = 28;
 

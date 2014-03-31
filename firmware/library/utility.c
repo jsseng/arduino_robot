@@ -13,40 +13,40 @@ u08 digital(u08 num) {
    switch(num) {
    case 0:
    case 1:
-      if (PORTE & _BV(num))
+      if (PINE & _BV(num))
          return 1;
       break;
    case 2:
    case 3:
-      if (PORTG & _BV(num+1))
+      if (PING & _BV(num+1))
          return 1;
       break;
    case 4:
-      if (PORTE & _BV(6))
+      if (PINE & _BV(6))
             return 1;
       break;
    case 5:
    case 6:
-      if (PORTB & _BV(num))
+      if (PINB & _BV(num))
          return 1;
       break;
    case 7:
    case 8:
    case 9:
-      if (PORTC & _BV(num-2))
+      if (PINC & _BV(num-2))
          return 1;
       break;
    case 10:
-      if (PORTB & _BV(0))
+      if (PINB & _BV(0))
          return 1;
       break;
    case 11:
    case 12:
-      if (PORTB & _BV(num-9))
+      if (PINB & _BV(num-9))
          return 1;
       break;
    case 13:
-      if (PORTB & _BV(1))
+      if (PINB & _BV(1))
          return 1;
       break;
    }

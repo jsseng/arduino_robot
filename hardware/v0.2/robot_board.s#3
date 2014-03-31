@@ -17005,6 +17005,13 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <wire x1="195.58" y1="109.22" x2="195.58" y2="111.76" width="0.1524" layer="91"/>
 <label x="193.04" y="111.76" size="1.778" layer="95"/>
 </segment>
+<segment>
+<wire x1="226.06" y1="-33.02" x2="226.06" y2="-40.64" width="0.1524" layer="91"/>
+<pinref part="JP4" gate="G$1" pin="2"/>
+<wire x1="226.06" y1="-40.64" x2="228.6" y2="-40.64" width="0.1524" layer="91"/>
+<wire x1="226.06" y1="-33.02" x2="228.6" y2="-33.02" width="0.1524" layer="91"/>
+<label x="228.6" y="-33.02" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="3V3_OUT" class="0">
 <segment>
@@ -18494,7 +18501,6 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <approved hash="113,1,185.42,107.717,JP8,,,,,"/>
 <approved hash="113,1,-25.4,140.737,JP10,,,,,"/>
 <approved hash="113,1,-25.4,153.437,JP11,,,,,"/>
-<approved hash="113,1,338.497,79.8153,IR,,,,,"/>
 <approved hash="113,1,231.817,-48.4547,JP4,,,,,"/>
 </errors>
 </schematic>

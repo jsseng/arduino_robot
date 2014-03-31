@@ -1,152 +1,58 @@
-Partlist exported from /Users/jseng/Dropbox/arduino_robot/hardware/robot_board.sch at 2/11/14 9:51 AM
-
-Part  Value             Device            Package                   Description                                                                         PROD_ID    VALUE
-C1    22pF              CAP0805           0805                      Capacitor                                                                                           
-C2    22pF              CAP0805           0805                      Capacitor                                                                                           
-C3    100uF             CAP_POLD          PANASONIC_D               Capacitor Polarized                                                                                 
-C4    .1uF              C-USC1206         C1206                     CAPACITOR, American symbol                                                                          
-C5    .1uF              C-USC1206         C1206                     CAPACITOR, American symbol                                                                          
-C6    .1uF              C-USC1206         C1206                     CAPACITOR, American symbol                                                                          
-C7    22uF              C-USC1206         C1206                     CAPACITOR, American symbol                                                                          
-C8    .1uF              C-USC1206         C1206                     CAPACITOR, American symbol                                                                          
-C9    1uF               C-USC1206         C1206                     CAPACITOR, American symbol                                                                          
-D1    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D2    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D3    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D4    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D5    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D6    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D7    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D8    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D9    5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D10   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D11   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D12   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D13   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D14   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D15   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D16   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D17   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D18   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D19   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D20   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D21   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D22   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D23   2.4V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D24   POWER             LED-GREENLILYPAD  LED-1206                  Various green LEDs                                                                  DIO-09910  GREEN
-D25   POWER             LED-GREENLILYPAD  LED-1206                  Various green LEDs                                                                  DIO-09910  GREEN
-D26   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D27   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D28   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D29   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D30   GREEN             LED-GREENLILYPAD  LED-1206                  Various green LEDs                                                                  DIO-09910  GREEN
-D31   YELLOW            LED-GREENLILYPAD  LED-1206                  Various green LEDs                                                                  DIO-09910  GREEN
-D32   5.1V              DIODESOT23        SOT23-3                   Diode                                                                                               
-D33   BAT54C            BAT54C            SOT23                     Schottky Diodes                                                                                     
-F1    2920L200          2920L200          SMD050F                   PolySwitch (TM) Resettable Device                                                                   
-F2    1206PPTC_FUSE     1206PPTC_FUSE     R1206                                                                                                                         
-H1    MOUNT-HOLE2.8     MOUNT-HOLE2.8     2,8                       MOUNTING HOLE with drill center marker                                                              
-H2    MOUNT-HOLE2.8     MOUNT-HOLE2.8     2,8                       MOUNTING HOLE with drill center marker                                                              
-H3    MOUNT-HOLE2.8     MOUNT-HOLE2.8     2,8                       MOUNTING HOLE with drill center marker                                                              
-H4    MOUNT-HOLE2.8     MOUNT-HOLE2.8     2,8                       MOUNTING HOLE with drill center marker                                                              
-IR                      M03PTH            1X03                      Header 3                                                                                            
-J1    POWER_JACKPTH     POWER_JACKPTH     POWER_JACK_PTH            Power Jack                                                                          PRT-00119       
-JP1                     M081X08           1X08                      Header 8                                                                                            
-JP2   M10"              M10"              1X10                      Header 10                                                                                           
-JP3                     M04PTH            1X04                      Header 4                                                                                            
-JP4                     M06SIP            1X06                      Header 6                                                                                            
-JP5                     M06SIP            1X06                      Header 6                                                                                            
-JP6                     M04PTH            1X04                      Header 4                                                                                            
-JP7                     M04PTH            1X04                      Header 4                                                                                            
-JP8   ISP               M03X22X3_SILK_SM  2X3                       2x3 .1" header.                                                                                     
-JP9   USB-B             USBPTH            USB-B-PTH                 USB Connectors                                                                      CONN-08278 USB-B
-JP10                    M03X22X3_SILK_SM  2X3                       2x3 .1" header.                                                                                     
-JP11                    M03X22X3_SILK_SM  2X3                       2x3 .1" header.                                                                                     
-POWER SW                SW                SW                                                                                                                            
-Q1    DMP2035U          DMP2035U          SOT23                     Diodes Inc. DMP2035U-7 P-channel logic level mosfet                                                 
-Q2    DMP2035U          DMP2035U          SOT23                     Diodes Inc. DMP2035U-7 P-channel logic level mosfet                                                 
-Q3    DMP2035U-7        DMP2035U-7        SOT23@1                   Diodes Inc. DMP2035U-7 P-channel logic level mosfet                                                 
-Q4    DMP2035U-7        DMP2035U-7        SOT23@1                   Diodes Inc. DMP2035U-7 P-channel logic level mosfet                                                 
-R1    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R2    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R3    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R4    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R5    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R6    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R7    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R8    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R9    300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R10   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R11   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R12   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R13   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R14   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R15   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R16   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R17   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R18   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R19   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R20   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R21   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R22   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R23   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R24   12K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R25   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R26   7.68K             R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R27   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R28   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R29   15K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R30   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R31   15K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R32   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R33   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R34   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R35   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R36   20K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R37   4.7K              R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R38   4.7K              R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R39   1k                R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R40   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R41   330               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R42   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R43   1K                R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R44   100K              R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R45   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R46   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R47   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R48   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R49   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R50   300               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R51   330               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R52   330               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R53   1.5K              R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R54   10K               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R55   1K                R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R56   1K                R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R57   330               R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R58   300K              R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R59   1K                R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R60   300K              R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R61   1K                R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-R62   2K                R-US_R1206        R1206                     RESISTOR, American symbol                                                                           
-RESET                   TAC_SWITCHPTH     TACTILE-PTH               Momentary Switch                                                                                    
-S2                      TAC_SWITCHPTH     TACTILE-PTH               Momentary Switch                                                                                    
-U$1   M08X2             M08X2             2X8                       .1" headers, two rows of 8 each                                                                     
-U$8   MMA8453Q          MMA8453Q          QFN-COL                                                                                                                       
-U$19  2POS_TERMINAL     2POS_TERMINAL     2POS_TERMINAL                                                                                                                 
-U$20  2POS_TERMINAL     2POS_TERMINAL     2POS_TERMINAL                                                                                                                 
-U1    FT232RL-BASICSSOP FT232RL-BASICSSOP SSOP28DB                  USB UART                                                                                            
-U2    SIA907EDJT        SIA907EDJT        SC70T                                                                                                                         
-U3    MIC5219           MIC52055V         SOT23-5                   MIC5205 150mA vreg                                                                  VREG-00823      
-U4    HC_05             HC_05             BLUETOOTH_SMD                                                                                                                 
-U5    SIA907EDJT        SIA907EDJT        SC70T                                                                                                                         
-U6    SIA907EDJT        SIA907EDJT        SC70T                                                                                                                         
-U7    TLV70233          TLV70233          SOT-23-5                  TLV70233 - 3.3V 350mA regulator                                                                     
-U8    MIC2009A          MIC2009A          SOT23-M5                                                                                                                      
-U9    DRV8839           DRV8839           PWSON-N12                                                                                                                     
-U10   DRV8839           DRV8839           PWSON-N12                                                                                                                     
-U11   LM393             LM393             SO08                      Low-voltage comparator                                                                              
-U12   LM393             LM393             SO08                      Low-voltage comparator                                                                              
-U16   LM393             LM393             SO08                      Low-voltage comparator                                                                              
-U17   ATMEGA325PA       ATMEGA325PA       TQFP64                                                                                                                        
-Y1    16MHz             CRYSTAL10.5X4.8   CRYSTAL-SMD-10.5X4.8-2PIN Various standard crystals. Proven footprints. Spark Fun Electronics SKU : COM-00534                 
+"Qty";"Value";"Device";"Package";"Parts";"Description";"PROD_ID";"VALUE";
+"1";"";"M03PTH";"1X03";"IR";"Header 3";"";"";
+"3";"";"M03X22X3_SILK_SM";"2X3";"JP8, JP10, JP11";"2x3 .1" header.";"";"";
+"3";"";"M04PTH";"1X04";"JP3, JP6, JP7";"Header 4";"";"";
+"1";"";"M06SIP";"1X06";"JP5";"Header 6";"";"";
+"2";"";"M081X08";"1X08";"JP1, JP4";"Header 8";"";"";
+"2";"";"TAC_SWITCHPTH";"TACTILE-PTH";"RESET, S2";"Momentary Switch";"";"";
+"5";".1uF";"C-USC1206";"C1206";"C4, C5, C6, C8, C10";"CAPACITOR, American symbol";"";"";
+"1";"1.5K";"R-US_R1206";"R1206";"R53";"RESISTOR, American symbol";"";"";
+"1";"100K";"R-US_R1206";"R1206";"R44";"RESISTOR, American symbol";"";"";
+"2";"100K 1%";"R-US_R1206";"R1206";"R45, R46";"RESISTOR, American symbol";"";"";
+"1";"100uF";"CAP_POLD";"PANASONIC_D";"C3";"Capacitor Polarized";"";"";
+"8";"10K 1%";"R-US_R1206";"R1206";"R27, R37, R38, R40, R42, R54, R58, R60";"RESISTOR, American symbol";"";"";
+"2";"1206PPTC_FUSE";"1206PPTC_FUSE";"R1206";"F2, F3";"";"";"";
+"1";"120K 1%";"R-US_R1206";"R1206";"R35";"RESISTOR, American symbol";"";"";
+"1";"16MHz";"CRYSTAL10.5X4.8";"CRYSTAL-SMD-10.5X4.8-2PIN";"Y1";"Various standard crystals. Proven footprints. Spark Fun Electronics SKU : COM-00534";"";"";
+"8";"1K";"R-US_R1206";"R1206";"R39, R43, R55, R56, R59, R61, R63, R65";"RESISTOR, American symbol";"";"";
+"1";"1M";"R-US_R1206";"R1206";"R28";"RESISTOR, American symbol";"";"";
+"1";"1uF";"C-USC1206";"C1206";"C9";"CAPACITOR, American symbol";"";"";
+"1";"1uH";"TAIYO4012";"TAIYO4012";"U$4";"";"";"";
+"5";"20K 1%";"R-US_R1206";"R1206";"R23, R25, R26, R30, R32";"RESISTOR, American symbol";"";"";
+"2";"22pF";"CAP0805";"0805";"C1, C2";"Capacitor";"";"";
+"4";"22uF";"C-USC1206";"C1206";"C7, C11, C12, C13";"CAPACITOR, American symbol";"";"";
+"2";"24K 1%";"R-US_R1206";"R1206";"R24, R31";"RESISTOR, American symbol";"";"";
+"1";"2920L200";"2920L200";"SMD050F";"F1";"PolySwitch (TM) Resettable Device";"";"";
+"1";"2K";"R-US_R1206";"R1206";"R62";"RESISTOR, American symbol";"";"";
+"2";"2POS_TERMINAL";"2POS_TERMINAL";"2POS_TERMINAL";"U$19, U$20";"";"";"";
+"1";"2X7HEADER";"2X7HEADER";"2X7";"U$1";"";"";"";
+"28";"300";"R-US_R1206";"R1206";"R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, R12, R13, R14, R15, R16, R17, R18, R19, R20, R21, R22, R33, R34, R47, R48, R49, R50";"RESISTOR, American symbol";"";"";
+"5";"330";"R-US_R1206";"R1206";"R29, R41, R51, R52, R57";"RESISTOR, American symbol";"";"";
+"27";"5.1V";"DIODESOT23";"SOT23-3";"D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20, D21, D22, D26, D27, D28, D29, D32";"Diode";"";"";
+"1";"600K 1%";"R-US_R1206";"R1206";"R36";"RESISTOR, American symbol";"";"";
+"1";"AP431SAG-7";"AP431SAG-7";"SOT23";"U$5";"";"";"";
+"1";"ATMEGA325PA";"ATMEGA325PA";"TQFP64";"U17";"";"";"";
+"1";"BAT54C";"BAT54C";"SOT23";"D24";"Schottky Diodes";"";"";
+"3";"BSS138";"BSS138";"SOT23";"U$9, U$10, U$11";"";"";"";
+"2";"DMP2035U";"DMP2035U";"SOT23";"Q1, Q2";"Diodes Inc. DMP2035U-7 P-channel logic level mosfet";"";"";
+"2";"DMP2035U-7";"DMP2035U-7";"SOT23@1";"Q3, Q4";"Diodes Inc. DMP2035U-7 P-channel logic level mosfet";"";"";
+"2";"DRV8839";"DRV8839";"PWSON-N12";"U9, U10";"";"";"";
+"1";"FT232RL-BASICSSOP";"FT232RL-BASICSSOP";"SSOP28DB";"U1";"USB UART";"";"";
+"1";"GREEN";"LED-GREENLILYPAD";"LED-1206";"D30";"Various green LEDs";"DIO-09910";"GREEN";
+"1";"HC_05";"HC_05";"BLUETOOTH_SMD";"U4";"";"";"";
+"2";"LM393";"LM393";"SO08";"U12, U16";"Low-voltage comparator";"";"";
+"1";"M02PTH";"M02PTH";"1X02";"JP12";"Standard 2-pin 0.1" header. Use with";"";"";
+"1";"M10"";"M10"";"1X10";"JP2";"Header 10";"";"";
+"1";"MIC2009A";"MIC2009A";"SOT23-M5";"U8";"";"";"";
+"1";"MMA8453Q";"MMA8453Q";"QFN-COL";"U$8";"";"";"";
+"4";"MOUNT-HOLE2.8";"MOUNT-HOLE2.8";"2,8";"H1, H2, H3, H4";"MOUNTING HOLE with drill center marker";"";"";
+"1";"POT";"POT";"POT";"U$2";"";"";"";
+"1";"POWER";"LED-GREENLILYPAD";"LED-1206";"D25";"Various green LEDs";"DIO-09910";"GREEN";
+"1";"POWER_JACKPTH";"POWER_JACKPTH";"POWER_JACK_PTH";"J1";"Power Jack";"PRT-00119";"";
+"2";"RX";"LED-GREENLILYPAD";"LED-1206";"D23, D34";"Various green LEDs";"DIO-09910";"GREEN";
+"2";"SIA907EDJT";"SIA907EDJT";"SC70T";"U$6, U$7";"";"";"";
+"1";"SW";"SW";"SW";"POWER";"";"";"";
+"1";"TLV70233";"TLV70233";"SOT-23-5";"U7";"TLV70233 - 3.3V 350mA regulator";"";"";
+"1";"TPS63061";"TPS63061";"WSON-10";"U$3";"TPS63031 - Step up/down 5V regulator";"";"";
+"1";"USB-B";"USBPTH";"USB-B-PTH";"JP9";"USB Connectors";"CONN-08278";"USB-B";
+"1";"YELLOW";"LED-GREENLILYPAD";"LED-1206";"D31";"Various green LEDs";"DIO-09910";"GREEN";

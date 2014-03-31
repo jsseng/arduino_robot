@@ -15724,6 +15724,8 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="R33" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
 <part name="R34" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
 <part name="JP4" library="SparkFun-Connectors" deviceset="M08" device="1X08"/>
+<part name="R58" library="resistor" deviceset="R-US_" device="R1206" value="4.7K"/>
+<part name="R60" library="resistor" deviceset="R-US_" device="R1206" value="4.7K"/>
 </parts>
 <sheets>
 <sheet>
@@ -15898,6 +15900,8 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <instance part="R33" gate="G$1" x="287.02" y="76.2"/>
 <instance part="R34" gate="G$1" x="320.04" y="91.44" rot="R90"/>
 <instance part="JP4" gate="G$1" x="233.68" y="-45.72" rot="R180"/>
+<instance part="R58" gate="G$1" x="124.46" y="167.64" rot="R90"/>
+<instance part="R60" gate="G$1" x="132.08" y="167.64" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -16862,6 +16866,16 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="IR" gate="G$1" pin="2"/>
 <wire x1="335.28" y1="81.28" x2="332.74" y2="81.28" width="0.1524" layer="91"/>
 <label x="332.74" y="81.28" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R58" gate="G$1" pin="2"/>
+<wire x1="124.46" y1="172.72" x2="124.46" y2="175.26" width="0.1524" layer="91"/>
+<label x="121.92" y="175.26" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R60" gate="G$1" pin="2"/>
+<wire x1="132.08" y1="172.72" x2="132.08" y2="175.26" width="0.1524" layer="91"/>
+<label x="132.08" y="175.26" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VIN_F" class="0">

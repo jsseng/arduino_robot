@@ -33,7 +33,7 @@ void write_data(u08 data) {
 #define _HOME_ADDR      0x80
 #define _LINE_INCR      0x40
 
-void lcd_cursor(uint8_t col, uint8_t row)
+void lcd_cursor(u08 col, u08 row)
 {
    if (col >= 16 || row >= 2)
    {
@@ -42,6 +42,7 @@ void lcd_cursor(uint8_t col, uint8_t row)
 
    u08 addr = _HOME_ADDR + row * _LINE_INCR + col;
    write_control(addr);
+   _delay_us(37);
 }
 
 void init_lcd(void) {
@@ -73,17 +74,59 @@ void init_lcd(void) {
    
 }
 
-void print_string(char* string, u08 num_bytes) {
-  u08 i;
+void print_string(char* string) {
+  u08 i=0;
 
+  while (string[i] != 0) {
+    write_data(string[i]);
+    _delay_us(160);
+    i++;
+  }
+
+  /*
   for (i=0;i<num_bytes;i++) {
     write_data(string[i]);
     _delay_us(160);
   }
+  */
 }
 
 void print_num(u16 number) {
-  char test[5];
+  u08 i;
+  u16 base = 9999;
+  u08 leading = 1;
+  u08 digit;
+
+  if (number == 0) {
+     write_data(48);
+     _delay_us(160);
+     return;
+  }
+
+  for (i=0;i<5;i++) {
+     digit = number / (base+1);
+
+     if (digit != 0)
+        leading = 0;
+
+     if (number > base) {
+        if (!leading) {
+           write_data(48 + digit);
+           _delay_us(160);
+        }
+        number = number % (base+1);
+     } else {
+        if (!leading) {
+           write_data(48 + digit);
+           _delay_us(160);
+        }
+     }
+
+     base = base / 10;
+  }
+
+
+  /*
   u08 size;
 
   if (number>9999) {
@@ -96,9 +139,7 @@ void print_num(u16 number) {
     size = 2;
   } else {
     size = 1;
-  }
-  itoa(number,test,10);
-  print_string(test,size);
+  }*/
 }
 
 void clear_screen(void) {

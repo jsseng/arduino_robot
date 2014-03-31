@@ -3,8 +3,6 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define F_CPU 20000000UL //20MHz clock
-
 typedef unsigned char u08;
 typedef unsigned int u16;
 
@@ -16,8 +14,8 @@ typedef unsigned int u16;
 #define LCD_DATA_PORT PORTA
 
 #define SW1_PIN 7  //PE7
-#define LED0_PIN 1 //PG0
-#define LED1_PIN 0 //PG1
+#define LED0_PIN 0 //PG0
+#define LED1_PIN 1 //PG1
 #define USB_DETECT_PIN 2 //PG2
 #define IR_PIN 0 //PD0
 #define ACCEL_INT_PIN 1 //PD1
@@ -77,5 +75,11 @@ void clock_scl();
 void send_address(u08 reg, u08 read);
 void write_register(u08* data, u08 num);
 void read_register(u08* data, u08 num);
+
+u08 get_sw1(void);
+void led_on(u08 num);
+void led_off(u08 num);
+void init(void);
+void clear_screen(void);
 
 #endif

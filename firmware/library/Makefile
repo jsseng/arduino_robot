@@ -1,5 +1,5 @@
 main: main.c adc.c servo.c motor.c lcd.c utility.c
-	avr-gcc -mmcu=atmega325pa -O2 -o main.elf main.c adc.c servo.c motor.c lcd.c utility.c i2c.c
+	avr-gcc -DF_CPU=20000000L -Wall -mmcu=atmega325pa -O2 -o main.elf main.c adc.c servo.c motor.c lcd.c utility.c i2c.c
 	avr-objcopy -O ihex main.elf main.hex
 	avr-size main.elf
 

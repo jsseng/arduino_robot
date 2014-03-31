@@ -102,7 +102,7 @@ STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 # End of build environment code.
 
 
-OBJ        = $(PROGRAM).o lcd.o utility.o servo.o motor.o adc.o
+OBJ        = $(PROGRAM).o lcd.o utility.o servo.o motor.o adc.o i2c.o
 OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types
 
 DEFS       = 
@@ -202,7 +202,7 @@ endif
 
 atmega325pa: TARGET = atmega325pa
 atmega325pa: MCU_TARGET = atmega325pa
-atmega325pa: CFLAGS += $(COMMON_OPTIONS) -DSOFT_UART=1
+atmega325pa: CFLAGS += -Wall $(COMMON_OPTIONS) -DSOFT_UART=1
 atmega325pa: AVR_FREQ ?= 20000000L
 atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
 atmega325pa: $(PROGRAM)_atmega325pa.hex
@@ -230,7 +230,7 @@ isp-stk500: $(PROGRAM)_$(TARGET).hex
 	$(STK500-2)
 
 %.elf: $(OBJ) baudcheck $(dummy)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS) lcd.o utility.o servo.o motor.o adc.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIBS) lcd.o utility.o servo.o motor.o adc.o i2c.o
 	$(SIZE) $@
 	cp $@ test.elf
 

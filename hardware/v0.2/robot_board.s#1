@@ -16295,7 +16295,7 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="R55" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="U7" library="jseng" deviceset="TLV70233" device=""/>
 <part name="U$8" library="jseng" deviceset="MMA8453Q" device=""/>
-<part name="R23" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
+<part name="R23" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R24" library="resistor" deviceset="R-US_" device="R1206" value="24K 1%"/>
 <part name="R25" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
 <part name="R26" library="resistor" deviceset="R-US_" device="R1206" value="20K 1%"/>
@@ -19112,6 +19112,8 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 </sheet>
 </sheets>
 <errors>
+<approved hash="101,1,-58.42,149.86,JP12,1,,,,"/>
+<approved hash="101,1,-58.42,152.4,JP12,2,,,,"/>
 <approved hash="104,1,35.56,-53.34,U12G1,V+,5V,,,"/>
 <approved hash="104,1,35.56,-68.58,U12G1,V-,GND,,,"/>
 <approved hash="104,1,-38.1,43.18,U16G1,V+,USB_5V,,,"/>

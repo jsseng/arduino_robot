@@ -178,6 +178,7 @@
 <rectangle x1="13.081" y1="53.8988" x2="14.3764" y2="54.1528" layer="1"/>
 <text x="21.0312" y="64.4652" size="1.27" layer="21" font="vector" rot="SR0">Motor 0</text>
 <text x="31.5468" y="64.4652" size="1.27" layer="21" font="vector" rot="SR0">Motor 1</text>
+<rectangle x1="15.5956" y1="52.9082" x2="16.7132" y2="53.1114" layer="1"/>
 </plain>
 <libraries>
 <library name="SparkFun-DigitalIC">
@@ -6519,6 +6520,7 @@ design rules under a new name.</description>
 <approved hash="19,1,c4bf581ca888ac9b"/>
 <approved hash="19,1,33944066684c4741"/>
 <approved hash="19,1,66f4bfb7b454c89f"/>
+<approved hash="19,1,6f40c3c7b40cd285"/>
 </errors>
 </board>
 </drawing>

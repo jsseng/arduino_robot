@@ -16237,9 +16237,9 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="C3" library="SparkFun-Capacitors" deviceset="CAP_POL" device="D" value="100uF"/>
 <part name="U16" library="SparkFun-AnalogIC" deviceset="LM393" device=""/>
 <part name="R35" library="resistor" deviceset="R-US_" device="R1206" value="120K 1%"/>
-<part name="R36" library="resistor" deviceset="R-US_" device="R1206" value="600K 1%"/>
+<part name="R36" library="resistor" deviceset="R-US_" device="R1206" value="604K 1%"/>
 <part name="JP8" library="SparkFun-Connectors" deviceset="M03X2" device="2X3_SILK_SM"/>
-<part name="R39" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
+<part name="R39" library="resistor" deviceset="R-US_" device="R1206" value="1K 1%"/>
 <part name="R41" library="resistor" deviceset="R-US_" device="R1206" value="330"/>
 <part name="D25" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="POWER"/>
 <part name="R1" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
@@ -16268,12 +16268,12 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="R42" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="Q2" library="jseng" deviceset="DMP2035U" device=""/>
 <part name="POWER" library="r_cubed" deviceset="SW" device=""/>
-<part name="R43" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
-<part name="R44" library="resistor" deviceset="R-US_" device="R1206" value="100K"/>
+<part name="R43" library="resistor" deviceset="R-US_" device="R1206" value="1K 1%"/>
+<part name="R44" library="resistor" deviceset="R-US_" device="R1206" value="100K 1%"/>
 <part name="U$19" library="r_cubed" deviceset="2POS_TERMINAL" device=""/>
 <part name="U$20" library="r_cubed" deviceset="2POS_TERMINAL" device=""/>
-<part name="R45" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
-<part name="R46" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
+<part name="R45" library="resistor" deviceset="R-US_" device="R1206" value="100K 1%"/>
+<part name="R46" library="resistor" deviceset="R-US_" device="R1206" value="100K 1%"/>
 <part name="U1" library="SparkFun-DigitalIC" deviceset="FT232RL-BASIC" device="SSOP"/>
 <part name="R47" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
 <part name="R48" library="resistor" deviceset="R-US_" device="R1206" value="300"/>
@@ -16290,7 +16290,7 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="D31" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="YELLOW"/>
 <part name="R52" library="resistor" deviceset="R-US_" device="R1206" value="330"/>
 <part name="U8" library="jseng" deviceset="MIC2009A" device=""/>
-<part name="R53" library="resistor" deviceset="R-US_" device="R1206" value="1.5K"/>
+<part name="R53" library="resistor" deviceset="R-US_" device="R1206" value="1.5K 1%"/>
 <part name="R54" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="R55" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
 <part name="U7" library="jseng" deviceset="TLV70233" device=""/>
@@ -16322,10 +16322,10 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="R62" library="resistor" deviceset="R-US_" device="R1206" value="2K"/>
 <part name="C8" library="resistor" deviceset="C-US" device="C1206" value=".1uF"/>
 <part name="C9" library="resistor" deviceset="C-US" device="C1206" value="1uF"/>
-<part name="R63" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
+<part name="R63" library="resistor" deviceset="R-US_" device="R1206" value="1K 1%"/>
 <part name="U$2" library="r_cubed" deviceset="POT" device=""/>
 <part name="D34" library="SparkFun-LED" deviceset="LED-GREEN" device="LILYPAD" value="RX"/>
-<part name="R65" library="resistor" deviceset="R-US_" device="R1206" value="1K"/>
+<part name="R65" library="resistor" deviceset="R-US_" device="R1206" value="1K 1%"/>
 <part name="D24" library="diode" deviceset="BAT54C" device=""/>
 <part name="R28" library="resistor" deviceset="R-US_" device="R1206" value="1M"/>
 <part name="C10" library="resistor" deviceset="C-US" device="C1206" value=".1uF"/>

@@ -15755,6 +15755,7 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <part name="R60" library="resistor" deviceset="R-US_" device="R1206" value="10K 1%"/>
 <part name="U$9" library="jseng" deviceset="BSS138" device=""/>
 <part name="U$10" library="jseng" deviceset="BSS138" device=""/>
+<part name="U$11" library="jseng" deviceset="BSS138" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15933,6 +15934,7 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <instance part="R60" gate="G$1" x="132.08" y="167.64" rot="R90"/>
 <instance part="U$9" gate="G$1" x="129.54" y="149.86"/>
 <instance part="U$10" gate="G$1" x="160.02" y="149.86"/>
+<instance part="U$11" gate="G$1" x="386.08" y="124.46"/>
 </instances>
 <busses>
 </busses>
@@ -16485,6 +16487,11 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="R32" gate="G$1" pin="1"/>
 <wire x1="-76.2" y1="53.34" x2="-76.2" y2="48.26" width="0.1524" layer="91"/>
 <label x="-76.2" y="48.26" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$11" gate="G$1" pin="S"/>
+<wire x1="396.24" y1="124.46" x2="398.78" y2="124.46" width="0.1524" layer="91"/>
+<label x="393.7" y="124.46" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="D8" class="0">
@@ -18134,14 +18141,14 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 </net>
 <net name="ACCEL_INT" class="0">
 <segment>
-<pinref part="U$8" gate="G$1" pin="INT1"/>
-<wire x1="358.14" y1="121.92" x2="363.22" y2="121.92" width="0.1524" layer="91"/>
-<label x="358.14" y="121.92" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="U17" gate="G$1" pin="PD1"/>
 <wire x1="111.76" y1="10.16" x2="109.22" y2="10.16" width="0.1524" layer="91"/>
 <label x="104.14" y="10.16" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="U$11" gate="G$1" pin="D"/>
+<wire x1="375.92" y1="127" x2="368.3" y2="127" width="0.1524" layer="91"/>
+<label x="365.76" y="127" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$8" class="0">
@@ -18487,6 +18494,14 @@ LILYPAD- DIO-09910&lt;br&gt;</description>
 <pinref part="U17" gate="G$1" pin="PE5(SDA)"/>
 <wire x1="111.76" y1="58.42" x2="106.68" y2="58.42" width="0.1524" layer="91"/>
 <label x="106.68" y="58.42" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="ACCEL_INT1" class="0">
+<segment>
+<pinref part="U$8" gate="G$1" pin="INT1"/>
+<label x="358.14" y="121.92" size="1.778" layer="95"/>
+<pinref part="U$11" gate="G$1" pin="G"/>
+<wire x1="358.14" y1="121.92" x2="375.92" y2="121.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

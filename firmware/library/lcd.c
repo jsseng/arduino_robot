@@ -82,6 +82,41 @@ void print_string(char* string, u08 num_bytes) {
 }
 
 void print_num(u16 number) {
+   u08 i;
+   u16 base = 9999;
+   u08 leading = 1;
+   u08 digit;
+
+   if (number == 0) {
+      write_data(48);
+      _delay_us(160);
+      return;
+   }
+
+   for (i=0;i<5;i++) {
+      digit = number / (base+1);
+
+      if (digit != 0)
+         leading = 0;
+
+      if (number > base) {
+         if (!leading) {
+            write_data(48 + digit);
+            _delay_us(160);
+         }
+         number = number % (base+1);
+      } else {
+         if (!leading) {
+            write_data(48 + digit);
+            _delay_us(160);
+         }
+      }
+
+      base = base / 10;
+   }
+
+
+/*
   u08 test[5];
   u08 size;
 
@@ -98,6 +133,7 @@ void print_num(u16 number) {
   }
   itoa(number,test,10);
   print_string(test,size);
+  */
 }
 
 void clear_screen(void) {
