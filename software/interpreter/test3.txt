@@ -1,0 +1,17 @@
+define thermometer = analogPinIn[0]
+define leftServo = servo[0]
+define rightServo = servo[1]
+
+when start
+{
+   display "Hello! Machine is starting up"
+}
+
+repeat
+{
+   display "Thermometer reading is: " + thermometer
+   rotate leftServo 15
+   rotate rightServo 75
+
+   display "Temperature in Celcius is: " + ((thermometer - 32) * 5 / 9)
+}

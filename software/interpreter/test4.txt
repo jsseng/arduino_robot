@@ -1,0 +1,14 @@
+when start
+{
+   display "Start #1"
+}
+
+repeat
+{
+   display "Repeat #1"
+}
+
+repeat
+{
+   display "Repeat #2"
+}
