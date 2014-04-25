@@ -1,10 +1,9 @@
 F_CPU = 16000000
 f = irTest
 p = com8
-INTERRUPT = "C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\WInterrupts.c"
 
 default:
-	avr-gcc -mmcu=atmega328p -DF_CPU=$(F_CPU) -O2 -o $f.elf $f.c $(INTERRUPT)
+	avr-gcc -mmcu=atmega328p -DF_CPU=$(F_CPU) -O2 -o $f.elf $f.c arduinolib/WInterrupts.c
 	avr-objcopy -O ihex $f.elf $f.hex
 	avr-size $f.elf
 

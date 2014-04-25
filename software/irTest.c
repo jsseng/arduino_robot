@@ -1,20 +1,23 @@
-#include "C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\Arduino.h"
+#include "arduinolib/Arduino.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
 #define LED_PIN 7
-#define INPUT_PIN 2
+#define INPUT_PIN 2 //Only works on pin 2 or 3
+#define INTERRUPT INPUT_PIN-2
 
 volatile int state = 0;
 
 //initialize timer 0
-void lab4_initialize_timer0(void) {
+void lab4_initialize_timer0(void)
+{
     TCCR0B |= (1 << CS02);   //set timer 0 to increment at 62.5KHz
 }
 
 //Initialize Timer 1
-void initialize_timer(void) {
+void initialize_timer(void)
+{
     TCCR1B = 2;                  //increment timer at 2MHz
     TIMSK1 |= (1 << OCIE1A); //enable output compare match
     sei();                   //enable global interrupts
@@ -22,10 +25,9 @@ void initialize_timer(void) {
 
 
 //Interrupt Funciton
-ISR(TIMER1_COMPA_vect){
-
+ISR(TIMER1_COMPA_vect)
+{
     //OCR1A +=speed_1;
-
 }
 
 
@@ -61,12 +63,9 @@ char readDataBit(void)
     if (checkForFallingEdge(75))
     {
         //Fall Detected. Continue.
-
         if (!(checkForFallingEdge(57)))
         {
             //Fall Not Detected. Continue.
-
-
             if ((PIND & (1 << INPUT_PIN)) != 0)
             {
                 return(0);
@@ -131,23 +130,16 @@ int main(void)
 {
     char dataBitArray[7];
 
-    //Initialize Timers
-    //lab4_initialize_timer0();
-    //initialize_timer(); // Start Timer
-    //OCR1A = 2000;
-
     //Setup pins for input and output
     DDRD |= (1 << LED_PIN); //Sets pin 1 to output
-    sei();
-    attachInterrupt(0, blink, CHANGE);
+    sei(); //Enable global interrupts
+    attachInterrupt(INTERRUPT, blink, FALLING); //Set up a pin interrupt
 
+    //Main loop
     while(1)
     {
 
     }
-
-    //PORTB |= (1<< 0);
-    //if (PINB & (1 << 0)))
 
     return 0;
 }
