@@ -1,0 +1,5 @@
+# USAGE: runone [test number]
+# EXAMPLE: runone    # Will run test.txt and output to output.c
+# EXAMPLE: runone 2  # Will run test2.txt and output to output2.c
+
+java Interpreter -dumpAST test$1.txt > output$1.c

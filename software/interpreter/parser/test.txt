@@ -1,0 +1,1 @@
+define thermometer = pins[1,3]

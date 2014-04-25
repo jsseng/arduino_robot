@@ -1,0 +1,3 @@
+To run the java program...
+
+java Interpreter -dumpAST <STUDENT_SOURCE_FILE>
