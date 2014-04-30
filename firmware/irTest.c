@@ -4,35 +4,38 @@
 #include <avr/interrupt.h>
 
 #define LED_PIN 7
-#define INPUT_PIN 2 //Only works on pin 2 or 3
-#define INTERRUPT INPUT_PIN-2
+#define INPUT_PIN 2
+#define INTERRUPT 0
+#define MAX_BUFFER_SIZE 10
 
 volatile int state = 0;
+unsigned char buffer[MAX_BUFFER_SIZE];
+unsigned char bufferSize = 0;
 
 //initialize timer 0
-void lab4_initialize_timer0(void)
+/*void lab4_initialize_timer0(void)
 {
     TCCR0B |= (1 << CS02);   //set timer 0 to increment at 62.5KHz
-}
+}*/
 
 //Initialize Timer 1
-void initialize_timer(void)
+/*void initialize_timer(void)
 {
     TCCR1B = 2;                  //increment timer at 2MHz
     TIMSK1 |= (1 << OCIE1A); //enable output compare match
     sei();                   //enable global interrupts
-}
+}*/
 
 
 //Interrupt Funciton
-ISR(TIMER1_COMPA_vect)
+/*ISR(TIMER1_COMPA_vect)
 {
     //OCR1A +=speed_1;
-}
+}*/
 
 
 //Check Falling Edge
-char checkForFallingEdge (int timeInMilsec)
+char checkForFallingEdge(int timeInMilsec)
 {
     TCNT0 = 0;
     //int timeInTicks = 0;
@@ -112,6 +115,9 @@ void waitForStartBit(void)
     }
 }
 
+/**
+    Toggles the state of the LED
+*/
 void blink(void)
 {
     state = !state;
@@ -123,6 +129,54 @@ void blink(void)
     {
         PORTD &= !(1 << LED_PIN);
     }
+}
+
+/**
+    Returns the most recent value in the buffer
+    and removes it from the buffer
+*/
+unsigned char getNextBufferValue()
+{
+    if (bufferSize == 0)
+    {
+        return 0;
+    }
+
+    bufferSize--;
+    return(buffer[bufferSize]);
+}
+
+/**
+    Removes all elements from the buffer
+    and resets the buffer size to 0
+*/
+void clearBuffer()
+{
+    bufferSize = 0;
+}
+
+/**
+    Adds a value to the end of the buffer
+    Pushes out oldest value if the buffer is full
+*/
+void addToBuffer(unsigned char value)
+{
+    int i;
+
+    if (bufferSize == MAX_BUFFER_SIZE)
+    {
+        //Buffer is full, shift values
+        for (i = 0; i < bufferSize-1; i++)
+        {
+            buffer[i] = buffer[i+1];
+        }
+        //Drop the last element
+        bufferSize--;
+    }
+
+    //Add the new value
+    buffer[bufferSize] = value;
+    bufferSize++;
 }
 
 //Main
