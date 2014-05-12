@@ -3,7 +3,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 
-#define LED_PIN 
+#define LED_PIN 7
 /*
 This page lists which intterupt #s are associated with which pins: 
 http://arduino.cc/en/Reference/attachInterrupt
