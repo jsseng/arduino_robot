@@ -8,8 +8,8 @@
 This page lists which intterupt #s are associated with which pins: 
 http://arduino.cc/en/Reference/attachInterrupt
 */
-#define INPUT_PIN 2
-#define INTERRUPT 0
+#define INPUT_PIN 2 //The IR pin is D0
+#define INTERRUPT 0 //Should be 2
 #define MAX_BUFFER_SIZE 10
 
 volatile int state = 0;
