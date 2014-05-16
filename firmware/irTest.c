@@ -16,28 +16,6 @@ volatile int state = 0;
 unsigned char buffer[MAX_BUFFER_SIZE];
 unsigned char bufferSize = 0;
 
-//initialize timer 0
-/*void lab4_initialize_timer0(void)
-{
-    TCCR0B |= (1 << CS02);   //set timer 0 to increment at 62.5KHz
-}*/
-
-//Initialize Timer 1
-/*void initialize_timer(void)
-{
-    TCCR1B = 2;                  //increment timer at 2MHz
-    TIMSK1 |= (1 << OCIE1A); //enable output compare match
-    sei();                   //enable global interrupts
-}*/
-
-
-//Interrupt Funciton
-/*ISR(TIMER1_COMPA_vect)
-{
-    //OCR1A +=speed_1;
-}*/
-
-
 //Check Falling Edge
 char checkForFallingEdge(int timeInMilsec)
 {
