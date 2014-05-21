@@ -1,0 +1,5 @@
+# Statements cannot start with a Machinery
+
+define thermo = analogPinIn[0]
+
+thermo

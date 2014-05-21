@@ -1,9 +1,9 @@
 package ast;
 
 import visitor.ASTVisitor;
+
 public abstract class Machinery
-   implements Visitable
-{
+   implements Visitable {
     private String  _id;
     public Machinery(String id) {
 	_id = id;

@@ -169,20 +169,13 @@ public class Parser
       int num, num2;
       switch (_currentToken.code())
       {
-         case TK_ANALOGPINOUT:
-            match(TokenCode.TK_ANALOGPINOUT);
-            match(TokenCode.TK_LBRACKET);
-            num = Integer.parseInt(_currentToken.toString());
-            nextToken();
-            match(TokenCode.TK_RBRACKET);
-            return new AnalogPin(id, num, true);
          case TK_ANALOGPININ:
             match(TokenCode.TK_ANALOGPININ);
             match(TokenCode.TK_LBRACKET);
             num = Integer.parseInt(_currentToken.toString());
             nextToken();
             match(TokenCode.TK_RBRACKET);
-            return new AnalogPin(id, num, false);
+            return new AnalogPin(id, num);
          case TK_DIGITALPINSOUT:
             match(TokenCode.TK_DIGITALPINSOUT);
             match(TokenCode.TK_LBRACKET);
@@ -211,7 +204,7 @@ public class Parser
             match(TokenCode.TK_RBRACKET);
             return new Servo(id, num);
          default:
-            expected("'analogPinOut | analogPinIn | digitalPinsOut | digitalPinsIn | servo'", _currentToken);
+            expected("'analogPinIn | digitalPinsOut | digitalPinsIn | servo'", _currentToken);
             return null;
       }
    }
@@ -282,7 +275,6 @@ public class Parser
             return parseMove();
          case TK_TURN:
             return parseTurn();
-
          case TK_ROTATE:
             return parseRotate();
          case TK_SLEEP:
@@ -582,8 +574,9 @@ public class Parser
    {
       match(TokenCode.TK_ROTATE);
       String id = matchIdentifier();
+      Machinery m = parseMachinery(id);
       Expression exp = parseExpression();
-      return new RotateStatement(id, exp);
+      return new RotateStatement(m, exp);
    }
 
    private Statement parseSleep() throws ScannerException

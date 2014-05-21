@@ -1,0 +1,3 @@
+# Cannot assign Strings into numerical values
+variable a = 0
+a = "this is a string"

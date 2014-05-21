@@ -1,0 +1,3 @@
+# Cannot use variables not declared
+
+display a

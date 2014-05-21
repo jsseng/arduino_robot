@@ -1,0 +1,11 @@
+# Cannot have multiple when start's
+
+when start
+{
+   display "Start 1"
+}
+
+when start
+{
+   display "Start 2"
+}

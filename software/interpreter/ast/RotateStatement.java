@@ -6,16 +6,22 @@ import visitor.StatementVisitor;
 public class RotateStatement
    extends Statement
 {
-   private String _servo;
+   private Servo _servo;
    private Expression _angle;
 
-   public RotateStatement(String servo, Expression angle)
+   public RotateStatement(Machinery servo, Expression angle)
    {
-      _servo = servo;
-      _angle = angle;
+       if (! (servo instanceof Servo)) {
+	   System.out.println("Machinery must be initialized to Servo to rotate");
+	   System.exit(0);
+       }
+       else {
+	   _servo = (Servo)servo;
+	   _angle = angle;
+       }
    }
 
-   public String getServo()
+   public Servo getServo()
    {
       return _servo;
    }
