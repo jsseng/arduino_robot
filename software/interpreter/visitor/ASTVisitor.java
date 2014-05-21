@@ -143,6 +143,9 @@ public abstract class ASTVisitor<T>
    {
       return visit((ASTRoot)t);
    }
+   public T visit(ReadStatement t) {
+       return visit((ASTRoot)t);
+   }
    public T visit(BetweenExpression t)
    {
       return visit((ASTRoot)t);

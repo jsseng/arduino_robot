@@ -9,10 +9,16 @@ public class AssignmentExpression
    private IdentifierExpression _dest;
    private Expression _src;
 
-   public AssignmentExpression(IdentifierExpression dest, Expression src)
+   public AssignmentExpression(Expression dest, Expression src)
    {
-      _dest = dest;
-      _src = src;
+       if (!(dest instanceof IdentifierExpression)) {
+	   System.out.println("Expected an identifier expression.");
+	   System.exit(0);
+       }
+       else {
+	   _dest = (IdentifierExpression)dest;
+	   _src = src;
+       }
    }
 
    public IdentifierExpression getTarget()

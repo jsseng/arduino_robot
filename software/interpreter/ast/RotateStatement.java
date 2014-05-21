@@ -9,10 +9,16 @@ public class RotateStatement
    private Servo _servo;
    private Expression _angle;
 
-   public RotateStatement(Servo servo, Expression angle)
+   public RotateStatement(Machinery servo, Expression angle)
    {
-      _servo = servo;
-      _angle = angle;
+       if (! (servo instanceof Servo)) {
+	   System.out.println("Machinery must be initialized to Servo to rotate");
+	   System.exit(0);
+       }
+       else {
+	   _servo = (Servo)servo;
+	   _angle = angle;
+       }
    }
 
    public Servo getServo()
