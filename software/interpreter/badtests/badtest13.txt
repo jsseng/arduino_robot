@@ -1,0 +1,6 @@
+# Cannot use String Expressions for repeats
+
+repeat "fifty" times
+{
+   display 2
+}

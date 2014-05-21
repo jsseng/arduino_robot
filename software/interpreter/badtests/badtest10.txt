@@ -1,0 +1,3 @@
+# Cannot declare machinery of same name
+define mach = analogPinIn[0]
+define mach = analogPinIn[1]

@@ -1,0 +1,5 @@
+# Cannot assign values into Machinery identifiers
+
+define thermo = analogPinIn[0]
+
+thermo = 0

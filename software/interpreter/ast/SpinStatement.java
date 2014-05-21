@@ -3,26 +3,26 @@ package ast;
 import visitor.ASTVisitor;
 import visitor.StatementVisitor;
 
-public class RotateStatement
+public class SpinStatement
    extends Statement
 {
-   private Servo _servo;
-   private Expression _angle;
+   private Motor _motor;
+   private Expression _value;
 
-   public RotateStatement(Servo servo, Expression angle)
+   public SpinStatement(Motor motor, Expression value)
    {
-      _servo = servo;
-      _angle = angle;
+      _motor = motor;
+      _value = value;
    }
 
-   public Servo getServo()
+   public Motor getMotor()
    {
-      return _servo;
+      return _motor;
    }
 
-   public Expression getAngle()
+   public Expression getValue()
    {
-      return _angle;
+      return _value;
    }
 
    public <T> T visit(StatementVisitor<T> guest)

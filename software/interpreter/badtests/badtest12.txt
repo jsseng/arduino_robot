@@ -1,0 +1,4 @@
+# Cannot use String Expressions for set_servos
+define s1 = servo[0]
+
+rotate s1 "fifty"

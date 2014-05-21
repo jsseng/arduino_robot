@@ -6,16 +6,16 @@ import visitor.ExpressionVisitor;
 public class AssignmentExpression
    extends Expression
 {
-   private Expression _dest;
+   private IdentifierExpression _dest;
    private Expression _src;
 
-   public AssignmentExpression(Expression dest, Expression src)
+   public AssignmentExpression(IdentifierExpression dest, Expression src)
    {
       _dest = dest;
       _src = src;
    }
 
-   public Expression getTarget()
+   public IdentifierExpression getTarget()
    {
       return _dest;
    }

@@ -1,0 +1,11 @@
+# Cannot have multiple when repeat's
+
+repeat
+{
+   display "repeat 1"
+}
+
+repeat 
+{
+   display "repeat 2"
+}
