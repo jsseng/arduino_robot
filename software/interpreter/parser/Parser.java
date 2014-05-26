@@ -1,20 +1,22 @@
 package parser;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import ast.*;
-import java.util.Vector;
 import visitor.ASTStringBuilderVisitor;
 
 public class Parser
 {
    private Scanner _scanner;
-   private Token _currentToken = new Token(TokenCode.TK_NONE);
+   private Token _currentToken = new Token(TokenCode.TK_NONE, 1);
+   
+   private Map<String, Machinery> strToMach;
+   private Set<String> globalEnvir;
 
    public Parser(Scanner scanner)
    {
       _scanner = scanner;
+      strToMach = new HashMap<String, Machinery>();
+      globalEnvir = new HashSet<String>();
    }
 
    public Program parse() throws ScannerException
@@ -29,7 +31,6 @@ public class Parser
    private Program parseProgram() throws ScannerException
    {
       List<Machinery> decls = parseDeclarations();
- //     Declarations decls = parseDeclarations();
       List<SourceElement> sourceElements = new LinkedList<SourceElement>();
       while (_currentToken.code() != TokenCode.TK_EOF)
       {
@@ -48,7 +49,7 @@ public class Parser
 
    private SourceElement parseWhenStatement() throws ScannerException {
       WhenExpression condition = null;
-
+      int lineNum = _currentToken.getLine();
       match(TokenCode.TK_WHEN);
 
       if (_currentToken.code() == TokenCode.TK_START) {
@@ -60,23 +61,25 @@ public class Parser
       }
 
       Statement[] block = parseBlockStatement();
-      return new WhenStatement(condition, block);
+      SourceElement s = new WhenStatement(condition, block);
+      s.setLineNum(lineNum);
+      return s;
    }
     
     private WhenExpression parseWhenCondition()
-	throws ScannerException {
+        throws ScannerException {
         return parseWhenOrExpression();
     }
 
     private WhenExpression parseWhenOrExpression()
-	throws ScannerException {
+        throws ScannerException {
         WhenExpression lft = parseWhenAndExpression();
         WhenExpression exp = parseRptWhenOrExpression(lft);
         return exp;
     }
     
     private WhenExpression parseRptWhenOrExpression(WhenExpression lft)
-	throws ScannerException {
+        throws ScannerException {
         if (_currentToken.equals(TokenCode.TK_OR)) {
             match(TokenCode.TK_OR);
             WhenExpression rht = parseWhenAndExpression();
@@ -89,7 +92,7 @@ public class Parser
     }
 
     private WhenExpression parseWhenAndExpression()
-	throws ScannerException {
+        throws ScannerException {
         WhenExpression lft = parseEventExpression();
         return parseRptWhenAndExpression(lft);
     }
@@ -142,7 +145,7 @@ public class Parser
        }
 
     private WhenExpression parseEqualityWhenExpression()
-	throws ScannerException {
+        throws ScannerException {
         return new BooleanWhenExpression(parseEqualityExpression());
     }
 
@@ -159,6 +162,12 @@ public class Parser
          match(TokenCode.TK_ASSIGN);
          Machinery machine = parseMachinery(id);
          decls.add(machine);
+
+         if (strToMach.containsKey(id))
+         {
+            error("Cannot have multiple Machineries of the same name of " + id);
+         }
+         strToMach.put(id, machine);
       }
 
       return decls;
@@ -196,6 +205,18 @@ public class Parser
             nextToken();
             match(TokenCode.TK_RBRACKET);
             return new DigitalPin(id, num, num2, false);
+         case TK_GYROSCOPE:
+            match(TokenCode.TK_GYROSCOPE);
+            match(TokenCode.TK_LBRACKET);
+            Token t = _currentToken;
+            String s = matchIdentifier();
+            match(TokenCode.TK_RBRACKET);
+            if (!Arrays.asList(new String[]{"X", "Y", "Z"}).contains(s))
+            {
+               expected("'X' | 'Y' | 'Z' for gyroscope axis", t);
+            }
+            return new Gyroscope(id, s);
+
          case TK_SERVO:
             match(TokenCode.TK_SERVO);
             match(TokenCode.TK_LBRACKET);
@@ -203,9 +224,37 @@ public class Parser
             nextToken();
             match(TokenCode.TK_RBRACKET);
             return new Servo(id, num);
+         case TK_TL:
+         case TK_TR:
+         case TK_BL:
+         case TK_BR:
+            int wheel = matchWheel();
+            return new Motor(id, wheel);
          default:
-            expected("'analogPinIn | digitalPinsOut | digitalPinsIn | servo'", _currentToken);
+            expected("'analogPinIn | digitalPinsOut | digitalPinsIn | servo | TL | TR | BL | BR'", _currentToken);
             return null;
+      }
+   }
+
+   private int matchWheel() throws ScannerException
+   {
+      switch (_currentToken.code())
+      {
+         case TK_TL:
+            nextToken();
+            return 0;
+         case TK_TR:
+            nextToken();
+            return 1;
+         case TK_BL:
+            nextToken();
+            return 2;
+         case TK_BR:
+            nextToken();
+            return 3;
+         default:
+            expected("'TL | TR | BL | BR' for wheels'", _currentToken);
+            return -1;
       }
    }
       
@@ -263,39 +312,194 @@ public class Parser
       return new IfStatement(guard, body, elseBody);
    }
 
+   private Statement parseSet() throws ScannerException
+   {
+      Statement s = null;
+      Machinery m = null;
+      match(TokenCode.TK_SET);
+      if (_currentToken.code() == TokenCode.TK_LED)
+      {
+         nextToken();
+         m = new LED();
+      }
+      else
+      {
+         Token t = _currentToken;
+         m = strToMach.get(matchIdentifier());
+         if (!isOutputMachinery(m))
+         {
+            expected("a motor, servo, digital pin out, or an LED", t);
+         }
+      }
+      Expression e = parseExpression();
+      s = new SetStatement(m, e);
+      /*
+      if (m instanceof Motor)
+      {
+         s = new SetStatement((Motor)m, e);
+      }
+      else if (m instanceof Servo)
+      {
+         s = new SetStatement((Servo)m, e);
+      }
+      // Double check ast/DigitalPin types
+      else if (m instanceof DigitalPin)
+      {
+         s = new SetStatement((DigitalPinOut)m, e);
+      }
+      */
+      return s;
+   }
+
    private Statement parseStatement() throws ScannerException
    {
+      int lineNum = _currentToken.getLine();
+      Statement s = null;
       switch (_currentToken.code())
       {
          case TK_REPEAT:
-            return parseRepeat();
+            s = parseRepeat();
+            break;
          case TK_DISPLAY:
-            return parseDisplay();
+            s = parseDisplay();
+            break;
          case TK_MOVE:
-            return parseMove();
+            s = parseMove();
+            break;
          case TK_TURN:
-            return parseTurn();
+            s = parseTurn();
+            break;
+         /*
          case TK_ROTATE:
-            return parseRotate();
+            s = parseRotateStatement();
+            break;
+         case TK_WRITE:
+            s = parseWriteStatement();
+            break;
+         case TK_SPIN:
+            s = parseSpinStatement();
+            break;
+         */
          case TK_SLEEP:
-            return parseSleep();
+            s = parseSleep();
+            break;
          case TK_IF:
-            return parseIfStatement();
+            s = parseIfStatement();
+            break;
          case TK_TURNON:
-            return parseTurnOnStatement();
+            s = parseTurnOnStatement();
+            break;
          case TK_TURNOFF:
-            return parseTurnOffStatement();
+            s = parseTurnOffStatement();
+            break;
          case TK_VARIABLE:
-            return parseVariableDeclaration();
+            s = parseVariableDeclaration();
+            break;
+         case TK_CLEAR:
+             s = parseClearScreenStatement();
+            break;
+         case TK_CHANGE:
+             s = parseChangeStatement();
+            break;
+         case TK_SET:
+            Token t = _currentToken;
+            match(TokenCode.TK_SET);
+            if (_currentToken.code() == TokenCode.TK_CURSOR)
+            {
+               ungetToken(t);
+               s = parseSetCursorStatement();
+            }
+            else
+            {  
+               ungetToken(t);
+               s = parseSet();
+            }
+            break;
          case TK_ID:
+            // Statements cannot start with a Machinery
+            if (strToMach.containsKey(_currentToken.toString()))
+            {
+               expected("'statement'", _currentToken);
+               return null;
+            }
+            // Check if ID exists
+            if (!globalEnvir.contains(_currentToken.toString()))
+            {
+               error("variable name " + _currentToken.toString() + " does not exist");
+               return null;
+            }
          case TK_NUM:
+         case TK_READ:
          case TK_STRING:
-            return new ExpressionStatement(parseExpression());
+            s = new ExpressionStatement(parseExpression());
+            break;
 
          default:
             expected("'statement'", _currentToken);
             return null;
       }
+      s.setLineNum(lineNum);
+      return s;
+   }
+    
+   private Statement parseChangeStatement() throws ScannerException {
+      match(TokenCode.TK_CHANGE);
+      match(TokenCode.TK_MODE);
+      String id = matchIdentifier();
+      Machinery m = strToMach.get(id); 
+
+      switch(_currentToken.code()) {
+         case TK_IN:
+            match(TokenCode.TK_IN);
+            return new ChangeStatement(m, true);
+         case TK_OUT:
+            match(TokenCode.TK_OUT);
+            return new ChangeStatement(m, false);
+      }
+      expected("'in' | 'out'", _currentToken);
+      return null;
+   }
+		
+    private Statement parseSetCursorStatement() throws ScannerException {
+       match(TokenCode.TK_SET);
+       match(TokenCode.TK_CURSOR);
+       match(TokenCode.TK_LPAREN);
+       Expression row = parseExpression();
+       match(TokenCode.TK_COMMA);
+       Expression column = parseExpression();
+       match(TokenCode.TK_RPAREN);
+       return null;
+       //return new SetCursorStatement(row, column);
+    }
+
+    private Statement parseClearScreenStatement() throws ScannerException {
+       match(TokenCode.TK_CLEAR);
+       match(TokenCode.TK_SCREEN);
+       return null;
+       //return new ClearScreenStatement();
+    }
+    
+   private Statement parseWriteStatement(Machinery m) throws ScannerException
+   {
+      Expression e = parseExpression();
+      if (!(m instanceof DigitalPinOut) && !(m instanceof DigitalPinIn))
+      {
+         expected("Can only write to 'DigitalPinOut'", _currentToken);
+      }
+      return new SetStatement(m, e);
+   }
+
+    private Expression parseReadStatement() throws ScannerException {
+				match(TokenCode.TK_READ);
+				String id = matchIdentifier();
+				Machinery m = strToMach.get(id);
+				return new ReadStatement(m);
+    }
+
+   private Statement parseSpinStatement(Motor m) throws ScannerException
+   {
+      Expression e = parseExpression();
+      return new SpinStatement(m, e);
    }
 
    private Statement parseTurnOnStatement() throws ScannerException
@@ -318,6 +522,7 @@ public class Parser
       String id = matchIdentifier();
       match(TokenCode.TK_ASSIGN);
       Expression assignment = parseExpression();
+      globalEnvir.add(id);
       return new VariableDeclarationStatement(id, assignment);
    }
 
@@ -570,13 +775,10 @@ public class Parser
       }
    }
 
-   private Statement parseRotate() throws ScannerException
+   private Statement parseRotateStatement(Servo s) throws ScannerException
    {
-      match(TokenCode.TK_ROTATE);
-      String id = matchIdentifier();
-      Machinery m = parseMachinery(id);
       Expression exp = parseExpression();
-      return new RotateStatement(m, exp);
+      return new RotateStatement(s, exp);
    }
 
    private Statement parseSleep() throws ScannerException
@@ -638,9 +840,14 @@ public class Parser
    private Expression parseRptAssignExpression(Expression lft)
       throws ScannerException {
          if (_currentToken.equals(TokenCode.TK_ASSIGN)) {
+            if (!(lft instanceof IdentifierExpression))
+            {
+               expected("'variable name'", _currentToken);
+               return null;
+            }
             match(TokenCode.TK_ASSIGN);
             Expression rht = parseAssignExpression();
-            return parseRptAssignExpression(new AssignmentExpression(lft, rht));
+            return parseRptAssignExpression(new AssignmentExpression((IdentifierExpression)lft, rht));
          }
          else {
             return lft;
@@ -648,7 +855,7 @@ public class Parser
       }
 
     private Expression parseConditionalExpression()
-	throws ScannerException {
+        throws ScannerException {
         return parseLogicalORExpression();
     }
 
@@ -814,7 +1021,28 @@ public class Parser
 
    private Expression parseLeftHandSideExp() throws ScannerException
    {
-      return parsePrimaryExpression();
+      return parseCallExpression();
+   }
+
+   private Expression parseCallExpression() throws ScannerException
+   {
+      if (_currentToken.code() == TokenCode.TK_READ)
+      {
+         match(TokenCode.TK_READ);
+         String s = matchIdentifier();
+         Machinery m = strToMach.get(s);
+         Token t = _currentToken;
+         if (!strToMach.containsKey(s))
+         {
+            expected("machinery name does not exist", t);
+            return null;
+         }
+         return new ReadStatement(m);
+      }
+      else
+      {
+         return parsePrimaryExpression();
+      }
    }
 
    private Expression parsePrimaryExpression() throws ScannerException
@@ -1063,7 +1291,8 @@ public class Parser
          || tk.equals(TokenCode.TK_MOVE)
          || tk.equals(TokenCode.TK_TURNON)
          || tk.equals(TokenCode.TK_TURNOFF)
-         || tk.equals(TokenCode.TK_ROTATE)
+         || tk.equals(TokenCode.TK_SET)
+         //|| tk.equals(TokenCode.TK_ROTATE)
          || tk.equals(TokenCode.TK_SLEEP)
          ;
    }
@@ -1076,6 +1305,14 @@ public class Parser
          || tk.equals(TokenCode.TK_NUM)
          || tk.equals(TokenCode.TK_STRING)
          ;
+   }
+
+   private static boolean isOutputMachinery(Machinery m)
+   {
+      return m instanceof Motor
+         || m instanceof Servo
+         || m instanceof DigitalPinOut
+         || m instanceof LED;
    }
 
    private static boolean isParameter(Token tk)
@@ -1126,7 +1363,7 @@ public class Parser
    }
    private static void expected(String msg, Token tk)
    {
-      error("expected " + msg + ", found '" + tk + "'");
+      error("expected " + msg + ", found '" + tk + "'" + " at line " + tk.getLine());
    }
 
    private static void error(String msg)

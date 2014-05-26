@@ -5,6 +5,7 @@ import java.io.*;
 public class Scanner
 {
    Token _unget = null;
+   int lineNumber;
 
    public static void main(String [] args)
       throws Exception
@@ -40,6 +41,7 @@ public class Scanner
       {
          _in = new CharReader(new BufferedReader(new FileReader(filename)));
       }
+      lineNumber = 1;
    }
    
    public void ungetToken(Token t)
@@ -70,7 +72,7 @@ public class Scanner
       clearWhitespace();
       if (_in.gotEOF())
       {
-         return new Token(TokenCode.TK_EOF);
+         return new Token(TokenCode.TK_EOF, lineNumber);
       }
 
       int c = _in.lookahead();
@@ -96,7 +98,7 @@ public class Scanner
          }
          if (_in.gotEOF())
          {
-            return new Token(TokenCode.TK_EOF);
+            return new Token(TokenCode.TK_EOF, lineNumber);
          }
          return nextToken();
       }
@@ -110,7 +112,10 @@ public class Scanner
    {
       while (!_in.gotEOF() && Character.isWhitespace((char)_in.lookahead()))
       {
-         _in.read();
+         if (_in.read() == '\n')
+         {
+            lineNumber++;
+         }
       }
    }
 
@@ -123,7 +128,7 @@ public class Scanner
          buf.append((char)_in.read());
       }
       _in.read();
-      return new Token(TokenCode.TK_STRING, buf.toString());
+      return new Token(TokenCode.TK_STRING, buf.toString(), lineNumber);
    }
 
    private Token buildIdentifier()
@@ -154,10 +159,10 @@ public class Scanner
          {
             buf.append((char)_in.read());
          }
-         return new Token(TokenCode.TK_FLOAT, buf.toString());
+         return new Token(TokenCode.TK_FLOAT, buf.toString(), lineNumber);
       }
 
-      return new Token(TokenCode.TK_NUM, buf.toString());
+      return new Token(TokenCode.TK_NUM, buf.toString(), lineNumber);
    }
 
    private String multiSymbol(int c, int need, boolean optional) 
@@ -222,7 +227,13 @@ public class Scanner
          }
          case '-':
          {
-            str = multiSymbol(_in.read(), '>', true); 
+            int character = _in.read();
+            if (Character.isDigit(_in.lookahead()))
+            {
+               Token t = buildNumber();
+               return new Token(TokenCode.TK_NUM, "-" + t.toString(), lineNumber);
+            }
+            str = multiSymbol(character, '>', true); 
             break;
          }
          case ':':
@@ -236,7 +247,7 @@ public class Scanner
             throw new InvalidCharacterException();
          }
       }
-      return new Token(TokenCode.lookupSymbol(str));
+      return new Token(TokenCode.lookupSymbol(str), lineNumber);
    }
 
    private Token checkForKeyword(String id)
@@ -244,11 +255,11 @@ public class Scanner
       TokenCode tk = TokenCode.lookupKeyword(id);
       if (tk != TokenCode.TK_NONE)
       {
-         return new Token(tk);
+         return new Token(tk, lineNumber);
       }
       else
       {
-         return new Token(TokenCode.TK_ID, id);
+         return new Token(TokenCode.TK_ID, id, lineNumber);
       }
    }
 }

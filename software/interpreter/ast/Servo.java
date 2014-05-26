@@ -21,6 +21,11 @@ public class Servo extends Machinery {
 
    public String toString()
    {
+      return "set_servo(" + getMachineNumber() + ", ";
+   }
+
+   public String getMachineNumber()
+   {
       return String.valueOf(_servoNum);
    }
 }

@@ -1,11 +1,10 @@
-variable a = 1.5
-variable b = 0
+# Test for SET SERVO
 
-when start
-{
-   display "omg" + 0.5 + 1 + (0.5 + 1) + "this better work!"
-   a = a + 1
-   b = b + 1
+define s1 = servo[0]
+define s2 = servo[1]
 
-   display "This is a string" + a + b + (a + b) + "this better work!"
-}
+set s1 11
+set s1 -22
+
+set s2 33
+set s2 -44

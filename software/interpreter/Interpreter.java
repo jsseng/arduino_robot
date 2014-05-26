@@ -1,7 +1,6 @@
 import parser.*;
 import ast.Program;
 import visitor.*;
-import eval.EvalProgramVisitor;
 
 import java.io.FileNotFoundException;
 
@@ -17,14 +16,12 @@ public class Interpreter
          Program prog = new Parser(createScanner(args)).parse();
          if (_dumpAST)
          {
-            System.out.print(prog.visit(new ASTStringVisitor()));
+            System.out.print(prog.visit(new ASTStringBuilderVisitor()));
             System.exit(0);
          }
 
          System.out.println("Finished Parsing");
          System.exit(0);
-         EvalProgramVisitor eval = new EvalProgramVisitor();
-         eval.visit(prog);
       }
       catch (FileNotFoundException e)
       {

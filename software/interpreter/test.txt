@@ -1,80 +1,10 @@
-define thermometer = analogPinIn[4]
-define s1 = servo[1]
-define s2 = servo[2]
-variable g = 4
-variable omg = 1.0
-variable h = g + omg
-variable j = thermometer + g
-variable k = thermometer + omg
-variable i = "evenbetter"
-variable d = 0
+# Test for SET MOTOR
 
-# variable z = 0.999999
+define m1 = TL
+define m2 = TR
 
-when start
-{
-   display "Starting!"
-}
+set m1 50
+set m1 -70
 
-when theromometer between 75 and 90
-{
-   display "Hot"
-   # display "Cold"
-}
-
-when thermometer changes
-{
-   variable go = 1 # + 0.12345
-   display "Changing" + 5 + "going"
-}
-
-display (g equals g)
-
-when g < 6
-{
-   g = g equals h
-}
-
-when 4 < h equals 1
-{
-}
-
-repeat 4 times
-{
-   sleep 5
-   if thermometer < 50
-   {
-      move backward 40
-      move forward 10
-      turn left
-      turn right
-   }
-   else
-   {
-      display "Even better!"
-   }
-   display (1 + 2 - 3 * 4)
-   display "number: " + (1 + 2 - 3 * 4 / 5 + 6 * 7 - 8 / 9)
-}
-
-repeat
-{
-   d = d + 1
-   move forward 5
-   move backward 17
-   turn left
-   turn right
-   # (4 + 4 + 4) #
-   repeat 4 times
-   {
-      sleep 4 + 4 + 4
-      display "good!"
-      rotate s1 60
-   }
-
-   if 4 < 5 or 5 + 9 < 0
-   {
-      sleep 4
-   }
-}
-#
+set m2 0
+set m2 -22
