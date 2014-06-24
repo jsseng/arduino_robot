@@ -11,6 +11,11 @@ public abstract class Machinery
 
     public abstract String toString();
     
+    public String getMachineNumber()
+    {
+       return "";
+    }
+
     public String getIdentifier() { 
        return _id;
     }

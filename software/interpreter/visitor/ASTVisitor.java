@@ -43,6 +43,10 @@ public abstract class ASTVisitor<T>
    {
       return visit((ASTRoot)t);
    }
+   public T visit(SetStatement t)
+   {
+      return visit((ASTRoot)t);
+   }
    public T visit(Machinery t)
    {
       return visit((ASTRoot)t);
@@ -193,10 +197,6 @@ public abstract class ASTVisitor<T>
       return visit((Declaration)t);
    }
    public T visit(DisplayStatement t)
-   {
-      return visit((ASTRoot)t);
-   }
-   public T visit(WritelineStatement t)
    {
       return visit((ASTRoot)t);
    }

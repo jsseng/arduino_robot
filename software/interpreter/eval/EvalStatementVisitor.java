@@ -85,10 +85,20 @@ public class EvalStatementVisitor
       */
       return _state;
    }
-   public State visit(WritelineStatement t)
+   public State visit(WriteStatement t)
    {
       System.out.println(
          t.getExpression().visit(new EvalExpressionVisitor(_state)));
       return _state;
+   }
+
+   public State visit(ReadStatement t) {
+       System.out.println(t.getExpression().visit(new EvalExpressionVisitor(_state)));
+       return _state;
+   }
+
+   public State visit(ChangeStatement t) {
+       System.out.println(t.getExpression().visit(new EvalExpressionVisitor(_state)));
+       return _state;
    }
 }

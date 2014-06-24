@@ -2,12 +2,12 @@ package ast;
 
 import visitor.*;
 
-public class WriteStatement extends Statement
+public class SetStatement extends Statement
 {
    private Machinery _mach;
    private Expression _value;
 
-   public WriteStatement(Machinery mach, Expression value)
+   public SetStatement(Machinery mach, Expression value)
    {
       _mach = mach;
       _value = value;

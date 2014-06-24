@@ -1,0 +1,4 @@
+cat badtests/badtest$1.txt
+echo =====
+
+java Interpreter -dumpAST badtests/badtest$1.txt

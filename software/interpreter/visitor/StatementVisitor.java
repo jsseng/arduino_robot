@@ -11,6 +11,10 @@ public abstract class StatementVisitor<T>
    {
       return visit((Statement)t);
    }
+   public T visit(SpinStatement t)
+   {
+      return visit((Statement)t);
+   }
    public T visit(IfStatement t)
    {
       return visit((Statement)t);
@@ -24,10 +28,6 @@ public abstract class StatementVisitor<T>
       return visit((Statement)t);
    }
    public T visit(DisplayStatement t)
-   {
-      return visit((Statement)t);
-   }
-   public T visit(WritelineStatement t)
    {
       return visit((Statement)t);
    }

@@ -21,7 +21,7 @@ public class Motor extends Machinery {
 
    public String toString()
    {
-      return String.valueOf(_motorNum);
+      return "motor(" + String.valueOf(_motorNum) + ", ";
    }
 }
 

@@ -10,8 +10,8 @@ when start
 repeat
 {
    display "Thermometer reading is: " + thermometer
-   rotate leftServo 15
-   rotate rightServo 75
+   set leftServo 15
+   set rightServo 75
 
    display "Temperature in Celcius is: " + ((thermometer - 32) * 5 / 9)
 }
