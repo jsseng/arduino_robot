@@ -38,6 +38,10 @@ public class Parser
          {
             sourceElements.add(parseWhenStatement());
          }
+         else if (_currentToken.code() == TokenCode.TK_FUNC)
+         {
+            sourceElements.add(parseFuncStatement());
+         }
          else
          {
             sourceElements.add(parseStatement());
@@ -45,6 +49,29 @@ public class Parser
       }
 
       return new Program(decls, sourceElements);
+   }
+
+   private SourceElement parseFuncStatement() throws ScannerException {
+      match(TokenCode.TK_FUNC);
+      int lineNum = _currentToken.getLine();
+      String id = matchIdentifier();
+      List<String> params = new ArrayList<String>();
+      match(TokenCode.TK_LPAREN);
+      while (_currentToken.code() != TokenCode.TK_RPAREN)
+      {
+         if (_currentToken.code() == TokenCode.TK_COMMA)
+         {
+            nextToken();
+         }
+         params.add(matchIdentifier());
+      }
+      match(TokenCode.TK_RPAREN);
+
+      Statement[] body = parseBlockStatement();
+      Function func = new Function(id, params, body);
+      func.setLineNum(lineNum);
+
+      return func;
    }
 
    private SourceElement parseWhenStatement() throws ScannerException {
@@ -257,46 +284,6 @@ public class Parser
             return -1;
       }
    }
-      
-/*
-   private Function parseFunction()
-   throws ScannerException
-   {
-      match(TokenCode.TK_FN);
-      String id = matchIdentifier();
-      match(TokenCode.TK_LPAREN);
-      Parameters params = parseParameters();
-      match(TokenCode.TK_RPAREN);
-      Declarations decls = parseDeclarations();
-      Statement s = parseCompoundStatement();
-
-      return new Function(id, params, decls, s);
-   }
-
-   private Parameters parseParameters()
-   throws ScannerException
-   {
-      Parameters params = new Parameters();
-      if (isParameter(_currentToken))
-      {
-         params.add(parseParameter());
-         while (_currentToken.equals(TokenCode.TK_COMMA))
-         {
-            match(TokenCode.TK_COMMA);
-            params.add(parseParameter());
-         }
-      }
-
-      return params;
-   }
-
-   private Declaration parseParameter()
-   throws ScannerException
-   {
-      String id = matchIdentifier();
-      return new Declaration(id);
-   }
-*/
 
    private Statement parseIfStatement() throws ScannerException
    {
@@ -369,29 +356,20 @@ public class Parser
          case TK_TURN:
             s = parseTurn();
             break;
-         /*
-         case TK_ROTATE:
-            s = parseRotateStatement();
-            break;
-         case TK_WRITE:
-            s = parseWriteStatement();
-            break;
-         case TK_SPIN:
-            s = parseSpinStatement();
-            break;
-         */
          case TK_SLEEP:
             s = parseSleep();
             break;
          case TK_IF:
             s = parseIfStatement();
             break;
+         /*
          case TK_TURNON:
             s = parseTurnOnStatement();
             break;
          case TK_TURNOFF:
             s = parseTurnOffStatement();
             break;
+         */
          case TK_VARIABLE:
             s = parseVariableDeclaration();
             break;
@@ -429,11 +407,13 @@ public class Parser
                return null;
             }
          case TK_NUM:
-         case TK_READ:
+         case TK_GET:
          case TK_STRING:
             s = new ExpressionStatement(parseExpression());
             break;
-
+         case TK_RETURN:
+            s = parseReturnStatement();
+            break;
          default:
             expected("'statement'", _currentToken);
             return null;
@@ -442,6 +422,12 @@ public class Parser
       return s;
    }
     
+   private Statement parseReturnStatement() throws ScannerException {
+      match(TokenCode.TK_RETURN);
+      Expression ret = parseExpression();
+      return new ReturnStatement(ret);
+   }
+
    private Statement parseChangeStatement() throws ScannerException {
       match(TokenCode.TK_CHANGE);
       match(TokenCode.TK_MODE);
@@ -490,7 +476,7 @@ public class Parser
    }
 
     private Expression parseReadStatement() throws ScannerException {
-				match(TokenCode.TK_READ);
+				match(TokenCode.TK_GET);
 				String id = matchIdentifier();
 				Machinery m = strToMach.get(id);
 				return new ReadStatement(m);
@@ -502,6 +488,7 @@ public class Parser
       return new SpinStatement(m, e);
    }
 
+   /*
    private Statement parseTurnOnStatement() throws ScannerException
    {
       match(TokenCode.TK_TURNON);
@@ -515,6 +502,7 @@ public class Parser
       String id = matchIdentifier();
       return new TurnOffStatement(id);
    }
+   */
 
    private Statement parseVariableDeclaration() throws ScannerException
    {
@@ -787,6 +775,7 @@ public class Parser
       return new SleepStatement(parseExpression());
    }
 
+   /*
    private Statement parseState() throws ScannerException
    {
       String id = matchIdentifier();
@@ -800,6 +789,7 @@ public class Parser
             return null;
       }
    }
+   */
 
    private Statement parseCompoundStatement() throws ScannerException
    {
@@ -1026,9 +1016,9 @@ public class Parser
 
    private Expression parseCallExpression() throws ScannerException
    {
-      if (_currentToken.code() == TokenCode.TK_READ)
+      if (_currentToken.code() == TokenCode.TK_GET)
       {
-         match(TokenCode.TK_READ);
+         match(TokenCode.TK_GET);
          String s = matchIdentifier();
          Machinery m = strToMach.get(s);
          Token t = _currentToken;
@@ -1289,8 +1279,9 @@ public class Parser
          || tk.equals(TokenCode.TK_IF)
          || tk.equals(TokenCode.TK_REPEAT)
          || tk.equals(TokenCode.TK_MOVE)
-         || tk.equals(TokenCode.TK_TURNON)
-         || tk.equals(TokenCode.TK_TURNOFF)
+         
+        // || tk.equals(TokenCode.TK_TURNON)
+        // || tk.equals(TokenCode.TK_TURNOFF)
          || tk.equals(TokenCode.TK_SET)
          //|| tk.equals(TokenCode.TK_ROTATE)
          || tk.equals(TokenCode.TK_SLEEP)

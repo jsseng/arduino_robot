@@ -9,7 +9,7 @@ int j = 3;
 int repeatCounter = 0;
 for (repeatCounter = 0; repeatCounter < 5; repeatCounter++)
 {
-printf("%s %f\n","hello",i);
+printf("%s%f\n","hello",i);
 i = (i + 1);
 {
 int repeatCounter = 0;

@@ -17,7 +17,7 @@ extends ASTVisitor<StringBuilder>
    private int lineNum = 0;
    private List<Machinery> allMachinery = new ArrayList<Machinery>();
 
-   private Map<String, Visitable> idToType = new HashMap<String, Visitable>();
+   private Environment currentEnvir;
 
    public StringBuilder visit(ASTRoot t)
    {
@@ -25,7 +25,7 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(Machinery t)
    {
-      idToType.put(t.getIdentifier(), t);
+      currentEnvir.put(t.getIdentifier(), t);
       StringBuilder buf = new StringBuilder();
       buf.append("#define " + t.getIdentifier() + " " + t.getMachineNumber() + "\n");
       /*
@@ -53,7 +53,7 @@ extends ASTVisitor<StringBuilder>
    {
       StringBuilder buf = new StringBuilder();
       String id = t.getTarget().getIdentifier();
-      Visitable type = idToType.get(id);
+      Visitable type = currentEnvir.get(id);
 
       buf.append(t.getTarget().visit(this));
       buf.append(" = ");
@@ -136,15 +136,36 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(Function t)
    {
+      if (!ASTCheckerVisitor.hasReturn(t.getBody()))
+      {
+         expected("A return statement in function " + t.getName());
+      }
+
       StringBuilder buf = new StringBuilder();
 
-      buf.append("fn ");
+      Environment e = new Environment();
+      e.put(t.getName(), t);
+
+      buf.append("float ");
       buf.append(t.getName());
       buf.append("(");
-      buf.append(t.getParameters().visit(this));
+      List<String> params = t.getParameters();
+      if (params.size() > 0)
+      {
+         Iterator<String> iter = params.iterator();
+         String varName = iter.next();
+         buf.append("float " + varName);
+         e.put(varName, new FloatConstantExpression(0));
+         while (iter.hasNext())
+         {
+            varName = iter.next();
+            buf.append(", float " + varName);
+            e.put(varName, new FloatConstantExpression(0));
+         }
+      }
+
       buf.append(")\n");
-      buf.append(t.getDeclarations().visit(this));
-      buf.append(t.getBody().visit(this));
+      buf.append(visit(t.getBody(), e));
 
       return buf;
    }
@@ -165,9 +186,22 @@ extends ASTVisitor<StringBuilder>
    {
       return visitBinary(t, ">");
    }
+
+   public StringBuilder visit(IdentifierExpression t, HashMap<String, Visitable> map)
+   {
+      if (map.containsKey(t.getIdentifier()))
+      {
+         return new StringBuilder(t.getIdentifier());
+      }
+      else
+      {
+         return visit(t);
+      }
+   }
+
    public StringBuilder visit(IdentifierExpression t)
    {
-      if (idToType.containsKey(t.getIdentifier()))
+      if (currentEnvir.containsKey(t.getIdentifier()))
       {
          return new StringBuilder(t.getIdentifier());
       }
@@ -180,13 +214,21 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(Statement[] t)
    {
+      return visit(t, new Environment());
+   }
+
+   public StringBuilder visit(Statement[] t, Environment e)
+   {
       StringBuilder str = new StringBuilder();
+      Environment oldEnvir = currentEnvir;
+      currentEnvir = e;
       str.append("{\n");
       for (Statement s : t)
       {
          str.append(s.visit(this));
       }
       str.append("}\n");
+      currentEnvir = oldEnvir;
       return str;
    }
    public StringBuilder visit(TurnOnStatement t)
@@ -214,17 +256,17 @@ extends ASTVisitor<StringBuilder>
       Expression e = t.getExpression();
       if (numberType(e) instanceof FloatConstantExpression)
       {
-         idToType.put(t.getId(), new FloatConstantExpression(0));
+         currentEnvir.put(t.getId(), new FloatConstantExpression(0));
          str.append("float ");
       }
       if (numberType(e) instanceof IntegerConstantExpression)
       {
-         idToType.put(t.getId(), new IntegerConstantExpression(0));
+         currentEnvir.put(t.getId(), new IntegerConstantExpression(0));
          str.append("int ");
       }
       if (numberType(e) instanceof StringExpression)
       {
-         idToType.put(t.getId(), new StringExpression(""));
+         currentEnvir.put(t.getId(), new StringExpression(""));
          str.append("char *");
       }
       str.append(t.getId());
@@ -589,12 +631,14 @@ extends ASTVisitor<StringBuilder>
 
    public StringBuilder visit(Program t)
    {
+      currentEnvir = new Environment();
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n\n");
       //buf.append("int auto_old, auto_new;\n");
       buf.append(visit(t.getDeclarations()));
       buf.append(visitGlobalVars(elems));
+      buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
       buf.append(visitWhens(elems));
       buf.append(visitRepeat(elems));
@@ -613,6 +657,34 @@ extends ASTVisitor<StringBuilder>
 
       return buf;
    }
+
+   public StringBuilder visitFunctions(List<SourceElement> elems)
+   {
+      StringBuilder buf = new StringBuilder();
+      List<Function> funcs = new ArrayList<Function>();
+      Iterator<SourceElement> iter = elems.iterator();
+      while (iter.hasNext())
+      {
+         SourceElement elem = iter.next();
+         if (elem instanceof Function)
+         {
+            funcs.add((Function)elem);
+            iter.remove();
+         }
+      }
+
+      /* Process Function prototypes */
+
+      /* Process Function Definitions */
+      for (Function func : funcs)
+      {
+         buf.append(visit(func));
+         buf.append("\n");
+      }
+
+      return buf;
+   }
+
    public StringBuilder visit(ReturnStatement t)
    {
       lineNum = t.getLineNum();
@@ -724,7 +796,7 @@ extends ASTVisitor<StringBuilder>
       if (e instanceof IdentifierExpression)
       {
          String id = ((IdentifierExpression)e).getIdentifier();
-         Visitable v = idToType.get(id);
+         Visitable v = currentEnvir.get(id);
          if (v instanceof Machinery)
          {
             return new IntegerConstantExpression(0);
@@ -806,6 +878,18 @@ extends ASTVisitor<StringBuilder>
       }
       System.err.println("Type is not String, float, or int");
       return "";
+   }
+
+   private Environment oldEnvir;
+   private void makeNewEnvir()
+   {
+      oldEnvir = currentEnvir;
+      currentEnvir = new Environment(currentEnvir);
+   }
+      
+   private void restoreEnvir()
+   {
+      currentEnvir = oldEnvir;
    }
 
    private void expected(String s)

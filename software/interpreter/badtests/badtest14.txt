@@ -1,0 +1,6 @@
+# Symbol not found in function
+
+func aFunc(float anID)
+{
+   return anIDs
+}

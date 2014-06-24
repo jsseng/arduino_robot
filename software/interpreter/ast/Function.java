@@ -1,21 +1,20 @@
 package ast;
 
 import visitor.ASTVisitor;
+import java.util.List;
 
-public class Function
+public class Function extends SourceElement
    implements Visitable
 {
    private String _id;
-   Parameters _params;
-   Declarations _decls;
-   Statement _body;
+   List<String> _params;
+   Statement[] _body;
 
-   public Function(String id, Parameters params, Declarations decls,
-      Statement body)
+   public Function(String id, List<String> params, Statement[] body)
    {
+      super();
       _id = id;
       _params = params;
-      _decls = decls;
       _body = body;
    }
 
@@ -24,17 +23,12 @@ public class Function
       return _id;
    }
 
-   public Parameters getParameters()
+   public List<String> getParameters()
    {
       return _params;
    }
 
-   public Declarations getDeclarations()
-   {
-      return _decls;
-   }
-
-   public Statement getBody()
+   public Statement[] getBody()
    {
       return _body;
    }

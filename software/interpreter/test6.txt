@@ -1,0 +1,23 @@
+# Test for functions
+
+func anotherFunction()
+{
+   return 0
+}
+
+func aFunction (anID)
+{
+   if (anID < 0)
+   {
+      return 0
+   }
+   else
+   {
+      return 1
+   }
+}
+
+func yetAnotherFunction(anId, anotherID, yetAnotherID)
+{
+   return 1
+}
