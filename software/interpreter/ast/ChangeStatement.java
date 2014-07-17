@@ -3,15 +3,15 @@ package ast;
 import visitor.*;
 
 public class ChangeStatement extends Statement {
-   private Machinery _mach;
+   private String _mach;
    private boolean _in;
 
-    public ChangeStatement(Machinery mach, boolean in) {
+    public ChangeStatement(String mach, boolean in) {
       _mach = mach;
       _in = in;
    }
 
-   public Machinery getMachinery() {
+   public String getMachinery() {
       return _mach;
    }
     

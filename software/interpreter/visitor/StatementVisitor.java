@@ -7,14 +7,6 @@ public abstract class StatementVisitor<T>
    public abstract T visit(Statement t);
 
    /* all default to base behavior */
-   public T visit(CompoundStatement t)
-   {
-      return visit((Statement)t);
-   }
-   public T visit(SpinStatement t)
-   {
-      return visit((Statement)t);
-   }
    public T visit(IfStatement t)
    {
       return visit((Statement)t);
@@ -28,6 +20,10 @@ public abstract class StatementVisitor<T>
       return visit((Statement)t);
    }
    public T visit(DisplayStatement t)
+   {
+      return visit((Statement)t);
+   }
+   public T visit(SetStatement t)
    {
       return visit((Statement)t);
    }

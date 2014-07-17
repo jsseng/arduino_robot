@@ -3,14 +3,20 @@ package ast;
 import visitor.*;
 
 public class SetCursorStatement extends Statement {
-   private Position _cursor;
+   private Expression _row;
+   private Expression _col;
 
-   public SetCursorStatement(IntegerConstantExpression row, IntegerConstantExpression column) {
-       _cursor = new Position(row.getValue(), column.getValue());
+   public SetCursorStatement(Expression row, Expression column) {
+       _row = row;
+       _col = column;
    }
 
-   public Position getPosition() {
-      return _cursor;
+   public Expression getRow() {
+      return _row;
+   }
+
+   public Expression getCol() {
+      return _col;
    }
 
    public <T> T visit(StatementVisitor<T> guest) {

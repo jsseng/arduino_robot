@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#define m1 
+#define m1 0
 
-#define m2 
+#define m2 1
 
 void start(void)
 {
@@ -12,10 +12,10 @@ void repeatAlways(void)
 }
 int main(void) {
 start();
-motor(0, 50);
-motor(0, -70);
-motor(1, 0);
-motor(1, -22);
+motor(m1, 50);
+motor(m1, -70);
+motor(m2, 0);
+motor(m2, -22);
 while (1) {
 repeatAlways();
 }

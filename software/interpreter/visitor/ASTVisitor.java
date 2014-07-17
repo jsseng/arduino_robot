@@ -11,6 +11,10 @@ public abstract class ASTVisitor<T>
    {
       return visit((ASTRoot)t);
    }
+   public T visit(CallExpression t)
+   {
+      return visit((ASTRoot)t);
+   }
    public T visit(AndExpression t)
    {
       return visit((ASTRoot)t);
@@ -36,10 +40,6 @@ public abstract class ASTVisitor<T>
       return visit((ASTRoot)t);
    }
    public T visit(ExpressionStatement t)
-   {
-      return visit((ASTRoot)t);
-   }
-   public T visit(CompoundStatement t)
    {
       return visit((ASTRoot)t);
    }
@@ -107,10 +107,6 @@ public abstract class ASTVisitor<T>
    {
       return visit((ASTRoot)t);
    }
-   public T visit(InvocationExpression t)
-   {
-      return visit((ASTRoot)t);
-   }
    public T visit(LessEqualExpression t)
    {
       return visit((ASTRoot)t);
@@ -147,7 +143,7 @@ public abstract class ASTVisitor<T>
    {
       return visit((ASTRoot)t);
    }
-   public T visit(ReadStatement t) {
+   public T visit(GetExpression t) {
        return visit((ASTRoot)t);
    }
    public T visit(BetweenExpression t)

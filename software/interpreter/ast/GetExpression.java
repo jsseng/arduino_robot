@@ -2,16 +2,16 @@ package ast;
 
 import visitor.*;
 
-public class ReadStatement extends Expression
+public class GetExpression extends Expression
 {
-   private Machinery _mach;
+   private String _mach;
 
-   public ReadStatement(Machinery mach)
+   public GetExpression(String mach)
    {
       _mach = mach;
    }
 
-   public Machinery getMachinery()
+   public String getMachinery()
    {
       return _mach;
    }

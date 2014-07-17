@@ -6,16 +6,16 @@ import visitor.ASTVisitor;
 public class Program
    implements ASTRoot, Visitable
 {
-   private List<Machinery>_decls;
+   private List<Declaration>_decls;
    private List<SourceElement> _body;
 
-   public Program(List<Machinery> decls, List<SourceElement> body)
+   public Program(List<Declaration> decls, List<SourceElement> body)
    {
       _decls = decls;
       _body = body;
    }
 
-   public List<Machinery> getDeclarations()
+   public List<Declaration> getDeclarations()
    {
       return _decls;
    }

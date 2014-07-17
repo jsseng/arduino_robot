@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define thermometer 
+#define thermometer 0
 
 #define leftServo 0
 
@@ -12,10 +12,10 @@ printf("%s\n","Hello! Machine is starting up");
 }
 void repeatAlways(void)
 {
-printf("%s%d\n","Thermometer reading is: ",thermometer);
-set_servo(0, 15);
-set_servo(1, 75);
-printf("%s%d\n","Temperature in Celcius is: ",(((thermometer - 32) * 5) /(float) 9));
+printf("%s%d\n","Thermometer reading is: ",analog(thermometer));
+set_servo(leftServo, 15);
+set_servo(rightServo, 75);
+printf("%s%d\n","Temperature in Celcius is: ",(((analog(thermometer) - 32) * 5) /(float) 9));
 }
 int main(void) {
 start();

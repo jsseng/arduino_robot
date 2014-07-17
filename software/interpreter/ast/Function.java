@@ -18,7 +18,7 @@ public class Function extends SourceElement
       _body = body;
    }
 
-   public String getName()
+   public String getID()
    {
       return _id;
    }

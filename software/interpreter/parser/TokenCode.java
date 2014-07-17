@@ -18,6 +18,7 @@ public enum TokenCode
    TK_SERVO("servo"),
    TK_BUTTON("button"),
    TK_LED("led"),
+   TK_MOTOR("motor"),
    TK_START("start"),
    // To do: Change Read to Get
    TK_GET("get"),
@@ -54,10 +55,12 @@ public enum TokenCode
    TK_AND("and"),
    TK_OR("or"),
    TK_EQ("equals"),
+   /*
    TK_TL("TL"),
    TK_TR("TR"),
    TK_BL("BL"),
    TK_BR("BR"),
+   */
    TK_ASSIGN("="),
    TK_LT("<"),
    TK_GT(">"),
