@@ -23,13 +23,9 @@ public class Environment
    public boolean containsKey(String id)
    {
       if (idToType.containsKey(id))
-      {
          return true;
-      }
       else if (next != null)
-      {
          return next.containsKey(id);
-      }
       else
          return false;
    }

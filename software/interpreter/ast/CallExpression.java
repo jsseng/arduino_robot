@@ -1,30 +1,29 @@
 package ast;
 
-import java.util.Vector;
-
 import visitor.ASTVisitor;
 import visitor.ExpressionVisitor;
+import java.util.List;
 
-public class InvocationExpression
+public class CallExpression
    extends Expression
 {
-   private String _id;
-   private Vector<Expression> _args;
+   String _id;
+   List<Expression> _params;
 
-   public InvocationExpression(String id, Vector<Expression> args)
+   public CallExpression(String id, List<Expression> params)
    {
       _id = id;
-      _args = args;
+      _params = params;
    }
 
-   public String getName()
+   public String getID()
    {
       return _id;
    }
 
-   public Vector<Expression> getArguments()
+   public List<Expression> getParams()
    {
-      return _args;
+      return _params;
    }
 
    public <T> T visit(ExpressionVisitor<T> guest)
@@ -37,3 +36,4 @@ public class InvocationExpression
       return guest.visit(this);
    }
 }
+

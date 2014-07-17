@@ -4,16 +4,16 @@ import visitor.*;
 
 public class SetStatement extends Statement
 {
-   private Machinery _mach;
+   private String _mach;
    private Expression _value;
 
-   public SetStatement(Machinery mach, Expression value)
+   public SetStatement(String mach, Expression value)
    {
       _mach = mach;
       _value = value;
    }
 
-   public Machinery getMachinery()
+   public String getMachinery()
    {
       return _mach;
    }

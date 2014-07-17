@@ -47,10 +47,6 @@ public abstract class ExpressionVisitor<T>
    {
       return visit((Expression)t);
    }
-   public T visit(InvocationExpression t)
-   {
-      return visit((Expression)t);
-   }
    public T visit(LessEqualExpression t)
    {
       return visit((Expression)t);

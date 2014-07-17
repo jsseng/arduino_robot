@@ -1,32 +1,27 @@
 package ast;
 import visitor.*;
 
-public class Servo extends Machinery {
-    int _servoNum;
+public class Servo extends Machinery implements Settable {
+   int _servoNum;
 
-    public Servo(String id, int servoNum) {
-       super(id);
-       _servoNum = servoNum;
-    }
+   public Servo(String id, int servoNum) {
+      super(id);
+      _servoNum = servoNum;
+   }
 
-    public int getServoNum()
-    {
-       return _servoNum;
-    }
+   public int getMachineNumber()
+   {
+      return _servoNum;
+   }
 
    public <T> T visit(ASTVisitor<T> guest)
    {
       return guest.visit(this);
    }
 
-   public String toString()
+   public String toSetString(CharSequence seq)
    {
-      return "set_servo(" + getMachineNumber() + ", ";
-   }
-
-   public String getMachineNumber()
-   {
-      return String.valueOf(_servoNum);
+      return "set_servo(" + getIdentifier() + ", " + seq + ")";
    }
 }
 

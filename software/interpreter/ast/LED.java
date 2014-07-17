@@ -2,17 +2,21 @@ package ast;
 
 import visitor.*;
 
-public class LED 
-   extends Machinery
+public class LED extends Machinery implements Settable
 {
    public LED()
    {
       super("");
    }
 
-   public String toString()
+   public String toSetString(CharSequence seq)
    {
-      return "led";
+      return String.format("led(%s", seq);
+   }
+
+   public int getMachineNumber()
+   {
+      throw new UnsupportedOperationException();
    }
 
    public <T> T visit(ASTVisitor<T> guest)

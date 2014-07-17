@@ -3,14 +3,22 @@ package ast;
 import visitor.*;
 
 public class CursorStatement extends Statement {
-   private Position _cursor;
+   private int _row;
+   private int _col;
 
    public CursorStatement(int row, int column) {
-      _cursor = new Position(row, column);
+      _row = row;
+      _col = column;
    }
 
-   public Position getPosition() {
-      return _cursor;
+   public int getRow()
+   {
+      return _row;
+   }
+
+   public int getCol()
+   {
+      return _col;
    }
 
    public <T> T visit(StatementVisitor<T> guest) {

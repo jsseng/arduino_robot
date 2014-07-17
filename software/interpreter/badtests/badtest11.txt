@@ -1,4 +1,4 @@
 # Cannot use String Expressions for computations
 define motor1 = TL
 
-spin motor1 50 + "hi"
+set motor1 50 + "hi"

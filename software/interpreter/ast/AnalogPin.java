@@ -2,21 +2,21 @@ package ast;
 
 import visitor.*;
 
-public class AnalogPin extends Machinery {
-   int _pin;
+public class AnalogPin extends Machinery implements Gettable {
+   private int _pin;
 
    public AnalogPin(String id, int pin) {
       super(id);
       _pin = pin;
    }
 
-   public int getPin() {
+   public int getMachineNumber() {
       return _pin;
    }
 
-   public String toString()
+   public String toGetString()
    {
-      return String.valueOf(_pin);
+      return "analog(" + getIdentifier() + ")";
    }
 
    public <T> T visit(ASTVisitor<T> guest)

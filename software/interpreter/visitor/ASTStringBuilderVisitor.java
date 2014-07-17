@@ -15,39 +15,43 @@ extends ASTVisitor<StringBuilder>
 {
    private int whenCount = 0;
    private int lineNum = 0;
-   private List<Machinery> allMachinery = new ArrayList<Machinery>();
-
    private Environment currentEnvir;
-
-   public StringBuilder visit(ASTRoot t)
+   public StringBuilder visit(Program t)
    {
-      return new StringBuilder();
-   }
-   public StringBuilder visit(Machinery t)
-   {
-      currentEnvir.put(t.getIdentifier(), t);
+      currentEnvir = new Environment();
+      List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
-      buf.append("#define " + t.getIdentifier() + " " + t.getMachineNumber() + "\n");
-      /*
-      buf.append(String.format("int auto_%s = %s;\n", t.getIdentifier(), t.toString()));
-      */
+      buf.append("#include <stdio.h>\n\n");
+      buf.append(visit(t.getDeclarations()));
+      buf.append(visitGlobalVars(elems));
+      buf.append(visitFunctions(elems));
+      buf.append(visitStart(elems));
+      buf.append(visitWhens(elems));
+      buf.append(visitRepeat(elems));
+
+      buf.append("int main(void) {\n");
+      buf.append("start();\n");
+
+      buf.append(visitNonRepeats(elems));
+
+      buf.append(callWhens(elems));
+
+      // buf.append(t.getBody().visit(this));
+      /* Must revisit visiting the program's body */
+
+      buf.append("return 0;\n}");
+
       return buf;
    }
-
-   public StringBuilder visit(FloatConstantExpression t)
+   public StringBuilder visit(Declaration t)
    {
+      String id = t.getIdentifier();
+      uniqueID(id);
+      Machinery m = t.getMachinery();
+      currentEnvir.put(id, m);
       StringBuilder buf = new StringBuilder();
-      buf.append(String.valueOf(t.getValue()));
+      buf.append("#define " + id + " " + m.getMachineNumber() + "\n");
       return buf;
-   }
-
-   public StringBuilder visit(AddExpression t)
-   {
-      return visitBinary(t, "+");
-   }
-   public StringBuilder visit(AndExpression t)
-   {
-      return visitBinary(t, "&&");
    }
    public StringBuilder visit(AssignmentExpression t)
    {
@@ -77,47 +81,15 @@ extends ASTVisitor<StringBuilder>
       }
       return buf;
    }
-   public StringBuilder visit(StringExpression t)
-   {
-      return new StringBuilder("\"" + t.getString() + "\"");
-   }
    public StringBuilder visit(ExpressionStatement t)
    {
       lineNum = t.getLineNum();
       return new StringBuilder(t.getExp().visit(this) + ";\n");
    }
-   public StringBuilder visit(BooleanConstantExpression t)
-   {
-      return new StringBuilder(String.valueOf(t.getValue()));
-   }
-   public StringBuilder visit(CompoundStatement t)
-   {
-      lineNum = t.getLineNum();
-      StringBuilder buf = new StringBuilder();
-      buf.append("{\n");
-      for (Statement st : t.getStatements())
-      {
-         buf.append(st.visit(this));
-      }
-      buf.append("}\n");
-      return buf;
-   }
-   /*
-   public StringBuilder visit(Declarations t)
+   public StringBuilder visit(List<Declaration> t)
    {
       StringBuilder buf = new StringBuilder();
       for (Declaration d : t)
-      {
-         buf.append(d.visit(this));
-         buf.append("\n");
-      }
-      return buf;
-   }
-   */
-   public StringBuilder visit(List<Machinery> t)
-   {
-      StringBuilder buf = new StringBuilder();
-      for (Machinery d : t)
       {
          buf.append(d.visit(this));
          buf.append("\n");
@@ -130,75 +102,35 @@ extends ASTVisitor<StringBuilder>
       // return visitBinary(t, "/");
       return visitBinary(t, "/(float)");
    }
-   public StringBuilder visit(EqualExpression t)
-   {
-      return visitBinary(t, "==");
-   }
    public StringBuilder visit(Function t)
    {
+      String id = t.getID();
+      uniqueID(id);
+      currentEnvir.put(id, t);
       if (!ASTCheckerVisitor.hasReturn(t.getBody()))
       {
-         expected("A return statement in function " + t.getName());
+         expected("A return statement in function " + t.getID());
       }
 
+      Environment oldEnvir = currentEnvir;
+      currentEnvir = new Environment(oldEnvir);
+
       StringBuilder buf = new StringBuilder();
-
-      Environment e = new Environment();
-      e.put(t.getName(), t);
-
-      buf.append("float ");
-      buf.append(t.getName());
-      buf.append("(");
+      buf.append(String.format("float %s(", id));
       List<String> params = t.getParameters();
-      if (params.size() > 0)
+      buf.append(listToComma(params, "float"));
+
+      for (String s : params)
       {
-         Iterator<String> iter = params.iterator();
-         String varName = iter.next();
-         buf.append("float " + varName);
-         e.put(varName, new FloatConstantExpression(0));
-         while (iter.hasNext())
-         {
-            varName = iter.next();
-            buf.append(", float " + varName);
-            e.put(varName, new FloatConstantExpression(0));
-         }
+         currentEnvir.put(s, new FloatConstantExpression(0));
       }
 
       buf.append(")\n");
-      buf.append(visit(t.getBody(), e));
+      buf.append(visit(t.getBody(), currentEnvir));
 
+      currentEnvir = oldEnvir;
       return buf;
    }
-   public StringBuilder visit(Functions t)
-   {
-      StringBuilder buf = new StringBuilder();
-      for (Function f : t)
-      {
-         buf.append(f.visit(this));
-      }
-      return buf;
-   }
-   public StringBuilder visit(GreaterEqualExpression t)
-   {
-      return visitBinary(t, ">=");
-   }
-   public StringBuilder visit(GreaterThanExpression t)
-   {
-      return visitBinary(t, ">");
-   }
-
-   public StringBuilder visit(IdentifierExpression t, HashMap<String, Visitable> map)
-   {
-      if (map.containsKey(t.getIdentifier()))
-      {
-         return new StringBuilder(t.getIdentifier());
-      }
-      else
-      {
-         return visit(t);
-      }
-   }
-
    public StringBuilder visit(IdentifierExpression t)
    {
       if (currentEnvir.containsKey(t.getIdentifier()))
@@ -207,14 +139,13 @@ extends ASTVisitor<StringBuilder>
       }
       else
       {
-         System.err.printf("Identifer %s not found\n", t.getIdentifier());
-         System.exit(0);
+         expected(String.format("Identifer %s not found\n", t.getIdentifier()));
          return null;
       }
    }
    public StringBuilder visit(Statement[] t)
    {
-      return visit(t, new Environment());
+      return visit(t, new Environment(currentEnvir));
    }
 
    public StringBuilder visit(Statement[] t, Environment e)
@@ -231,48 +162,30 @@ extends ASTVisitor<StringBuilder>
       currentEnvir = oldEnvir;
       return str;
    }
-   public StringBuilder visit(TurnOnStatement t)
-   {
-      lineNum = t.getLineNum();
-      StringBuilder str = new StringBuilder();
-      str.append("turn_on(");
-      str.append(t.getId());
-      str.append(");\n");
-      return str;
-   }
-   public StringBuilder visit(TurnOffStatement t)
-   {
-      lineNum = t.getLineNum();
-      StringBuilder str = new StringBuilder();
-      str.append("turn_off(");
-      str.append(t.getId());
-      str.append(");\n");
-      return str;
-   }
    public StringBuilder visit(VariableDeclarationStatement t)
    {
       lineNum = t.getLineNum();
       StringBuilder str = new StringBuilder();
       Expression e = t.getExpression();
+      String id = t.getId();
+      String varType = null;
+      uniqueID(id);
       if (numberType(e) instanceof FloatConstantExpression)
       {
-         currentEnvir.put(t.getId(), new FloatConstantExpression(0));
-         str.append("float ");
+         currentEnvir.put(id, new FloatConstantExpression(0));
+         varType = "float ";
       }
       if (numberType(e) instanceof IntegerConstantExpression)
       {
-         currentEnvir.put(t.getId(), new IntegerConstantExpression(0));
-         str.append("int ");
+         currentEnvir.put(id, new IntegerConstantExpression(0));
+         varType = "int ";
       }
       if (numberType(e) instanceof StringExpression)
       {
-         currentEnvir.put(t.getId(), new StringExpression(""));
-         str.append("char *");
+         currentEnvir.put(id, new StringExpression(""));
+         varType = "char *";
       }
-      str.append(t.getId());
-      str.append(" = ");
-      str.append(t.getExpression().visit(this));
-      str.append(";\n");
+      str.append(String.format("%s%s = %s;\n", varType, id, t.getExpression().visit(this).toString()));
       return str;
    }
    public StringBuilder visit(ForwardStatement t)
@@ -334,21 +247,6 @@ extends ASTVisitor<StringBuilder>
       lineNum = t.getLineNum();
       return new StringBuilder("delay_milliseconds(1000 * (" + t.getDuration().visit(this) + "));\n");
    }
-   public StringBuilder visit(RotateStatement t)
-   {
-      lineNum = t.getLineNum();
-      StringBuilder buf = new StringBuilder();
-      buf.append("set_servo(");
-      buf.append(String.valueOf(t.getServo().getServoNum()));
-      if (!isValidNonDisplayExpression(t.getAngle()))
-      {
-         expected("set_servo can only accept numerical values");
-      }
-      buf.append(", " + t.getAngle().visit(this));
-      buf.append(");\n");
-
-      return buf;
-   }
    public StringBuilder visit(RepeatStatement t)
    {
       lineNum = t.getLineNum();
@@ -360,8 +258,8 @@ extends ASTVisitor<StringBuilder>
          {
             expected("when repeats can only accept numerical values");
          }
-         buf.append("{\nint repeatCounter = 0;\n");
-         buf.append(String.format("for (repeatCounter = 0; repeatCounter < %s; repeatCounter++)\n", t.getTimes().visit(this)));
+         buf.append("{\nint rptCnt;\n");
+         buf.append(String.format("for (rptCnt = 0; rptCnt < %s; rptCnt++)\n", t.getTimes().visit(this)));
          buf.append(visit(t.getBody()));
          buf.append("}\n");
       }
@@ -383,72 +281,16 @@ extends ASTVisitor<StringBuilder>
       buf.append(visit(t.getElse()));
       return buf;
    }
-   public StringBuilder visit(IntegerConstantExpression t)
-   {
-      return new StringBuilder(String.valueOf(t.getValue()));
-   }
-   public StringBuilder visit(InvocationExpression t)
+   public StringBuilder visit(CallExpression t)
    {
       StringBuilder buf = new StringBuilder();
-      buf.append(t.getName());
+      buf.append(t.getID());
       buf.append("(");
-      Vector<Expression> args = t.getArguments();
-      if (args.size() > 0)
-      {
-         Iterator<Expression> iter = args.iterator();
-         buf.append(iter.next().visit(this));
-
-         while (iter.hasNext())
-         {
-            buf.append(", ");
-            buf.append(iter.next().visit(this));
-         }
-      }
+      List<Expression> args = t.getParams();
+      buf.append(visitableListToComma(args, ""));
       buf.append(")");
       return buf;
    }
-   public StringBuilder visit(LessEqualExpression t)
-   {
-      return visitBinary(t, "<=");
-   }
-   public StringBuilder visit(LessThanExpression t)
-   {
-      return visitBinary(t, "<");
-   }
-   public StringBuilder visit(MultiplyExpression t)
-   {
-      return visitBinary(t, "*");
-   }
-   public StringBuilder visit(NotEqualExpression t)
-   {
-      return visitBinary(t, "!=");
-   }
-   public StringBuilder visit(NotExpression t)
-   {
-      return visitUnary(t, "!");
-   }
-   public StringBuilder visit(OrExpression t)
-   {
-      return visitBinary(t, "||");
-   }
-   /*
-   public StringBuilder visit(Parameters t)
-   {
-      StringBuilder buf = new StringBuilder();
-      if (t.size() > 0)
-      {
-         Iterator<Declaration> iter = t.iterator();
-         buf.append(iter.next().visit(this));
-
-         while (iter.hasNext())
-         {
-            buf.append(", ");
-            buf.append(iter.next().visit(this));
-         }
-      }
-      return buf;
-   }
-   */
    public StringBuilder visit(OrWhenExpression t)
    {
       StringBuilder buf = new StringBuilder();
@@ -485,12 +327,6 @@ extends ASTVisitor<StringBuilder>
    {
       return t.getExp().visit(this);
    }
-   public StringBuilder visit(ChangesExpression t)
-   {
-      StringBuilder buf = new StringBuilder();
-      buf.append(String.format("(auto_old = auto_%s, auto_new = auto_%s = %s, auto_new != auto_old)", t.getId(), t.getId(), t.getId()));
-      return buf;
-   }
    public StringBuilder visit(BetweenExpression t)
    {
       StringBuilder buf = new StringBuilder();
@@ -510,7 +346,6 @@ extends ASTVisitor<StringBuilder>
       }
       return buf;
    }
-
    public StringBuilder callWhens(List<SourceElement> t)
    {
       int count = 0;
@@ -629,34 +464,6 @@ extends ASTVisitor<StringBuilder>
       return buf;
    } 
 
-   public StringBuilder visit(Program t)
-   {
-      currentEnvir = new Environment();
-      List<SourceElement> elems = t.getBody();
-      StringBuilder buf = new StringBuilder();
-      buf.append("#include <stdio.h>\n\n");
-      //buf.append("int auto_old, auto_new;\n");
-      buf.append(visit(t.getDeclarations()));
-      buf.append(visitGlobalVars(elems));
-      buf.append(visitFunctions(elems));
-      buf.append(visitStart(elems));
-      buf.append(visitWhens(elems));
-      buf.append(visitRepeat(elems));
-
-      buf.append("int main(void) {\n");
-      buf.append("start();\n");
-
-      buf.append(visitNonRepeats(elems));
-
-      buf.append(callWhens(elems));
-
-      // buf.append(t.getBody().visit(this));
-      /* Must revisit visiting the program's body */
-
-      buf.append("return 0;\n}");
-
-      return buf;
-   }
 
    public StringBuilder visitFunctions(List<SourceElement> elems)
    {
@@ -694,24 +501,6 @@ extends ASTVisitor<StringBuilder>
       buf.append(";\n");
       return buf;
    }
-   public StringBuilder visit(SubtractExpression t)
-   {
-      return visitBinary(t, "-");
-   }
-   public StringBuilder visit(UnitConstantExpression t)
-   {
-      return new StringBuilder("unit");
-   }
-   public StringBuilder visit(WhileStatement t)
-   {
-      lineNum = t.getLineNum();
-      StringBuilder buf = new StringBuilder();
-      buf.append("while (");
-      buf.append(t.getGuard().visit(this));
-      buf.append(")\n");
-      buf.append(t.getBody().visit(this));
-      return buf;
-   }
    public StringBuilder visit(DisplayStatement t)
    {
       lineNum = t.getLineNum();
@@ -732,40 +521,126 @@ extends ASTVisitor<StringBuilder>
    {
       lineNum = t.getLineNum();
       StringBuilder buf = new StringBuilder();
-      buf.append(t.getMachinery().toString());
-      buf.append(t.getValue().visit(this));
-      buf.append(");\n");
+      String id = t.getMachinery();
+      Visitable v = currentEnvir.get(id);
+      if (v instanceof Settable)
+      {
+         Settable s = (Settable)v;
+         Expression exp = t.getValue();
+         if (!isValidNonDisplayExpression(exp))
+         {
+            expected("Machinery can only accept numerical values");
+         }
+         buf.append(s.toSetString(t.getValue().visit(this)));
+         buf.append(";\n");
+      }
+      else
+      {
+         expected(id + " cannot be set");
+      }
       return buf;
    }
-   public StringBuilder visit(SpinStatement t)
+   public StringBuilder visit(GetExpression t)
+   {
+      StringBuilder buf = new StringBuilder();
+      String id = t.getMachinery();
+      Visitable v = currentEnvir.get(id);
+      if (v instanceof Gettable)
+      {
+         Gettable g = (Gettable)v;
+         buf.append(g.toGetString());
+      }
+      else
+      {
+         expected(id + " cannot be get");
+      }
+      return buf;
+   }
+   /* ===== Start Trivial Functions ===== */
+   public StringBuilder visit(LessEqualExpression t)
+   {
+      return visitBinary(t, "<=");
+   }
+   public StringBuilder visit(LessThanExpression t)
+   {
+      return visitBinary(t, "<");
+   }
+   public StringBuilder visit(MultiplyExpression t)
+   {
+      return visitBinary(t, "*");
+   }
+   public StringBuilder visit(NotEqualExpression t)
+   {
+      return visitBinary(t, "!=");
+   }
+   public StringBuilder visit(NotExpression t)
+   {
+      return visitUnary(t, "!");
+   }
+   public StringBuilder visit(OrExpression t)
+   {
+      return visitBinary(t, "||");
+   }
+   public StringBuilder visit(IntegerConstantExpression t)
+   {
+      return new StringBuilder(String.valueOf(t.getValue()));
+   }
+   public StringBuilder visit(GreaterEqualExpression t)
+   {
+      return visitBinary(t, ">=");
+   }
+   public StringBuilder visit(GreaterThanExpression t)
+   {
+      return visitBinary(t, ">");
+   }
+   public StringBuilder visit(EqualExpression t)
+   {
+      return visitBinary(t, "==");
+   }
+   public StringBuilder visit(BooleanConstantExpression t)
+   {
+      return new StringBuilder(String.valueOf(t.getValue()));
+   }
+   public StringBuilder visit(StringExpression t)
+   {
+      return new StringBuilder("\"" + t.getString() + "\"");
+   }
+   public StringBuilder visit(ASTRoot t)
+   {
+      return new StringBuilder();
+   }
+   public StringBuilder visit(FloatConstantExpression t)
+   {
+      StringBuilder buf = new StringBuilder();
+      buf.append(String.valueOf(t.getValue()));
+      return buf;
+   }
+   public StringBuilder visit(AddExpression t)
+   {
+      return visitBinary(t, "+");
+   }
+   public StringBuilder visit(AndExpression t)
+   {
+      return visitBinary(t, "&&");
+   }
+   public StringBuilder visit(SubtractExpression t)
+   {
+      return visitBinary(t, "-");
+   }
+   public StringBuilder visit(UnitConstantExpression t)
+   {
+      return new StringBuilder("unit");
+   }
+   public StringBuilder visit(WhileStatement t)
    {
       lineNum = t.getLineNum();
       StringBuilder buf = new StringBuilder();
-      buf.append("motor(");
-      buf.append(t.getMotor().getIdentifier());
-      buf.append(", ");
-      if (!isValidNonDisplayExpression(t.getValue()))
-      {
-         expected("motors can only accept numerical values");
-      }
-      buf.append(t.getValue().visit(this));
-      buf.append(");\n");
+      buf.append("while (");
+      buf.append(t.getGuard().visit(this));
+      buf.append(")\n");
+      buf.append(t.getBody().visit(this));
       return buf;
    }
-   public StringBuilder visit(ReadStatement t)
-   {
-      StringBuilder buf = new StringBuilder();
-      Machinery m = t.getMachinery();
-      if (m instanceof Gyroscope)
-      {
-         Gyroscope g = (Gyroscope)m;
-         buf.append("accelerometer(");
-         buf.append(String.valueOf(g.getAxis()));
-         buf.append(")");
-      }
-      return buf;
-   }
-
    private StringBuilder visitBinary(BinaryExpression t, String op)
    {
       StringBuilder buf = new StringBuilder();
@@ -779,7 +654,6 @@ extends ASTVisitor<StringBuilder>
 
       return buf;
    }
-
    private StringBuilder visitUnary(UnaryExpression t, String op)
    {
       StringBuilder buf = new StringBuilder();
@@ -790,6 +664,7 @@ extends ASTVisitor<StringBuilder>
 
       return buf;
    }
+   /* ===== End Trivial Functions ===== */
 
    private Expression numberType(Expression e)
    {
@@ -799,7 +674,7 @@ extends ASTVisitor<StringBuilder>
          Visitable v = currentEnvir.get(id);
          if (v instanceof Machinery)
          {
-            return new IntegerConstantExpression(0);
+            expected("Cannot numberType a machinery");
          }
          if (v instanceof FloatConstantExpression)
          {
@@ -811,7 +686,14 @@ extends ASTVisitor<StringBuilder>
       {
          return e;
       }
-
+      if (e instanceof CallExpression)
+      {
+         return new FloatConstantExpression(0);
+      }
+      if (e instanceof GetExpression)
+      {
+         return new IntegerConstantExpression(0);
+      }
       if (e instanceof UnaryExpression)
       {
          return numberType(((UnaryExpression)e).getOperand());
@@ -880,6 +762,40 @@ extends ASTVisitor<StringBuilder>
       return "";
    }
 
+   private StringBuilder listToComma(List<String> l, String prefix)
+   {
+      StringBuilder buf = new StringBuilder();
+      Iterator<String> iter = l.iterator();
+      if (iter.hasNext())
+      {
+         String s = iter.next();
+         buf.append(String.format("%s %s", prefix, s));
+         while (iter.hasNext())
+         {
+            s = iter.next();
+            buf.append(String.format(", %s %s", prefix, s));
+         }
+      }
+      return buf;
+   }
+   private StringBuilder visitableListToComma(List<? extends Visitable> l, String prefix)
+   {
+      StringBuilder buf = new StringBuilder();
+      Iterator<? extends Visitable> iter = l.iterator();
+      if (iter.hasNext())
+      {
+         Visitable s = iter.next();
+         buf.append(String.format("%s %s", prefix, s.visit(this)));
+         while (iter.hasNext())
+         {
+            s = iter.next();
+            buf.append(String.format(", %s %s", prefix, s.visit(this)));
+         }
+      }
+      return buf;
+   }
+
+/*
    private Environment oldEnvir;
    private void makeNewEnvir()
    {
@@ -890,6 +806,14 @@ extends ASTVisitor<StringBuilder>
    private void restoreEnvir()
    {
       currentEnvir = oldEnvir;
+   }
+*/
+   private void uniqueID(String id)
+   {
+      if (currentEnvir.containsKey(id))
+      {
+         expected("Identifier name of " + id + " already taken");
+      }
    }
 
    private void expected(String s)

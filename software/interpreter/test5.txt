@@ -18,5 +18,5 @@ when start
       }
    }
    j = i
-   display j
+#   display j
 }

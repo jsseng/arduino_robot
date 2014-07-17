@@ -1,7 +1,7 @@
 package ast;
 import visitor.*;
 
-public class DigitalPin extends Machinery {
+public class DigitalPin extends Machinery implements Settable, Gettable {
    boolean _isOut;
    int _pins[];
 
@@ -33,21 +33,23 @@ public class DigitalPin extends Machinery {
       return _pins;
    }
 
+   public int getMachineNumber()
+   {
+      throw new UnsupportedOperationException();
+   }
+
    public <T> T visit(ASTVisitor<T> guest)
    {
       return guest.visit(this);
    }
 
-   public String toString()
+   public String toGetString()
    {
-      String digital = "digital(" + _pins[0] + ")";
-      if (_isOut)
-      {
-         return "write_" + digital;
-      }
-      else
-      {
-         return digital;
-      }
+      return "digital(" + _pins[0] + ")";
+   }
+
+   public String toSetString(CharSequence seq)
+   {
+      return "UNSUPPORTED TOSETSTRING";
    }
 }

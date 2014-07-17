@@ -1,7 +1,7 @@
 # Test for SET MOTOR
 
-define m1 = TL
-define m2 = TR
+define m1 = motor[0]
+define m2 = motor[1]
 
 set m1 50
 set m1 -70
