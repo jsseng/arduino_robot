@@ -284,9 +284,15 @@ extends ASTVisitor<StringBuilder>
    public StringBuilder visit(CallExpression t)
    {
       StringBuilder buf = new StringBuilder();
+      String functionID = t.getID();
+      Function f = (Function)currentEnvir.get(functionID);
       buf.append(t.getID());
       buf.append("(");
       List<Expression> args = t.getParams();
+      if (f.getParameters().size() != args.size())
+      {
+         expected(String.format("Parameter count do not match, expected %d parameters, found %d\n", f.getParameters().size(), args.size()));
+      }
       buf.append(visitableListToComma(args, ""));
       buf.append(")");
       return buf;

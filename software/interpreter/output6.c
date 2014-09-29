@@ -30,6 +30,7 @@ void repeatAlways(void)
 }
 int main(void) {
 start();
+printf("%f\n",(aFunction( 1) + yetAnotherFunction( -4,  6.6,  0)));
 while (1) {
 repeatAlways();
 }
