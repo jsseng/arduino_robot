@@ -36,9 +36,6 @@ extends ASTVisitor<StringBuilder>
 
       buf.append(callWhens(elems));
 
-      // buf.append(t.getBody().visit(this));
-      /* Must revisit visiting the program's body */
-
       buf.append("return 0;\n}");
 
       return buf;
@@ -104,6 +101,7 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(Function t)
    {
+      lineNum = t.getLineNum();
       String id = t.getID();
       uniqueID(id);
       currentEnvir.put(id, t);
@@ -486,8 +484,6 @@ extends ASTVisitor<StringBuilder>
          }
       }
 
-      /* Process Function prototypes */
-
       /* Process Function Definitions */
       for (Function func : funcs)
       {
@@ -801,19 +797,6 @@ extends ASTVisitor<StringBuilder>
       return buf;
    }
 
-/*
-   private Environment oldEnvir;
-   private void makeNewEnvir()
-   {
-      oldEnvir = currentEnvir;
-      currentEnvir = new Environment(currentEnvir);
-   }
-      
-   private void restoreEnvir()
-   {
-      currentEnvir = oldEnvir;
-   }
-*/
    private void uniqueID(String id)
    {
       if (currentEnvir.containsKey(id))

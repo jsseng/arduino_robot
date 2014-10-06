@@ -57,6 +57,7 @@ public class Parser
          {
             nextToken();
          }
+         match(TokenCode.TK_VARIABLE);
          params.add(matchIdentifier());
       }
       match(TokenCode.TK_RPAREN);
@@ -64,6 +65,7 @@ public class Parser
       Statement[] body = parseBlockStatement();
       Function func = new Function(id, params, body);
       func.setLineNum(lineNum);
+
 
       return func;
    }
@@ -778,6 +780,14 @@ public class Parser
          }
 
       }
+      else if (_currentToken.equals(TokenCode.TK_NUM) || _currentToken.equals(TokenCode.TK_FLOAT))
+      {
+         if (_currentToken.toString().charAt(0) == '-')
+         {
+            Expression e = parseMultiplicativeExpression();
+            return parseRptAddExpression(new AddExpression(lft, e));
+         }
+      }
       else {
          return lft;
       }
@@ -967,6 +977,11 @@ public class Parser
             {
                e = new IdentifierExpression(id);
             }
+            break;
+         case TK_FLOAT:
+            e = new FloatConstantExpression(
+                  Float.parseFloat(_currentToken.toString()));
+            nextToken();
             break;
          case TK_NUM:
             e = new IntegerConstantExpression(
