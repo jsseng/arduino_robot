@@ -57,7 +57,7 @@ public enum TokenCode
    TK_ASSIGN("="),
    TK_LT("<"),
    TK_GT(">"),
-   TK_NE("not ="),
+   TK_NE("!="),
    TK_LE("<="),
    TK_GE(">="),
    TK_PLUS("+"),
