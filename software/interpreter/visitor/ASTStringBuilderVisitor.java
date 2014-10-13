@@ -19,6 +19,9 @@ extends ASTVisitor<StringBuilder>
    public StringBuilder visit(Program t)
    {
       currentEnvir = new Environment();
+      /* Initialize with 2 pieces of machinery */
+      currentEnvir.put("button", new Button());
+      currentEnvir.put("LED", new LED());
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n\n");
@@ -534,7 +537,7 @@ extends ASTVisitor<StringBuilder>
             expected("Machinery can only accept numerical values");
          }
          buf.append(s.toSetString(t.getValue().visit(this)));
-         buf.append(";\n");
+         buf.append(");\n");
       }
       else
       {

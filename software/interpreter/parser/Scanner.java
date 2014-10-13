@@ -210,14 +210,11 @@ public class Scanner
             str = String.valueOf((char)_in.read());
             break;
          }
-         /* Need to figure out how to multisymbol for assignment
-         and equality
          case '=':
          {
             str = multiSymbol(_in.read(), '=', true); 
             break;
          }
-         */
          case '>':
          {
             str = multiSymbol(_in.read(), '=', true); 

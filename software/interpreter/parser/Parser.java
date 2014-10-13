@@ -401,8 +401,20 @@ public class Parser
 
     private Expression parseGetStatement() throws ScannerException {
 				match(TokenCode.TK_GET);
-				String id = matchIdentifier();
-				return new GetExpression(id);
+				//String id = matchIdentifier();
+            if (_currentToken.code() == TokenCode.TK_ID ||
+                _currentToken.code() == TokenCode.TK_BUTTON)
+            {
+               String id = _currentToken.toString();
+               nextToken();
+               return new GetExpression(id);
+            }
+            else
+            {
+               expected("an identifier or button");
+               return null;
+            }
+
     }
 
    private Statement parseVariableDeclaration() throws ScannerException
@@ -510,9 +522,7 @@ public class Parser
             case TK_GET:
                if (readyInput)
                {
-                  match(TokenCode.TK_GET);
-                  elements.add(new GetExpression(_currentToken.toString()));
-                  nextToken();
+                  elements.add(parseGetStatement());
                   readyInput = false;
                }
                else
