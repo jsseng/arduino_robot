@@ -11,7 +11,7 @@ public class LED extends Machinery implements Settable
 
    public String toSetString(CharSequence seq)
    {
-      return String.format("led(%s", seq);
+      return String.format("led1(%s", seq);
    }
 
    public int getMachineNumber()

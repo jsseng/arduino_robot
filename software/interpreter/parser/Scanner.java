@@ -5,7 +5,7 @@ import java.io.*;
 public class Scanner
 {
    Token _unget = null;
-   int lineNumber;
+   int lineNumber = 1;
 
    public static void main(String [] args)
       throws Exception
@@ -24,7 +24,6 @@ public class Scanner
       do
       {
          tk = scanner.nextToken();
-         System.out.println(tk);
       } while (!tk.equals(TokenCode.TK_EOF));
    }
 
@@ -76,6 +75,7 @@ public class Scanner
       }
 
       int c = _in.lookahead();
+
 
       if (Character.isLetter((char)c))
       {
@@ -201,13 +201,18 @@ public class Scanner
          case '/':
          case ';':
          case ',':
-         case '=':
+         //case '=':
          case '&':
          case '|':
          case '[':
          case ']':
          {
             str = String.valueOf((char)_in.read());
+            break;
+         }
+         case '=':
+         {
+            str = multiSymbol(_in.read(), '=', true); 
             break;
          }
          case '>':
@@ -231,7 +236,14 @@ public class Scanner
             if (Character.isDigit(_in.lookahead()))
             {
                Token t = buildNumber();
-               return new Token(TokenCode.TK_NUM, "-" + t.toString(), lineNumber);
+               if (t.code().equals(TokenCode.TK_NUM))
+               {
+                  return new Token(TokenCode.TK_NUM, "-" + t.toString(), lineNumber);
+               }
+               else
+               {  
+                  return new Token(TokenCode.TK_FLOAT, "-" + t.toString(), lineNumber);
+               }
             }
             str = multiSymbol(character, '>', true); 
             break;

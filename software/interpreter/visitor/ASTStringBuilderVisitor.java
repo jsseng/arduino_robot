@@ -19,6 +19,9 @@ extends ASTVisitor<StringBuilder>
    public StringBuilder visit(Program t)
    {
       currentEnvir = new Environment();
+      /* Initialize with 2 pieces of machinery */
+      currentEnvir.put("button", new Button());
+      currentEnvir.put("LED", new LED());
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n\n");
@@ -35,9 +38,6 @@ extends ASTVisitor<StringBuilder>
       buf.append(visitNonRepeats(elems));
 
       buf.append(callWhens(elems));
-
-      // buf.append(t.getBody().visit(this));
-      /* Must revisit visiting the program's body */
 
       buf.append("return 0;\n}");
 
@@ -104,6 +104,7 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(Function t)
    {
+      lineNum = t.getLineNum();
       String id = t.getID();
       uniqueID(id);
       currentEnvir.put(id, t);
@@ -284,9 +285,15 @@ extends ASTVisitor<StringBuilder>
    public StringBuilder visit(CallExpression t)
    {
       StringBuilder buf = new StringBuilder();
+      String functionID = t.getID();
+      Function f = (Function)currentEnvir.get(functionID);
       buf.append(t.getID());
       buf.append("(");
       List<Expression> args = t.getParams();
+      if (f.getParameters().size() != args.size())
+      {
+         expected(String.format("Parameter count do not match, expected %d parameters, found %d\n", f.getParameters().size(), args.size()));
+      }
       buf.append(visitableListToComma(args, ""));
       buf.append(")");
       return buf;
@@ -480,8 +487,6 @@ extends ASTVisitor<StringBuilder>
          }
       }
 
-      /* Process Function prototypes */
-
       /* Process Function Definitions */
       for (Function func : funcs)
       {
@@ -532,7 +537,7 @@ extends ASTVisitor<StringBuilder>
             expected("Machinery can only accept numerical values");
          }
          buf.append(s.toSetString(t.getValue().visit(this)));
-         buf.append(";\n");
+         buf.append(");\n");
       }
       else
       {
@@ -795,19 +800,6 @@ extends ASTVisitor<StringBuilder>
       return buf;
    }
 
-/*
-   private Environment oldEnvir;
-   private void makeNewEnvir()
-   {
-      oldEnvir = currentEnvir;
-      currentEnvir = new Environment(currentEnvir);
-   }
-      
-   private void restoreEnvir()
-   {
-      currentEnvir = oldEnvir;
-   }
-*/
    private void uniqueID(String id)
    {
       if (currentEnvir.containsKey(id))

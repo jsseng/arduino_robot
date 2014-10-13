@@ -11,6 +11,10 @@ public abstract class ASTVisitor<T>
    {
       return visit((ASTRoot)t);
    }
+   public T visit(NegativeExpression t)
+   {
+      return visit((ASTRoot)t);
+   }
    public T visit(CallExpression t)
    {
       return visit((ASTRoot)t);

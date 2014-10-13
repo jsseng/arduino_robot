@@ -21,3 +21,5 @@ func yetAnotherFunction(anId, anotherID, yetAnotherID)
 {
    return 1
 }
+
+display (aFunction(1) + yetAnotherFunction(-4, 6.6, 0))

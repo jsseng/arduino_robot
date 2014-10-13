@@ -20,7 +20,6 @@ public enum TokenCode
    TK_LED("led"),
    TK_MOTOR("motor"),
    TK_START("start"),
-   // To do: Change Read to Get
    TK_GET("get"),
    TK_SET("set"),
    TK_FUNC("func"),
@@ -55,16 +54,10 @@ public enum TokenCode
    TK_AND("and"),
    TK_OR("or"),
    TK_EQ("equals"),
-   /*
-   TK_TL("TL"),
-   TK_TR("TR"),
-   TK_BL("BL"),
-   TK_BR("BR"),
-   */
    TK_ASSIGN("="),
    TK_LT("<"),
    TK_GT(">"),
-   TK_NE("not ="),
+   TK_NE("!="),
    TK_LE("<="),
    TK_GE(">="),
    TK_PLUS("+"),
