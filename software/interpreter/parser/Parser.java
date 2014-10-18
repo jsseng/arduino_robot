@@ -303,6 +303,9 @@ public class Parser
          case TK_SLEEP:
             s = parseSleep();
             break;
+         case TK_STOP:
+	    s = parseStop();
+	    break;
          case TK_IF:
             s = parseIfStatement();
             break;
@@ -346,6 +349,12 @@ public class Parser
       return s;
    }
     
+    private Statement parseStop() throws ScannerException {
+	match(TokenCode.TK_STOP);
+	return new StopStatement();
+    }
+
+
    private Statement parseReturnStatement() throws ScannerException {
       match(TokenCode.TK_RETURN);
       Expression ret = parseExpression();
