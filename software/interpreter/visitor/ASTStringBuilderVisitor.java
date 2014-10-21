@@ -16,8 +16,9 @@ extends ASTVisitor<StringBuilder>
    private int whenCount = 0;
    private int lineNum = 0;
    private Environment currentEnvir;
-   public StringBuilder visit(Program t)
-   {
+
+
+   public StringBuilder visit(Program t) {
       currentEnvir = new Environment();
       /* Initialize with 2 pieces of machinery */
       currentEnvir.put("button", new Button());
@@ -243,11 +244,18 @@ extends ASTVisitor<StringBuilder>
       str.append("/* End right turn */\n");
       return str;
    }
+
    public StringBuilder visit(SleepStatement t)
    {
       lineNum = t.getLineNum();
       return new StringBuilder("delay_milliseconds(1000 * (" + t.getDuration().visit(this) + "));\n");
    }
+
+   public StringBuilder visit(StopStatement t) {
+       lineNum = t.getLineNum();
+       return new StringBuilder("exit();\n");
+   }
+
    public StringBuilder visit(RepeatStatement t)
    {
       lineNum = t.getLineNum();

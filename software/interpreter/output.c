@@ -12,10 +12,11 @@ void repeatAlways(void)
 }
 int main(void) {
 start();
-motor(m1, 50);
-motor(m1, -70);
-motor(m2, 0);
-motor(m2, -22);
+motor(m1, 50));
+motor(m1, -70));
+motor(m2, 0));
+motor(m2, -22));
+exit();
 while (1) {
 repeatAlways();
 }

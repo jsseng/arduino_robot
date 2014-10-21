@@ -29,6 +29,7 @@ public enum TokenCode
    TK_CHANGE("change"),
    TK_MODE("mode"),
    TK_IN("in"),
+   TK_STOP("stop"),
    TK_OUT("out"),
    TK_CLEAR("clear"),
    TK_SCREEN("screen"),
@@ -57,7 +58,7 @@ public enum TokenCode
    TK_ASSIGN("="),
    TK_LT("<"),
    TK_GT(">"),
-   TK_NE("!="),
+   TK_NE("not="),
    TK_LE("<="),
    TK_GE(">="),
    TK_PLUS("+"),
@@ -70,6 +71,7 @@ public enum TokenCode
    TK_STRING("-- string --"),
    TK_EOF("eof"),
    TK_NONE("<*none*>");
+
 
    TokenCode(String s)
    {

@@ -27,4 +27,7 @@ public abstract class StatementVisitor<T>
    {
       return visit((Statement)t);
    }
+   public T visit(StopStatement t) {
+       return visit((Statement) t);
+   }
 }
