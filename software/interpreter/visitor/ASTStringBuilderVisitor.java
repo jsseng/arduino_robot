@@ -25,7 +25,8 @@ extends ASTVisitor<StringBuilder>
       currentEnvir.put("LED", new LED());
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
-      buf.append("#include <stdio.h>\n\n");
+      buf.append("#include <stdio.h>\n");
+      buf.append("#include <stdlib.h>\n\n");
       buf.append(visit(t.getDeclarations()));
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
@@ -253,7 +254,7 @@ extends ASTVisitor<StringBuilder>
 
    public StringBuilder visit(StopStatement t) {
        lineNum = t.getLineNum();
-       return new StringBuilder("exit();\n");
+       return new StringBuilder("exit(0);\n");
    }
 
    public StringBuilder visit(RepeatStatement t)
@@ -545,7 +546,7 @@ extends ASTVisitor<StringBuilder>
             expected("Machinery can only accept numerical values");
          }
          buf.append(s.toSetString(t.getValue().visit(this)));
-         buf.append(");\n");
+         buf.append(";\n");
       }
       else
       {

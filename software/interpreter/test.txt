@@ -3,10 +3,18 @@
 define m1 = motor[0]
 define m2 = motor[1]
 
+variable a = 1
+variable b = 1
+
 set m1 50
 set m1 -70
 
 set m2 0
 set m2 -22
+
+if a not= b
+{
+   stop
+}
 
 stop
