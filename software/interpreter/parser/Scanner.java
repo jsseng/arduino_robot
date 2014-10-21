@@ -264,6 +264,15 @@ public class Scanner
 
    private Token checkForKeyword(String id)
    {
+      if (id.equals("not"))
+      {
+         if (_in.lookahead() == '=')
+         {
+            _in.read();
+            TokenCode token = TokenCode.TK_NE;
+            return new Token(token, lineNumber);
+         }
+      }
       TokenCode tk = TokenCode.lookupKeyword(id);
       if (tk != TokenCode.TK_NONE)
       {
