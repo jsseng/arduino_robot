@@ -1,0 +1,63 @@
+# This is a big test
+
+define tL = motor[0]
+define tR = motor[1]
+define bL = motor[2]
+define bR = motor[3]
+define thermometer = analogPinIn[0]
+
+func turnLeft()
+{
+   set tL 30
+   set tR 60
+   set bL 30
+   set bR 60
+   return 0
+}
+
+func turnRight()
+{
+   set tL 60
+   set tR 30
+   set bL 60
+   set bR 30
+   return 0
+}
+
+func halt()
+{
+   set tL 0
+   set tR 0
+   set bL 0
+   set bR 0
+   return 0
+}
+
+func go()
+{
+   set tL 70
+   set tR 70
+   set bL 70
+   set bR 70
+   return 0
+}
+
+when get thermometer > 5
+{
+   halt()
+}
+
+when thermometer changes 
+{
+   display "gooooooooo"
+   stop
+}
+
+turnLeft()
+sleep 0.5
+go()
+
+repeat 
+{
+   display get thermometer
+}

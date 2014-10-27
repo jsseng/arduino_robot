@@ -2,7 +2,12 @@
 
 unsigned char analog(int pin)
 {
-   return 0;
+   static int pins[15] = {0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0,
+                          0, 0, 0, 0, 0};
+   static int randomCount = 0;
+   pins[pin] = ((pins[pin] + ++randomCount) % 5) * 5;
+   return pins[pin];
 }
 
 unsigned char digitalPinsOut(int pin, char value)

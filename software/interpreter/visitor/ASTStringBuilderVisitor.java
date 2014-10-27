@@ -26,6 +26,7 @@ extends ASTVisitor<StringBuilder>
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n\n");
+      buf.append("#include <stdlib.h>\n\n");
       buf.append(visit(t.getDeclarations()));
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
@@ -54,7 +55,9 @@ extends ASTVisitor<StringBuilder>
       buf.append("#define " + id + " " + m.getMachineNumber() + "\n");
       if (m instanceof Gettable)
       {
-         buf.append(String.format("static int chng_%s = %s;\n", id, visit(new GetExpression(id))));
+         //buf.append(String.format("static int chng_%s = %s;\n", id, visit(new GetExpression(id))));
+         buf.append(String.format("static int chng_%s = 0;\n", id));
+         buf.append(String.format("int chng_temp = 0;\n", id));
       }
       return buf;
    }
@@ -322,7 +325,7 @@ extends ASTVisitor<StringBuilder>
       StringBuilder buf = new StringBuilder();
       String id = t.getId();
 
-      buf.append(String.format("chng_%s != (chng_%s = %s)", id, id, visit(new GetExpression(id))));
+      buf.append(String.format("chng_temp = chng_%s, chng_%s =  %s, chng_temp != chng_%s", id, id, visit(new GetExpression(id)), id));
       
       
       return buf;
