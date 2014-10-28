@@ -201,7 +201,7 @@ public class Scanner
          case '/':
          case ';':
          case ',':
-         //case '=':
+         case '=':
          case '&':
          case '|':
          case '[':
@@ -210,11 +210,13 @@ public class Scanner
             str = String.valueOf((char)_in.read());
             break;
          }
+         /*
          case '=':
          {
             str = multiSymbol(_in.read(), '=', true); 
             break;
          }
+         */
          case '>':
          {
             str = multiSymbol(_in.read(), '=', true); 
@@ -264,16 +266,15 @@ public class Scanner
 
    private Token checkForKeyword(String id)
    {
-      if (id.equals("not"))
-      {
-         if (_in.lookahead() == '=')
-         {
-            _in.read();
-            TokenCode token = TokenCode.TK_NE;
-            return new Token(token, lineNumber);
-         }
-      }
       TokenCode tk = TokenCode.lookupKeyword(id);
+      if (tk == TokenCode.TK_EQ2)
+      {
+         return new Token(TokenCode.TK_EQ, id, lineNumber);
+      }
+      if (tk == TokenCode.TK_NE2)
+      {
+         return new Token(TokenCode.TK_NE, id, lineNumber);
+      }
       if (tk != TokenCode.TK_NONE)
       {
          return new Token(tk, lineNumber);
@@ -284,4 +285,3 @@ public class Scanner
       }
    }
 }
-
