@@ -736,6 +736,7 @@ public class Parser
 
          switch(token) {
             case TK_EQ:
+            case TK_ASSIGN:
                return parseRptEqualityExpression(new EqualExpression(lft, e));
             case TK_NE:
                return parseRptEqualityExpression(new NotEqualExpression(lft, e));
@@ -1039,7 +1040,7 @@ public class Parser
 
    private static boolean isEqOp(Token tk)
    {
-      return tk.equals(TokenCode.TK_EQ) || tk.equals(TokenCode.TK_NE);
+      return tk.equals(TokenCode.TK_EQ) || tk.equals(TokenCode.TK_NE) || tk.equals(TokenCode.TK_ASSIGN);
    }
 
    private static boolean isRelOp(Token tk)

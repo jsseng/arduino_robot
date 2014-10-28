@@ -12,10 +12,11 @@ void repeatAlways(void)
 }
 int main(void) {
 start();
-set_servo(s1, 11);
-set_servo(s1, -22);
-set_servo(s2, 33);
-set_servo(s2, -44);
+set_servo(s1, 11));
+set_servo(s1, -22));
+set_servo(s2, 33));
+set_servo(s2, -44));
+exit(0);
 while (1) {
 repeatAlways();
 }

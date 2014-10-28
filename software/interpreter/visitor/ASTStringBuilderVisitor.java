@@ -28,6 +28,7 @@ extends ASTVisitor<StringBuilder>
       buf.append("#include <stdio.h>\n\n");
       buf.append("#include <stdlib.h>\n\n");
       buf.append(visit(t.getDeclarations()));
+      buf.append(String.format("int chng_temp = 0;\n"));
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
@@ -57,7 +58,6 @@ extends ASTVisitor<StringBuilder>
       {
          //buf.append(String.format("static int chng_%s = %s;\n", id, visit(new GetExpression(id))));
          buf.append(String.format("static int chng_%s = 0;\n", id));
-         buf.append(String.format("int chng_temp = 0;\n", id));
       }
       return buf;
    }

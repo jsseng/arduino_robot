@@ -4,7 +4,9 @@ define tL = motor[0]
 define tR = motor[1]
 define bL = motor[2]
 define bR = motor[3]
+
 define thermometer = analogPinIn[0]
+define ir = analogPinIn[1]
 
 func turnLeft()
 {
@@ -47,10 +49,14 @@ when get thermometer > 5
    halt()
 }
 
+when get ir = 4
+{
+   display "ir is 1"
+}
+
 when thermometer changes 
 {
    display "gooooooooo"
-   stop
 }
 
 turnLeft()
