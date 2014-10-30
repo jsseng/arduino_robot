@@ -863,9 +863,7 @@ public class Parser
    {
       if (_currentToken.code() == TokenCode.TK_GET)
       {
-         match(TokenCode.TK_GET);
-         String s = matchIdentifier();
-         return new GetExpression(s);
+         return parseGetStatement();
       }
       else
       {
