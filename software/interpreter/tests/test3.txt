@@ -1,0 +1,35 @@
+define front_right = motor[1]
+define front_left = motor[2]
+define back_left = motor[3]
+define back_right = motor[4]
+
+when start {
+     display "Hello! May the force be with you \n and may the odds be ever in your favor!"
+     startMoving()
+}
+
+func startMoving() {
+     repeat 4 {
+         move forward x > 4
+	 move forward 3
+	 turn left
+	 move forward 5
+	 turn left 
+	 move forward 3
+	 turn left
+	 move forward 5
+	 turn right
+	 move backward 4
+	 turn left 
+	 move backward 5
+     }     
+
+     display "I'm dizzy!"
+}
+
+
+when get back_right > 0 {
+     stop
+}
+
+stop

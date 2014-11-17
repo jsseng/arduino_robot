@@ -1,0 +1,36 @@
+#testing when statements
+
+define thermometer = analogPinIn[0]
+define x = 1
+
+when start {
+   display "Hello! Machine is starting up"
+}
+
+when get thermometer > 70 {
+     stop
+}
+
+when thermometer changes {
+    x = x + 1
+    display "Reading has changed, new reading is " + get thermometer
+}
+
+repeat 5 times {
+       when 1 {
+       	    display "TRUE!"
+       }
+}
+
+when x eq 5 {
+  display get thermometer
+}
+
+repeat {
+   display "Thermometer reading is: " + get thermometer
+   set leftServo 15
+   set rightServo 75
+
+   display "Temperature in Celcius is: " + ((get thermometer - 32) * 5 / 9)
+
+}
