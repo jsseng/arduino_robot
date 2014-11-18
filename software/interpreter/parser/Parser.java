@@ -789,7 +789,9 @@ public class Parser
       TokenCode token = _currentToken.code();
       if(isAddOp(_currentToken)) {
          nextToken();
-
+	 //here check if next token is another addOp, must be equal to prev token! (i.e. '++', '--')
+	 //CANNOT BE '-+' or '+-'
+	 //or could be "+=" so check for '=' or "-="
          Expression e = parseMultiplicativeExpression();
          switch(token) {
             case TK_PLUS:
@@ -825,8 +827,9 @@ public class Parser
 
       if (isMultOp(_currentToken)) {
          nextToken();
-         Expression e = parseUnaryExpression();
-
+         //could be '*=' or '/=' so check for '=' before parsing expression
+	 Expression e = parseUnaryExpression();
+	 
          switch(token) {
             case TK_MULT:
                return parseRptMultExpression(new MultiplyExpression(lft, e));
@@ -838,6 +841,8 @@ public class Parser
       else {
          return lft;
       }
+
+      //is this line necessary? It will always return left if it is not a multOp...
       return lft;
    }
 
