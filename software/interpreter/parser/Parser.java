@@ -430,9 +430,24 @@ public class Parser
    {
       match(TokenCode.TK_VARIABLE);
       String id = matchIdentifier();
+      int size = -1;
+      if (_currentToken.code() == TokenCode.TK_LBRACKET)
+      {
+         match(TokenCode.TK_LBRACKET);
+         size = Integer.parseInt(_currentToken.toString());
+         nextToken();
+         match(TokenCode.TK_RBRACKET);
+      }
       match(TokenCode.TK_ASSIGN);
       Expression assignment = parseExpression();
-      return new VariableDeclarationStatement(id, assignment);
+      if (size > 0)
+      {
+         return new VariableDeclarationStatement(id, assignment, size);
+      }
+      else
+      {
+         return new VariableDeclarationStatement(id, assignment);
+      }
    }
 
    private TokenCode matchDirection() throws ScannerException
@@ -900,18 +915,29 @@ public class Parser
          switch(_currentToken.code()) {
             case TK_STRING:
                e = new StringExpression(_currentToken.toString());
+               nextToken();
                break;
             case TK_NUM:
                e = new IntegerConstantExpression(Integer.parseInt(_currentToken.toString()));
+               nextToken();
                break;
             case TK_FLOAT:
                e = new FloatConstantExpression(Float.parseFloat(_currentToken.toString()));
+               nextToken();
                break;
             case TK_ID:
-               e = new IdentifierExpression(_currentToken.toString());
+               String id = _currentToken.toString();
+               e = new IdentifierExpression(id);
+               nextToken();
+               if (_currentToken.code() == TokenCode.TK_LBRACKET)
+               {
+                  match(TokenCode.TK_LBRACKET);
+                  Expression index = parseExpression();
+                  match(TokenCode.TK_RBRACKET);
+                  e = new IdentifierExpression(id, index);
+               }
                break;
          }
-         nextToken();
       }
       return e;
    }

@@ -27,4 +27,9 @@ public class ASTCheckerVisitor
       }
       return false;
    }
+   
+   private static int hasReturnHelper(Statement[] body)
+   {
+      return 0;
+   }
 }

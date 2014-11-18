@@ -16,6 +16,12 @@ define gX = gyroscope[X]
 define gY = gyroscope[Y]
 define gZ = gyroscope[Z]
 
+variable integer = 0
+variable float = 0.0
+
+variable iArr[10] = 5
+variable fArr[99] = 4.4
+
 func turnLeft()
 {
    set tL 30
@@ -82,7 +88,7 @@ sleep 4
 
 repeat 4 times
 {
-   sleep 2.5 * 6
+   sleep iArr[5] * 6
 }
 
 go()

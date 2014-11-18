@@ -53,6 +53,7 @@ extends ASTVisitor<StringBuilder>
       Machinery m = t.getMachinery();
       currentEnvir.put(id, m);
       StringBuilder buf = new StringBuilder();
+      id = id;
       buf.append("#define " + id + " " + m.getMachineNumber() + "\n");
       if (m instanceof Gettable)
       {
@@ -143,7 +144,18 @@ extends ASTVisitor<StringBuilder>
    {
       if (currentEnvir.containsKey(t.getIdentifier()))
       {
-         return new StringBuilder(t.getIdentifier());
+         if (t.isArrayAccess() != currentEnvir.isArray(t.getIdentifier()))
+         {
+            expected("Improper access. Either accessing as array of non-array variable or accessing array variable as non-array\n");
+         }
+         if (!t.isArrayAccess())
+         {
+            return new StringBuilder(t.getIdentifier());
+         }
+         else
+         {
+            return new StringBuilder(String.format("%s[%s]", t.getIdentifier(), t.getArrayIndex().visit(this)));
+         }
       }
       else
       {
@@ -180,20 +192,35 @@ extends ASTVisitor<StringBuilder>
       uniqueID(id);
       if (numberType(e) instanceof FloatConstantExpression)
       {
-         currentEnvir.put(id, new FloatConstantExpression(0));
+         currentEnvir.put(id, new FloatConstantExpression(0), t.getIsArray());
          varType = "float ";
       }
       if (numberType(e) instanceof IntegerConstantExpression)
       {
-         currentEnvir.put(id, new IntegerConstantExpression(0));
+         currentEnvir.put(id, new IntegerConstantExpression(0), t.getIsArray());
          varType = "int ";
       }
       if (numberType(e) instanceof StringExpression)
       {
-         currentEnvir.put(id, new StringExpression(""));
+         currentEnvir.put(id, new StringExpression(""), t.getIsArray());
          varType = "char *";
       }
-      str.append(String.format("%s%s = %s;\n", varType, id, t.getExpression().visit(this).toString()));
+      if (t.getIsArray())
+      {
+         str.append(String.format("%s%s[%d] = {", varType, id, t.getArraySize()));
+         List<String> init = new ArrayList<String>();
+         String arg = t.getExpression().visit(this).toString();
+         for (int i = 0; i < t.getArraySize(); i++)
+         {
+            init.add(arg);
+         }
+         str.append(listToComma(init, ""));
+         str.append("};\n");
+      }
+      else
+      {
+         str.append(String.format("%s%s = %s;\n", varType, id, t.getExpression().visit(this).toString()));
+      }
       return str;
    }
    public StringBuilder visit(ForwardStatement t)
