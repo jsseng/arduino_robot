@@ -3,7 +3,7 @@ package parser;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumSet;
-
+//do we want to add support for '%'??
 public enum TokenCode
 {
    TK_DISPLAY("display"),
@@ -65,6 +65,14 @@ public enum TokenCode
    TK_GE(">="),
    TK_PLUS("+"),
    TK_MINUS("-"),
+   TK_PLUSPLUS("++"),
+   TK_MINUSMINUS("--"),
+   TK_PLUSEQ("+="),
+   TK_MINUSEQ("-="),
+   TK_MULTEQ("*="),
+   TK_DIVIDEQ("/="),
+   TK_MODEQ("%="),
+   TK_MOD("%"),
    TK_MULT("*"),
    TK_DIVIDE("/"),
    TK_NUM("-- number --"),
