@@ -7,20 +7,20 @@ public class Environment
 {
    private Environment next;
    private Map<String, Visitable> idToType;
-   private Map<String, Boolean> _isArray;
+   private Map<String, ArrayType> _isArray;
 
    public Environment()
    {
       next = null;
       idToType = new HashMap<String, Visitable>();
-      _isArray = new HashMap<String, Boolean>();
+      _isArray = new HashMap<String, ArrayType>();
    }
 
    public Environment(Environment next)
    {
       this.next = next;
       idToType = new HashMap<String, Visitable>();
-      _isArray = new HashMap<String, Boolean>();
+      _isArray = new HashMap<String, ArrayType>();
    }
 
    public boolean containsKey(String id)
@@ -51,7 +51,7 @@ public class Environment
    {
       if (idToType.containsKey(id))
       {
-         return _isArray.get(id);
+         return _isArray.get(id).isArray();
       }
       else if (next != null)
       {
@@ -61,15 +61,28 @@ public class Environment
          return false;
    }
 
+   public int getArraySize(String id)
+   {
+      if (idToType.containsKey(id))
+      {
+         return _isArray.get(id).getSize();
+      }
+      else if (next != null)
+      {
+         return next.getArraySize(id);
+      }
+      else
+         return 0;
+   }
    public void put(String id, Visitable v)
    {
       idToType.put(id, v);
-      _isArray.put(id, false);
+      _isArray.put(id, new ArrayType(false, 0));
    }
 
-   public void put(String id, Visitable v, boolean v_isArray)
+   public void put(String id, Visitable v, boolean v_isArray, int v_size)
    {
       idToType.put(id, v);
-      _isArray.put(id, v_isArray);
+      _isArray.put(id, new ArrayType(v_isArray, v_size));
    }
 }
