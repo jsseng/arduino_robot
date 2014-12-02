@@ -3,7 +3,7 @@ package ast;
 import visitor.ASTVisitor;
 import visitor.StatementVisitor;
 
-public ModEqStatement extends Statement {
+public class ModEqStatement extends Statement {
     
     private Expression _lft;
     private Expression _rht;

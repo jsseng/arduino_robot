@@ -165,24 +165,28 @@ public class Scanner
       return new Token(TokenCode.TK_NUM, buf.toString(), lineNumber);
    }
 
-   private String multiSymbol(int c, int need, boolean optional) 
+   private String multiSymbol(int c, int[] need, boolean optional) 
       throws InvalidSymbolException
    {
       StringBuilder s = new StringBuilder();
       s.append((char)c);
-      if (_in.lookahead() == need)
-      {
-         _in.read();
-         s.append((char)need);
-         return s.toString();
-      }
-      else if (optional)
-      {
-         return s.toString();
-      }
-      else
-      {
-         throw new InvalidSymbolException();
+      int lookahead = _in.lookahead();
+
+      for (int i = 0; i < need.length; i++) {
+	  if (lookahead == need[i])
+	  {
+	      _in.read();
+	      s.append((char)need[i]);
+	      return s.toString();
+	  }
+	  else if (optional)
+	  {
+	      return s.toString();
+	  }
+	  else
+	  {
+	      throw new InvalidSymbolException();
+	  }
       }
    }
 
@@ -196,9 +200,6 @@ public class Scanner
          case ')':
          case '{':
          case '}':
-         case '+':
-         case '*':
-         case '/':
          case ';':
          case ',':
          case '=':
@@ -210,30 +211,30 @@ public class Scanner
             str = String.valueOf((char)_in.read());
             break;
          }
-         /*
-         case '=':
+         /*case '=':
          {
             str = multiSymbol(_in.read(), '=', true); 
             break;
-         }
-         */
+         }*/
+         case '+':
+	     str = multiSymbol(_in.read(), new int[]{'+','='}, true);
+	     break;
+         case '*':
+	     str = multiSymbol(_in.read(), new int[]{'='}, true);
+	     break;
+         case '/':
+	     str = multiSymbol(_in.read(), new int[]{'='}, true);
+	     break;
          case '>':
-         {
-            str = multiSymbol(_in.read(), '=', true); 
+	     str = multiSymbol(_in.read(), new int[]{'='}, true); 
             break;
-         }
          case '<':
-         {
-            str = multiSymbol(_in.read(), '=', true); 
+	     str = multiSymbol(_in.read(), new int[]{'='}, true); 
             break;
-         }
          case '!':
-         {
-            str = multiSymbol(_in.read(), '=', true); 
+	     str = multiSymbol(_in.read(), new int[]{'='}, true); 
             break;
-         }
          case '-':
-         {
             int character = _in.read();
             if (Character.isDigit(_in.lookahead()))
             {
@@ -247,19 +248,15 @@ public class Scanner
                   return new Token(TokenCode.TK_FLOAT, "-" + t.toString(), lineNumber);
                }
             }
-            str = multiSymbol(character, '>', true); 
+
+	    str = multiSymbol(character, new int[]{'-','='}, true);
             break;
-         }
          case ':':
-         {
-            str = multiSymbol(_in.read(), '=', false); 
+	     str = multiSymbol(_in.read(), new int[]{'='}, false); 
             break;
-         }
          // unrecognized character
          default:
-         {
             throw new InvalidCharacterException();
-         }
       }
       return new Token(TokenCode.lookupSymbol(str), lineNumber);
    }

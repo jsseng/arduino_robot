@@ -804,11 +804,16 @@ public class Parser
       TokenCode token = _currentToken.code();
       if(isAddOp(_currentToken)) {
          nextToken();
+	 
 	 //here check if next token is another addOp, must be equal to prev token! (i.e. '++', '--')
 	 //CANNOT BE '-+' or '+-'
 	 //or could be "+=" so check for '=' or "-="
-         Expression e = parseMultiplicativeExpression();
+	 Expression e = parseMultiplicativeExpression();
          switch(token) {
+	    case TK_PLUSEQ:
+	       return parseRptAddExpression(new PlusEqStatement(lft, e));
+	    case TK_MINUSEQ:
+	       return parseRptAddExpression(new MinusEqStatement(lft, e));
             case TK_PLUS:
                return parseRptAddExpression(new AddExpression(lft, e));
             case TK_MINUS:
@@ -846,7 +851,11 @@ public class Parser
 	 Expression e = parseUnaryExpression();
 	 
          switch(token) {
-            case TK_MULT:
+	    case TK_DIVEQ:
+	       return parseRptMultExpression(new DivEqStatement(lft, e));
+	    case TK_MULTEQ:
+	       return parseRptMultExpression(new MultEqStatement(lft, e));
+	    case TK_MULT:
                return parseRptMultExpression(new MultiplyExpression(lft, e));
             case TK_DIVIDE:
                return parseRptMultExpression(new DivideExpression(lft, e));
@@ -864,8 +873,18 @@ public class Parser
    private Expression parseUnaryExpression() throws ScannerException
    {
       if (isUnaryOp(_currentToken)) {
-         match(TokenCode.TK_NOT);
-         return new NotExpression(parseLeftHandSideExp());
+	  
+	  switch(_currentToken.code()) {
+	  case TK_NOT:
+	      nextToken();
+	      return new NotExpression(parseLeftHandSideExp());
+	  case TK_PLUSPLUS:
+	      nextToken();
+	      return new PlusPlusExpression(parseLeftHandSideExp());
+	  case TK_MINUSMINUS:
+	      nextToken();
+	      return new MinusMinusExpression(parseLeftHandSideExp());
+	  }
       }
       else
       {
@@ -1091,7 +1110,8 @@ public class Parser
    }
 
    private static boolean isUnaryOp(Token tk) {
-      return tk.equals(TokenCode.TK_NOT);
+       return tk.equals(TokenCode.TK_NOT) || tk.equals(TokenCode.TK_PLUSPLUS) || 
+	   tk.equals(TokenCode.TK_MINUSMINUS);
    }
 
    private Token parseBinaryOp() throws ScannerException

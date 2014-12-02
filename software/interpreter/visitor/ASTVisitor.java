@@ -308,4 +308,29 @@ public abstract class ASTVisitor<T>
    {
       return visit((ASTRoot)t);
    }
+   
+   public T visit(PlusPlusExpression t) {
+       return visit((ASTRoot)t);
+   }
+
+   public T visit(MinusMinusExpression t) {
+       return visit((ASTRoot)t);
+   }
+ 
+   public T visit(PlusEqStatement t) {
+       return visit((ASTRoot)t);
+   }
+
+   public T visit(MinusEqStatement t) {
+       return visit((ASTRoot)t);
+   }
+
+   public T visit(MultEqStatement t) {
+       return visit((ASTRoot)t);
+   }
+
+   public T visit(DivEqStatement t) {
+       return visit((ASTRoot)t);
+   }
+
 }
