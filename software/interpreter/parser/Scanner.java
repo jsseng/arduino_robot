@@ -166,8 +166,7 @@ public class Scanner
    }
 
    private String multiSymbol(int c, int[] need, boolean optional) 
-      throws InvalidSymbolException
-   {
+      throws InvalidSymbolException {
       StringBuilder s = new StringBuilder();
       s.append((char)c);
       int lookahead = _in.lookahead();
@@ -188,6 +187,8 @@ public class Scanner
 	      throw new InvalidSymbolException();
 	  }
       }
+
+      return s.toString();
    }
 
    private Token buildSymbol()

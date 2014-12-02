@@ -333,6 +333,7 @@ public class Parser
             }
             break;
          case TK_ID:
+	     s = parseAssignStatement();
          case TK_NUM:
          case TK_GET:
          case TK_STRING:
@@ -654,7 +655,7 @@ public class Parser
 
    private Expression parseExpression() throws ScannerException
    {
-       Expression e = parseAssignExpression();
+       Expression e = parseConditionalExpression();
        return e;
        //return parseRptExpression(e);
    }
@@ -673,13 +674,13 @@ public class Parser
          }
       }
 */
-   private Expression parseAssignExpression()
+   private Statement parseAssignStatement()
       throws ScannerException {
-         Expression lft = parseConditionalExpression();
-         return parseRptAssignExpression(lft);
+       Expression lft = parseConditionalExpression();
+         return parseRptAssignStatement(lft);
       }
 
-   private Expression parseRptAssignExpression(Expression lft)
+   private Statement parseRptAssignStatement(Expression lft)
       throws ScannerException {
          if (_currentToken.equals(TokenCode.TK_ASSIGN)) {
             if (!(lft instanceof IdentifierExpression))
@@ -688,8 +689,8 @@ public class Parser
                return null;
             }
             match(TokenCode.TK_ASSIGN);
-            Expression rht = parseAssignExpression();
-            return parseRptAssignExpression(new AssignmentExpression((IdentifierExpression)lft, rht));
+            Expression rht = parseConditionalExpression();
+            return parseRptAssignStatement(new AssignmentStatement((IdentifierExpression)lft, rht));
          }
          else {
             return lft;
@@ -811,9 +812,9 @@ public class Parser
 	 Expression e = parseMultiplicativeExpression();
          switch(token) {
 	    case TK_PLUSEQ:
-	       return parseRptAddExpression(new PlusEqStatement(lft, e));
+	       return parseRptAddExpression(new PlusEqExpression(lft, e));
 	    case TK_MINUSEQ:
-	       return parseRptAddExpression(new MinusEqStatement(lft, e));
+	       return parseRptAddExpression(new MinusEqExpression(lft, e));
             case TK_PLUS:
                return parseRptAddExpression(new AddExpression(lft, e));
             case TK_MINUS:
@@ -852,9 +853,9 @@ public class Parser
 	 
          switch(token) {
 	    case TK_DIVEQ:
-	       return parseRptMultExpression(new DivEqStatement(lft, e));
+	       return parseRptMultExpression(new DivEqExpression(lft, e));
 	    case TK_MULTEQ:
-	       return parseRptMultExpression(new MultEqStatement(lft, e));
+	       return parseRptMultExpression(new MultEqExpression(lft, e));
 	    case TK_MULT:
                return parseRptMultExpression(new MultiplyExpression(lft, e));
             case TK_DIVIDE:

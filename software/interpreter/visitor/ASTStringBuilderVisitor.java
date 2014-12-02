@@ -64,7 +64,7 @@ extends ASTVisitor<StringBuilder>
       }
       return buf;
    }
-   public StringBuilder visit(AssignmentExpression t)
+   public StringBuilder visit(AssignmentStatement t)
    {
       StringBuilder buf = new StringBuilder();
       String id = t.getTarget().getIdentifier();
