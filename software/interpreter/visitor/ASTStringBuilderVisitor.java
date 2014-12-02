@@ -27,6 +27,9 @@ extends ASTVisitor<StringBuilder>
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n");
       buf.append("#include <stdlib.h>\n\n");
+
+      buf.append("int _arrayCheck(int size, int index) { if (index >= size) { fprintf(stderr, \"Index out of bounds\n\"); exit(0); } return index; }\n");
+
       buf.append(visit(t.getDeclarations()));
       buf.append(String.format("int chng_temp;\n"));
       buf.append(visitGlobalVars(elems));
@@ -154,7 +157,7 @@ extends ASTVisitor<StringBuilder>
          }
          else
          {
-            return new StringBuilder(String.format("%s[%s]", t.getIdentifier(), t.getArrayIndex().visit(this)));
+            return new StringBuilder(String.format("%s[_arrayCheck(%s, %s)]", t.getIdentifier(), currentEnvir.getArraySize(t.getIdentifier()), t.getArrayIndex().visit(this)));
          }
       }
       else
@@ -192,21 +195,25 @@ extends ASTVisitor<StringBuilder>
       uniqueID(id);
       if (numberType(e) instanceof FloatConstantExpression)
       {
-         currentEnvir.put(id, new FloatConstantExpression(0), t.getIsArray());
+         currentEnvir.put(id, new FloatConstantExpression(0), t.getIsArray(), t.getArraySize());
          varType = "float ";
       }
       if (numberType(e) instanceof IntegerConstantExpression)
       {
-         currentEnvir.put(id, new IntegerConstantExpression(0), t.getIsArray());
+         currentEnvir.put(id, new IntegerConstantExpression(0), t.getIsArray(), t.getArraySize());
          varType = "int ";
       }
       if (numberType(e) instanceof StringExpression)
       {
-         currentEnvir.put(id, new StringExpression(""), t.getIsArray());
+         currentEnvir.put(id, new StringExpression(""), t.getIsArray(), t.getArraySize());
          varType = "char *";
       }
       if (t.getIsArray())
       {
+         if (t.getArraySize() < 1)
+         {
+            expected("Array size must be 2 or more");
+         }
          str.append(String.format("%s%s[%d] = {", varType, id, t.getArraySize()));
          List<String> init = new ArrayList<String>();
          String arg = t.getExpression().visit(this).toString();
