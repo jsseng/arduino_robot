@@ -677,10 +677,12 @@ public class Parser
    private Statement parseAssignStatement()
       throws ScannerException {
        Expression lft = parseConditionalExpression();
-         return parseRptAssignStatement(lft);
-      }
+       nextToken();
+       Expression rht = parseConditionalExpression();
+       return new AssignmentStatement((IdentifierExpression)lft, rht);
+   }
 
-   private Statement parseRptAssignStatement(Expression lft)
+    /* private Statement parseRptAssignStatement(Expression lft)
       throws ScannerException {
          if (_currentToken.equals(TokenCode.TK_ASSIGN)) {
             if (!(lft instanceof IdentifierExpression))
@@ -695,7 +697,7 @@ public class Parser
          else {
             return lft;
          }
-      }
+   }*/
 
     private Expression parseConditionalExpression()
         throws ScannerException {
@@ -887,10 +889,8 @@ public class Parser
 	      return new MinusMinusExpression(parseLeftHandSideExp());
 	  }
       }
-      else
-      {
-         return parseLeftHandSideExp();
-      }
+
+      return parseLeftHandSideExp();
 
    }
 
