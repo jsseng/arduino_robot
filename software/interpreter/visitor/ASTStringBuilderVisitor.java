@@ -691,6 +691,31 @@ extends ASTVisitor<StringBuilder>
    {
       return visitBinary(t, "+");
    }
+   
+   public StringBuilder visit(PlusEqExpression t) {
+       return visitBinary(t, "+=");
+   }
+
+   public StringBuilder visit(MinusEqExpression t) {
+       return visitBinary(t, "-=");
+   }
+
+   public StringBuilder visit(MultEqExpression t) {
+       return visitBinary(t, "*=");
+   }
+
+   public StringBuilder visit(DivEqExpression t) {
+       return visitBinary(t, "/=");
+   }
+
+   public StringBuilder visit(PlusPlusExpression t) {
+       return visitUnary(t, "++");
+   }
+
+   public StringBuilder visit(MinusMinusExpression t) {
+       return visitUnary(t, "--");
+   }
+
    public StringBuilder visit(AndExpression t)
    {
       return visitBinary(t, "&&");
