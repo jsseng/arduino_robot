@@ -1013,6 +1013,10 @@ public class Parser
 		   match(TokenCode.TK_PLUSPLUS);
 		   return new PlusPlusExpression(e, false);
 	       }
+	       else if (_currentToken.equals(TokenCode.TK_MINUSMINUS)) {
+		   match(TokenCode.TK_MINUSMINUS);
+		   return new MinusMinusExpression(e, false);
+	       }
                break;
          }
       }
