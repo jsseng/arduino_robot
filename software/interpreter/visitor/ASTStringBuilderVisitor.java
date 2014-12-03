@@ -754,10 +754,18 @@ extends ASTVisitor<StringBuilder>
    private StringBuilder visitUnary(UnaryExpression t, String op)
    {
       StringBuilder buf = new StringBuilder();
-      buf.append("(");
-      buf.append(op);
-      buf.append(t.getOperand().visit(this));
-      buf.append(")");
+      if (t.isPre()) {
+	  buf.append("(");
+	  buf.append(op);
+	  buf.append(t.getOperand().visit(this));
+	  buf.append(")");
+      }
+      else {
+	  buf.append("(");
+          buf.append(t.getOperand().visit(this));
+	  buf.append(op);
+          buf.append(")");
+      }
 
       return buf;
    }

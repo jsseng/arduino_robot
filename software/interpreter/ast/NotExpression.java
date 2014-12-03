@@ -8,7 +8,7 @@ public class NotExpression
 {
    public NotExpression(Expression oper)
    {
-      super(oper);
+       super(oper, true);
    }
 
    public <T> T visit(ExpressionVisitor<T> guest)

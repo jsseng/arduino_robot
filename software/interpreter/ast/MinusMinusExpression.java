@@ -7,8 +7,8 @@ public class MinusMinusExpression extends UnaryExpression {
 
     private Expression _lft;
 
-    public MinusMinusExpression(Expression lft) {
-	super(lft);
+    public MinusMinusExpression(Expression lft, boolean preDecrement) {
+	super(lft, preDecrement);
     }
 
     public <T> T visit(ASTVisitor<T> guest) {

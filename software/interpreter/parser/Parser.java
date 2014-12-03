@@ -931,10 +931,10 @@ public class Parser
 	      return new NotExpression(parseLeftHandSideExp());
 	  case TK_PLUSPLUS:
 	      nextToken();
-	      return new PlusPlusExpression(parseLeftHandSideExp());
+	      return new PlusPlusExpression(parseExpression(), true);
 	  case TK_MINUSMINUS:
 	      nextToken();
-	      return new MinusMinusExpression(parseLeftHandSideExp());
+	      return new MinusMinusExpression(parseExpression(), true);
 	  }
       }
 
@@ -1009,6 +1009,10 @@ public class Parser
                   match(TokenCode.TK_RBRACKET);
                   e = new IdentifierExpression(id, index);
                }
+	       else if (_currentToken.equals(TokenCode.TK_PLUSPLUS)) {
+		   match(TokenCode.TK_PLUSPLUS);
+		   return new PlusPlusExpression(e, false);
+	       }
                break;
          }
       }

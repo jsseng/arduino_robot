@@ -5,9 +5,11 @@ import visitor.ExpressionVisitor;
 
 
 public class PlusPlusExpression extends UnaryExpression {
+
     
-    public PlusPlusExpression(Expression lft) {
-	super(lft);
+    public PlusPlusExpression(Expression lft, boolean preIncrement) {
+	super(lft, preIncrement);
+	
     }
 
     public <T> T visit(ASTVisitor<T> guest) {
