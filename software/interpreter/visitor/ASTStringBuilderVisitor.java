@@ -692,20 +692,20 @@ extends ASTVisitor<StringBuilder>
       return visitBinary(t, "+");
    }
    
-   public StringBuilder visit(PlusEqExpression t) {
-       return visitBinary(t, "+=");
+   public StringBuilder visit(PlusEqStatement t) {
+       return new StringBuilder().append(t.getIdentifier() + "+=" + t.getExpression());
    }
 
-   public StringBuilder visit(MinusEqExpression t) {
-       return visitBinary(t, "-=");
+   public StringBuilder visit(MinusEqStatement t) {
+       return new StringBuilder().append(t.getIdentifier() + "-=" + t.getExpression());
    }
 
-   public StringBuilder visit(MultEqExpression t) {
-       return visitBinary(t, "*=");
+   public StringBuilder visit(MultEqStatement t) {
+       return new StringBuilder().append(t.getIdentifier() + "*=" + t.getExpression());
    }
 
-   public StringBuilder visit(DivEqExpression t) {
-       return visitBinary(t, "/=");
+   public StringBuilder visit(DivEqStatement t) {
+       return new StringBuilder().append(t.getIdentifier() + "/=" + t.getExpression());
    }
 
    public StringBuilder visit(PlusPlusExpression t) {

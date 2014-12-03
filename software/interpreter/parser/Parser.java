@@ -333,7 +333,30 @@ public class Parser
             }
             break;
          case TK_ID:
-	     s = parseAssignStatement();
+	     t = _currentToken;
+	     //check here for next tokens
+	     match(TokenCode.TK_ID);
+	     if (_currentToken.code() == TokenCode.TK_EQ) {
+		 ungetToken(t);
+		 s = parseAssignStatement();
+	     }
+	     else if (_currentToken.equals(TokenCode.TK_PLUSEQ)) {
+		 ungetToken(t);
+		 s = parsePlusEqStatement();
+	     }
+	     else if (_currentToken.equals(TokenCode.TK_MINUSEQ)) {
+		 ungetToken(t);
+		 s = parseMinusEqStatement();
+	     }
+	     else if (_currentToken.equals(TokenCode.TK_MULTEQ)) {
+		 ungetToken(t);
+		 s = parseMultEqStatement();
+	     }
+	     else if (_currentToken.equals(TokenCode.TK_DIVEQ)) {
+		 ungetToken(t);
+		 s = parseDivEqStatement();
+	     }
+	     break;
          case TK_NUM:
          case TK_GET:
          case TK_STRING:
@@ -676,11 +699,44 @@ public class Parser
 */
    private Statement parseAssignStatement()
       throws ScannerException {
+       //need to add +=, -=. *=, /= to this parse method!!
        Expression lft = parseConditionalExpression();
        nextToken();
        Expression rht = parseConditionalExpression();
        return new AssignmentStatement((IdentifierExpression)lft, rht);
    }
+
+    private Statement parsePlusEqStatement()
+       throws ScannerException {
+	Expression lft = parsePrimaryExpression();
+	nextToken();
+	Expression rht = parseConditionalExpression();
+	return new PlusEqStatement(lft, rht);
+    }
+    
+    private Statement parseMinusEqStatement() 
+       throws ScannerException {
+	Expression lft = parsePrimaryExpression();
+	nextToken();
+	Expression rht = parseConditionalExpression();
+	return new MinusEqStatement(lft, rht);
+    }
+    
+    private Statement parseMultEqStatement() 
+       throws ScannerException {
+	Expression lft = parsePrimaryExpression();
+	nextToken();
+	Expression rht = parseConditionalExpression();
+	return new MultEqStatement(lft, rht);
+    }
+    
+    private Statement parseDivEqStatement()
+       throws ScannerException {
+	Expression lft = parsePrimaryExpression();
+	nextToken();
+	Expression rht = parseConditionalExpression();
+	return new DivEqStatement(lft, rht);
+    }
 
     /* private Statement parseRptAssignStatement(Expression lft)
       throws ScannerException {
@@ -813,10 +869,6 @@ public class Parser
 	 //or could be "+=" so check for '=' or "-="
 	 Expression e = parseMultiplicativeExpression();
          switch(token) {
-	    case TK_PLUSEQ:
-	       return parseRptAddExpression(new PlusEqExpression(lft, e));
-	    case TK_MINUSEQ:
-	       return parseRptAddExpression(new MinusEqExpression(lft, e));
             case TK_PLUS:
                return parseRptAddExpression(new AddExpression(lft, e));
             case TK_MINUS:
@@ -854,10 +906,6 @@ public class Parser
 	 Expression e = parseUnaryExpression();
 	 
          switch(token) {
-	    case TK_DIVEQ:
-	       return parseRptMultExpression(new DivEqExpression(lft, e));
-	    case TK_MULTEQ:
-	       return parseRptMultExpression(new MultEqExpression(lft, e));
 	    case TK_MULT:
                return parseRptMultExpression(new MultiplyExpression(lft, e));
             case TK_DIVIDE:

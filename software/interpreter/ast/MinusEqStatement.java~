@@ -5,12 +5,8 @@ import visitor.StatementVisitor;
 
 public class MinusEqStatement extends Statement {
 
-    private Expression _lft;
-    private Expression _rht;
-
     public MinusEqStatement(Expression lft, Expression rht) {
-	_lft = lft;
-	_rht = rht;
+	super(lft, rht);
     }
 
     public <T> T visit(StatementVisitor<T> guest) {
