@@ -16,13 +16,22 @@ extends ASTVisitor<StringBuilder>
    private int whenCount = 0;
    private int lineNum = 0;
    private Environment currentEnvir;
-   public StringBuilder visit(Program t)
-   {
+
+
+   public StringBuilder visit(Program t) {
       currentEnvir = new Environment();
+      /* Initialize with 2 pieces of machinery */
+      currentEnvir.put("button", new Button());
+      currentEnvir.put("LED", new LED());
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
-      buf.append("#include <stdio.h>\n\n");
+      buf.append("#include <stdio.h>\n");
+      buf.append("#include <stdlib.h>\n\n");
+
+      buf.append("int _arrayCheck(int size, int index) { if (index >= size) { fprintf(stderr, \"Index out of bounds\n\"); exit(0); } return index; }\n");
+
       buf.append(visit(t.getDeclarations()));
+      buf.append(String.format("int chng_temp;\n"));
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
@@ -36,9 +45,6 @@ extends ASTVisitor<StringBuilder>
 
       buf.append(callWhens(elems));
 
-      // buf.append(t.getBody().visit(this));
-      /* Must revisit visiting the program's body */
-
       buf.append("return 0;\n}");
 
       return buf;
@@ -50,10 +56,15 @@ extends ASTVisitor<StringBuilder>
       Machinery m = t.getMachinery();
       currentEnvir.put(id, m);
       StringBuilder buf = new StringBuilder();
+      id = id;
       buf.append("#define " + id + " " + m.getMachineNumber() + "\n");
+      if (m instanceof Gettable)
+      {
+         buf.append(String.format("static int chng_%s = 0;\n", id));
+      }
       return buf;
    }
-   public StringBuilder visit(AssignmentExpression t)
+   public StringBuilder visit(AssignmentStatement t)
    {
       StringBuilder buf = new StringBuilder();
       String id = t.getTarget().getIdentifier();
@@ -104,6 +115,7 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(Function t)
    {
+      lineNum = t.getLineNum();
       String id = t.getID();
       uniqueID(id);
       currentEnvir.put(id, t);
@@ -135,7 +147,18 @@ extends ASTVisitor<StringBuilder>
    {
       if (currentEnvir.containsKey(t.getIdentifier()))
       {
-         return new StringBuilder(t.getIdentifier());
+         if (t.isArrayAccess() != currentEnvir.isArray(t.getIdentifier()))
+         {
+            expected("Improper access. Either accessing as array of non-array variable or accessing array variable as non-array\n");
+         }
+         if (!t.isArrayAccess())
+         {
+            return new StringBuilder(t.getIdentifier());
+         }
+         else
+         {
+            return new StringBuilder(String.format("%s[_arrayCheck(%s, %s)]", t.getIdentifier(), currentEnvir.getArraySize(t.getIdentifier()), t.getArrayIndex().visit(this)));
+         }
       }
       else
       {
@@ -172,20 +195,39 @@ extends ASTVisitor<StringBuilder>
       uniqueID(id);
       if (numberType(e) instanceof FloatConstantExpression)
       {
-         currentEnvir.put(id, new FloatConstantExpression(0));
+         currentEnvir.put(id, new FloatConstantExpression(0), t.getIsArray(), t.getArraySize());
          varType = "float ";
       }
       if (numberType(e) instanceof IntegerConstantExpression)
       {
-         currentEnvir.put(id, new IntegerConstantExpression(0));
+         currentEnvir.put(id, new IntegerConstantExpression(0), t.getIsArray(), t.getArraySize());
          varType = "int ";
       }
       if (numberType(e) instanceof StringExpression)
       {
-         currentEnvir.put(id, new StringExpression(""));
+         currentEnvir.put(id, new StringExpression(""), t.getIsArray(), t.getArraySize());
          varType = "char *";
       }
-      str.append(String.format("%s%s = %s;\n", varType, id, t.getExpression().visit(this).toString()));
+      if (t.getIsArray())
+      {
+         if (t.getArraySize() < 1)
+         {
+            expected("Array size must be 2 or more");
+         }
+         str.append(String.format("%s%s[%d] = {", varType, id, t.getArraySize()));
+         List<String> init = new ArrayList<String>();
+         String arg = t.getExpression().visit(this).toString();
+         for (int i = 0; i < t.getArraySize(); i++)
+         {
+            init.add(arg);
+         }
+         str.append(listToComma(init, ""));
+         str.append("};\n");
+      }
+      else
+      {
+         str.append(String.format("%s%s = %s;\n", varType, id, t.getExpression().visit(this).toString()));
+      }
       return str;
    }
    public StringBuilder visit(ForwardStatement t)
@@ -242,11 +284,18 @@ extends ASTVisitor<StringBuilder>
       str.append("/* End right turn */\n");
       return str;
    }
+
    public StringBuilder visit(SleepStatement t)
    {
       lineNum = t.getLineNum();
       return new StringBuilder("delay_milliseconds(1000 * (" + t.getDuration().visit(this) + "));\n");
    }
+
+   public StringBuilder visit(StopStatement t) {
+       lineNum = t.getLineNum();
+       return new StringBuilder("exit(0);\n");
+   }
+
    public StringBuilder visit(RepeatStatement t)
    {
       lineNum = t.getLineNum();
@@ -284,13 +333,37 @@ extends ASTVisitor<StringBuilder>
    public StringBuilder visit(CallExpression t)
    {
       StringBuilder buf = new StringBuilder();
+      String functionID = t.getID();
+      Function f = (Function)currentEnvir.get(functionID);
+      
+      if (f == null)
+      {
+         expected(String.format("function name of %s not found", functionID));
+      }
+
       buf.append(t.getID());
       buf.append("(");
       List<Expression> args = t.getParams();
+      if (f.getParameters().size() != args.size())
+      {
+         expected(String.format("Parameter count do not match, expected %d parameters, found %d\n", f.getParameters().size(), args.size()));
+      }
       buf.append(visitableListToComma(args, ""));
       buf.append(")");
       return buf;
    }
+   
+   public StringBuilder visit(ChangesExpression t)
+   {
+      StringBuilder buf = new StringBuilder();
+      String id = t.getId();
+
+      buf.append(String.format("chng_temp = chng_%s, chng_%s =  %s, chng_temp != chng_%s", id, id, visit(new GetExpression(id)), id));
+      
+      
+      return buf;
+   }
+
    public StringBuilder visit(OrWhenExpression t)
    {
       StringBuilder buf = new StringBuilder();
@@ -316,6 +389,7 @@ extends ASTVisitor<StringBuilder>
       lineNum = t.getLineNum();
       StringBuilder buf = new StringBuilder();
       buf.append(String.format("void when%d(void)\n{\n", whenCount++));
+      
       buf.append("if (");
       buf.append(t.getGuard().visit(this));
       buf.append(")\n");
@@ -480,8 +554,6 @@ extends ASTVisitor<StringBuilder>
          }
       }
 
-      /* Process Function prototypes */
-
       /* Process Function Definitions */
       for (Function func : funcs)
       {
@@ -619,6 +691,31 @@ extends ASTVisitor<StringBuilder>
    {
       return visitBinary(t, "+");
    }
+   
+   public StringBuilder visit(PlusEqStatement t) {
+       return new StringBuilder().append(t.getIdentifier() + "+=" + t.getExpression());
+   }
+
+   public StringBuilder visit(MinusEqStatement t) {
+       return new StringBuilder().append(t.getIdentifier() + "-=" + t.getExpression());
+   }
+
+   public StringBuilder visit(MultEqStatement t) {
+       return new StringBuilder().append(t.getIdentifier() + "*=" + t.getExpression());
+   }
+
+   public StringBuilder visit(DivEqStatement t) {
+       return new StringBuilder().append(t.getIdentifier() + "/=" + t.getExpression());
+   }
+
+   public StringBuilder visit(PlusPlusExpression t) {
+       return visitUnary(t, "++");
+   }
+
+   public StringBuilder visit(MinusMinusExpression t) {
+       return visitUnary(t, "--");
+   }
+
    public StringBuilder visit(AndExpression t)
    {
       return visitBinary(t, "&&");
@@ -657,10 +754,18 @@ extends ASTVisitor<StringBuilder>
    private StringBuilder visitUnary(UnaryExpression t, String op)
    {
       StringBuilder buf = new StringBuilder();
-      buf.append("(");
-      buf.append(op);
-      buf.append(t.getOperand().visit(this));
-      buf.append(")");
+      if (t.isPre()) {
+	  buf.append("(");
+	  buf.append(op);
+	  buf.append(t.getOperand().visit(this));
+	  buf.append(")");
+      }
+      else {
+	  buf.append("(");
+          buf.append(t.getOperand().visit(this));
+	  buf.append(op);
+          buf.append(")");
+      }
 
       return buf;
    }
@@ -795,19 +900,6 @@ extends ASTVisitor<StringBuilder>
       return buf;
    }
 
-/*
-   private Environment oldEnvir;
-   private void makeNewEnvir()
-   {
-      oldEnvir = currentEnvir;
-      currentEnvir = new Environment(currentEnvir);
-   }
-      
-   private void restoreEnvir()
-   {
-      currentEnvir = oldEnvir;
-   }
-*/
    private void uniqueID(String id)
    {
       if (currentEnvir.containsKey(id))

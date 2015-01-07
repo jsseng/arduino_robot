@@ -23,6 +23,7 @@ public class EvalStatementVisitor
    {
       return _state;
    }
+
    public State visit(AssignmentExpression t)
    {
       /*
@@ -41,6 +42,7 @@ public class EvalStatementVisitor
       */
       return null;
    }
+
    public State visit(CompoundStatement t)
    {
       State curState = _state;
@@ -50,6 +52,7 @@ public class EvalStatementVisitor
       }
       return curState;
    }
+
    public State visit(IfStatement t)
    {
       Expression guard = t.getGuard();
@@ -61,11 +64,13 @@ public class EvalStatementVisitor
       EvalConditionalVisitor guest = new EvalConditionalVisitor(this, th, el);
       return v.visit(guest);
    }
+
    public State visit(ReturnStatement t)
    {
       System.err.println("return not supported");
       return _state;
    }
+
    public State visit(WhileStatement t)
    {
       Expression guard = t.getGuard();
@@ -77,6 +82,7 @@ public class EvalStatementVisitor
          _state);
       return v.visit(guest);
    }
+
    public State visit(DisplayStatement t)
    {
       /*
@@ -85,6 +91,7 @@ public class EvalStatementVisitor
       */
       return _state;
    }
+
    public State visit(WriteStatement t)
    {
       System.out.println(
@@ -99,6 +106,11 @@ public class EvalStatementVisitor
 
    public State visit(ChangeStatement t) {
        System.out.println(t.getExpression().visit(new EvalExpressionVisitor(_state)));
+       return _state;
+   }
+
+   public State visit(StopStatement t) {
+       //System.out.println(t.getExpression().visit(new EvalStatementVisitor(_state)));
        return _state;
    }
 }

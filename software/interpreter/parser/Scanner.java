@@ -5,7 +5,7 @@ import java.io.*;
 public class Scanner
 {
    Token _unget = null;
-   int lineNumber;
+   int lineNumber = 1;
 
    public static void main(String [] args)
       throws Exception
@@ -24,7 +24,6 @@ public class Scanner
       do
       {
          tk = scanner.nextToken();
-         System.out.println(tk);
       } while (!tk.equals(TokenCode.TK_EOF));
    }
 
@@ -76,6 +75,7 @@ public class Scanner
       }
 
       int c = _in.lookahead();
+
 
       if (Character.isLetter((char)c))
       {
@@ -165,25 +165,30 @@ public class Scanner
       return new Token(TokenCode.TK_NUM, buf.toString(), lineNumber);
    }
 
-   private String multiSymbol(int c, int need, boolean optional) 
-      throws InvalidSymbolException
-   {
+   private String multiSymbol(int c, int[] need, boolean optional) 
+      throws InvalidSymbolException {
       StringBuilder s = new StringBuilder();
       s.append((char)c);
-      if (_in.lookahead() == need)
-      {
-         _in.read();
-         s.append((char)need);
-         return s.toString();
+      int lookahead = _in.lookahead();
+
+      for (int i = 0; i < need.length; i++) {
+	  if (lookahead == need[i])
+	  {
+	      _in.read();
+	      s.append((char)need[i]);
+	      return s.toString();
+	  }
+	  else if (optional)
+	  {
+	      return s.toString();
+	  }
+	  else
+	  {
+	      throw new InvalidSymbolException();
+	  }
       }
-      else if (optional)
-      {
-         return s.toString();
-      }
-      else
-      {
-         throw new InvalidSymbolException();
-      }
+
+      return s.toString();
    }
 
    private Token buildSymbol()
@@ -196,9 +201,6 @@ public class Scanner
          case ')':
          case '{':
          case '}':
-         case '+':
-         case '*':
-         case '/':
          case ';':
          case ',':
          case '=':
@@ -210,42 +212,52 @@ public class Scanner
             str = String.valueOf((char)_in.read());
             break;
          }
+         /*case '=':
+         {
+            str = multiSymbol(_in.read(), '=', true); 
+            break;
+         }*/
+         case '+':
+	     str = multiSymbol(_in.read(), new int[]{'+','='}, true);
+	     break;
+         case '*':
+	     str = multiSymbol(_in.read(), new int[]{'='}, true);
+	     break;
+         case '/':
+	     str = multiSymbol(_in.read(), new int[]{'='}, true);
+	     break;
          case '>':
-         {
-            str = multiSymbol(_in.read(), '=', true); 
+	     str = multiSymbol(_in.read(), new int[]{'='}, true); 
             break;
-         }
          case '<':
-         {
-            str = multiSymbol(_in.read(), '=', true); 
+	     str = multiSymbol(_in.read(), new int[]{'='}, true); 
             break;
-         }
          case '!':
-         {
-            str = multiSymbol(_in.read(), '=', true); 
+	     str = multiSymbol(_in.read(), new int[]{'='}, true); 
             break;
-         }
          case '-':
-         {
             int character = _in.read();
             if (Character.isDigit(_in.lookahead()))
             {
                Token t = buildNumber();
-               return new Token(TokenCode.TK_NUM, "-" + t.toString(), lineNumber);
+               if (t.code().equals(TokenCode.TK_NUM))
+               {
+                  return new Token(TokenCode.TK_NUM, "-" + t.toString(), lineNumber);
+               }
+               else
+               {  
+                  return new Token(TokenCode.TK_FLOAT, "-" + t.toString(), lineNumber);
+               }
             }
-            str = multiSymbol(character, '>', true); 
+
+	    str = multiSymbol(character, new int[]{'-','='}, true);
             break;
-         }
          case ':':
-         {
-            str = multiSymbol(_in.read(), '=', false); 
+	     str = multiSymbol(_in.read(), new int[]{'='}, false); 
             break;
-         }
          // unrecognized character
          default:
-         {
             throw new InvalidCharacterException();
-         }
       }
       return new Token(TokenCode.lookupSymbol(str), lineNumber);
    }
@@ -253,6 +265,14 @@ public class Scanner
    private Token checkForKeyword(String id)
    {
       TokenCode tk = TokenCode.lookupKeyword(id);
+      if (tk == TokenCode.TK_EQ2)
+      {
+         return new Token(TokenCode.TK_EQ, id, lineNumber);
+      }
+      if (tk == TokenCode.TK_NE2)
+      {
+         return new Token(TokenCode.TK_NE, id, lineNumber);
+      }
       if (tk != TokenCode.TK_NONE)
       {
          return new Token(tk, lineNumber);
@@ -263,4 +283,3 @@ public class Scanner
       }
    }
 }
-

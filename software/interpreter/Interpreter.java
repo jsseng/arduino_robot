@@ -29,7 +29,7 @@ public class Interpreter
       }
       catch (InvalidSymbolException e)
       {
-         System.err.println("invalid symbol");
+	  System.err.println("invalid symbol: " + e.getMessage());
       }
       catch (InvalidCharacterException e)
       {

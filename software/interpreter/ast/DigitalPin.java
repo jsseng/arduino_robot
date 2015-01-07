@@ -9,7 +9,8 @@ public class DigitalPin extends Machinery implements Settable, Gettable {
       super(id);
       int i = pin0;
       _isOut = out;
-      _pins = new int[(pinn-pin0) + 1];
+      // _pins = new int[(pinn-pin0) + 1];
+      _pins = new int[pinn + 1];
 
       while (i <= pinn) {
          _pins[i] = i;

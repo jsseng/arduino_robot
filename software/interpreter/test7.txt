@@ -1,0 +1,102 @@
+# This is a big test
+
+define tL = motor[0]
+define tR = motor[1]
+define bL = motor[2]
+define bR = motor[3]
+
+define s1 = servo[0]
+define s2 = servo[1]
+define s3 = servo[2]
+
+define thermometer = analogPinIn[0]
+define ir = analogPinIn[1]
+
+define gX = gyroscope[X]
+define gY = gyroscope[Y]
+define gZ = gyroscope[Z]
+
+variable i = 0
+variable f = 0.0
+
+variable iArr[10] = 5
+variable fArr[99] = 4.4
+
+func turnLeft()
+{
+   set tL 30
+   set tR 60
+   set bL 30
+   set bR 60
+   return 0
+}
+
+func turnRight()
+{
+   set tL 60
+   set tR 30
+   set bL 60
+   set bR 30
+   return 0
+}
+
+func halt()
+{
+   set tL 0
+   set tR 0
+   set bL 0
+   set bR 0
+   return 0
+}
+
+func go()
+{
+   set tL 70
+   set tR 70
+   set bL 70
+   set bR 70
+   return 0
+}
+
+when get thermometer > 15
+{
+   halt()
+}
+
+when get ir eq 4
+{
+   set s1 50
+   set s2 100
+}
+
+when get gX > 100 and get gY > 100
+{
+   display "Both X and Y > 100"
+}
+
+when thermometer changes 
+{
+}
+
+when get button equals 1
+{
+   stop
+}
+fArr[1000] = 5.5
+
+turnLeft()
+sleep 4
+
+repeat 4 times
+{
+   sleep iArr[5] * 6
+}
+
+iArr[2] = 5
+fArr[1000] = 5.5
+
+go()
+
+repeat 
+{
+}

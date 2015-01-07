@@ -1,15 +1,15 @@
 package ast;
 
 import visitor.ASTVisitor;
-import visitor.ExpressionVisitor;
+import visitor.StatementVisitor;
 
-public class AssignmentExpression
-   extends Expression
+public class AssignmentStatement
+   extends Statement
 {
    private IdentifierExpression _dest;
    private Expression _src;
 
-   public AssignmentExpression(Expression dest, Expression src)
+   public AssignmentStatement(Expression dest, Expression src)
    {
        if (!(dest instanceof IdentifierExpression)) {
 	   System.out.println("Expected an identifier expression.");
@@ -31,7 +31,7 @@ public class AssignmentExpression
       return _src;
    }
 
-   public <T> T visit(ExpressionVisitor<T> guest)
+   public <T> T visit(StatementVisitor<T> guest)
    {
       return guest.visit(this);
    }

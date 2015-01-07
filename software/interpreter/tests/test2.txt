@@ -1,0 +1,73 @@
+define thermometer = analogPinIn[0]
+define x = 1
+
+when start {
+   display "Hello! Machine is starting up"
+}
+
+func addone(var x) {
+     #return ++x
+     #x += 1?
+     x = x + 1
+     return x
+}
+
+func addtwo(var y) {
+     when y > 5 {
+     	  display "Happy " + y + "th Birthday!"
+     }
+}
+
+func checkEquality(var x, var y) {
+     
+     if (x equals y) {
+     	return 1
+     }    
+}	
+
+func checkIfGreater(var m, var n) {
+     if (m > n) {
+     	return 1
+     }
+     else
+	return 0
+}
+
+func checkIfLess(var m, var n) {
+     if (m < n) {
+     	return 1
+     }     
+     else {
+     	  return 0
+     }
+}
+
+func tempToCelsius(var temp) {
+     return ((temp - 32) * 5 / 9)
+}
+
+func tempToKelvin(var temp) {
+     return (((temp - 32) / 1.8) + 273.15)
+}
+
+when get thermometer > 70 {
+     stop
+}
+
+when thermometer changes {
+    x = x + 1
+    display "Reading has changed, new reading is " + get thermometer
+}
+
+repeat 5 times {
+       when 1 {
+       	    display "TRUE!"
+       }
+}
+
+when x eq 5 {
+  display get thermometer
+}
+
+stop
+

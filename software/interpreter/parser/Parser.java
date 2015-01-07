@@ -57,6 +57,7 @@ public class Parser
          {
             nextToken();
          }
+         match(TokenCode.TK_VARIABLE);
          params.add(matchIdentifier());
       }
       match(TokenCode.TK_RPAREN);
@@ -64,6 +65,7 @@ public class Parser
       Statement[] body = parseBlockStatement();
       Function func = new Function(id, params, body);
       func.setLineNum(lineNum);
+
 
       return func;
    }
@@ -301,6 +303,9 @@ public class Parser
          case TK_SLEEP:
             s = parseSleep();
             break;
+         case TK_STOP:
+	    s = parseStop();
+	    break;
          case TK_IF:
             s = parseIfStatement();
             break;
@@ -328,6 +333,30 @@ public class Parser
             }
             break;
          case TK_ID:
+	     t = _currentToken;
+	     //check here for next tokens
+	     match(TokenCode.TK_ID);
+	     if (_currentToken.code() == TokenCode.TK_EQ) {
+		 ungetToken(t);
+		 s = parseAssignStatement();
+	     }
+	     else if (_currentToken.equals(TokenCode.TK_PLUSEQ)) {
+		 ungetToken(t);
+		 s = parsePlusEqStatement();
+	     }
+	     else if (_currentToken.equals(TokenCode.TK_MINUSEQ)) {
+		 ungetToken(t);
+		 s = parseMinusEqStatement();
+	     }
+	     else if (_currentToken.equals(TokenCode.TK_MULTEQ)) {
+		 ungetToken(t);
+		 s = parseMultEqStatement();
+	     }
+	     else if (_currentToken.equals(TokenCode.TK_DIVEQ)) {
+		 ungetToken(t);
+		 s = parseDivEqStatement();
+	     }
+	     break;
          case TK_NUM:
          case TK_GET:
          case TK_STRING:
@@ -344,6 +373,12 @@ public class Parser
       return s;
    }
     
+    private Statement parseStop() throws ScannerException {
+	match(TokenCode.TK_STOP);
+	return new StopStatement();
+    }
+
+
    private Statement parseReturnStatement() throws ScannerException {
       match(TokenCode.TK_RETURN);
       Expression ret = parseExpression();
@@ -399,17 +434,44 @@ public class Parser
 
     private Expression parseGetStatement() throws ScannerException {
 				match(TokenCode.TK_GET);
-				String id = matchIdentifier();
-				return new GetExpression(id);
+				//String id = matchIdentifier();
+            if (_currentToken.code() == TokenCode.TK_ID ||
+                _currentToken.code() == TokenCode.TK_BUTTON)
+            {
+               String id = _currentToken.toString();
+               nextToken();
+               return new GetExpression(id);
+            }
+            else
+            {
+               expected("an identifier or button");
+               return null;
+            }
+
     }
 
    private Statement parseVariableDeclaration() throws ScannerException
    {
       match(TokenCode.TK_VARIABLE);
       String id = matchIdentifier();
+      int size = -1;
+      if (_currentToken.code() == TokenCode.TK_LBRACKET)
+      {
+         match(TokenCode.TK_LBRACKET);
+         size = Integer.parseInt(_currentToken.toString());
+         nextToken();
+         match(TokenCode.TK_RBRACKET);
+      }
       match(TokenCode.TK_ASSIGN);
       Expression assignment = parseExpression();
-      return new VariableDeclarationStatement(id, assignment);
+      if (size > 0)
+      {
+         return new VariableDeclarationStatement(id, assignment, size);
+      }
+      else
+      {
+         return new VariableDeclarationStatement(id, assignment);
+      }
    }
 
    private TokenCode matchDirection() throws ScannerException
@@ -508,9 +570,7 @@ public class Parser
             case TK_GET:
                if (readyInput)
                {
-                  match(TokenCode.TK_GET);
-                  elements.add(new GetExpression(_currentToken.toString()));
-                  nextToken();
+                  elements.add(parseGetStatement());
                   readyInput = false;
                }
                else
@@ -618,7 +678,7 @@ public class Parser
 
    private Expression parseExpression() throws ScannerException
    {
-       Expression e = parseAssignExpression();
+       Expression e = parseConditionalExpression();
        return e;
        //return parseRptExpression(e);
    }
@@ -637,13 +697,48 @@ public class Parser
          }
       }
 */
-   private Expression parseAssignExpression()
+   private Statement parseAssignStatement()
       throws ScannerException {
-         Expression lft = parseConditionalExpression();
-         return parseRptAssignExpression(lft);
-      }
+       //need to add +=, -=. *=, /= to this parse method!!
+       Expression lft = parseConditionalExpression();
+       nextToken();
+       Expression rht = parseConditionalExpression();
+       return new AssignmentStatement((IdentifierExpression)lft, rht);
+   }
 
-   private Expression parseRptAssignExpression(Expression lft)
+    private Statement parsePlusEqStatement()
+       throws ScannerException {
+	Expression lft = parsePrimaryExpression();
+	nextToken();
+	Expression rht = parseConditionalExpression();
+	return new PlusEqStatement(lft, rht);
+    }
+    
+    private Statement parseMinusEqStatement() 
+       throws ScannerException {
+	Expression lft = parsePrimaryExpression();
+	nextToken();
+	Expression rht = parseConditionalExpression();
+	return new MinusEqStatement(lft, rht);
+    }
+    
+    private Statement parseMultEqStatement() 
+       throws ScannerException {
+	Expression lft = parsePrimaryExpression();
+	nextToken();
+	Expression rht = parseConditionalExpression();
+	return new MultEqStatement(lft, rht);
+    }
+    
+    private Statement parseDivEqStatement()
+       throws ScannerException {
+	Expression lft = parsePrimaryExpression();
+	nextToken();
+	Expression rht = parseConditionalExpression();
+	return new DivEqStatement(lft, rht);
+    }
+
+    /* private Statement parseRptAssignStatement(Expression lft)
       throws ScannerException {
          if (_currentToken.equals(TokenCode.TK_ASSIGN)) {
             if (!(lft instanceof IdentifierExpression))
@@ -652,13 +747,13 @@ public class Parser
                return null;
             }
             match(TokenCode.TK_ASSIGN);
-            Expression rht = parseAssignExpression();
-            return parseRptAssignExpression(new AssignmentExpression((IdentifierExpression)lft, rht));
+            Expression rht = parseConditionalExpression();
+            return parseRptAssignStatement(new AssignmentStatement((IdentifierExpression)lft, rht));
          }
          else {
             return lft;
          }
-      }
+   }*/
 
     private Expression parseConditionalExpression()
         throws ScannerException {
@@ -768,8 +863,11 @@ public class Parser
       TokenCode token = _currentToken.code();
       if(isAddOp(_currentToken)) {
          nextToken();
-
-         Expression e = parseMultiplicativeExpression();
+	 
+	 //here check if next token is another addOp, must be equal to prev token! (i.e. '++', '--')
+	 //CANNOT BE '-+' or '+-'
+	 //or could be "+=" so check for '=' or "-="
+	 Expression e = parseMultiplicativeExpression();
          switch(token) {
             case TK_PLUS:
                return parseRptAddExpression(new AddExpression(lft, e));
@@ -777,6 +875,14 @@ public class Parser
                return parseRptAddExpression(new SubtractExpression(lft, e));
          }
 
+      }
+      else if (_currentToken.equals(TokenCode.TK_NUM) || _currentToken.equals(TokenCode.TK_FLOAT))
+      {
+         if (_currentToken.toString().charAt(0) == '-')
+         {
+            Expression e = parseMultiplicativeExpression();
+            return parseRptAddExpression(new AddExpression(lft, e));
+         }
       }
       else {
          return lft;
@@ -796,10 +902,11 @@ public class Parser
 
       if (isMultOp(_currentToken)) {
          nextToken();
-         Expression e = parseUnaryExpression();
-
+         //could be '*=' or '/=' so check for '=' before parsing expression
+	 Expression e = parseUnaryExpression();
+	 
          switch(token) {
-            case TK_MULT:
+	    case TK_MULT:
                return parseRptMultExpression(new MultiplyExpression(lft, e));
             case TK_DIVIDE:
                return parseRptMultExpression(new DivideExpression(lft, e));
@@ -809,19 +916,29 @@ public class Parser
       else {
          return lft;
       }
+
+      //is this line necessary? It will always return left if it is not a multOp...
       return lft;
    }
 
    private Expression parseUnaryExpression() throws ScannerException
    {
       if (isUnaryOp(_currentToken)) {
-         match(TokenCode.TK_NOT);
-         return new NotExpression(parseLeftHandSideExp());
+	  
+	  switch(_currentToken.code()) {
+	  case TK_NOT:
+	      nextToken();
+	      return new NotExpression(parseLeftHandSideExp());
+	  case TK_PLUSPLUS:
+	      nextToken();
+	      return new PlusPlusExpression(parseExpression(), true);
+	  case TK_MINUSMINUS:
+	      nextToken();
+	      return new MinusMinusExpression(parseExpression(), true);
+	  }
       }
-      else
-      {
-         return parseLeftHandSideExp();
-      }
+
+      return parseLeftHandSideExp();
 
    }
 
@@ -834,9 +951,7 @@ public class Parser
    {
       if (_currentToken.code() == TokenCode.TK_GET)
       {
-         match(TokenCode.TK_GET);
-         String s = matchIdentifier();
-         return new GetExpression(s);
+         return parseGetStatement();
       }
       else
       {
@@ -873,18 +988,37 @@ public class Parser
          switch(_currentToken.code()) {
             case TK_STRING:
                e = new StringExpression(_currentToken.toString());
+               nextToken();
                break;
             case TK_NUM:
                e = new IntegerConstantExpression(Integer.parseInt(_currentToken.toString()));
+               nextToken();
                break;
             case TK_FLOAT:
                e = new FloatConstantExpression(Float.parseFloat(_currentToken.toString()));
+               nextToken();
                break;
             case TK_ID:
-               e = new IdentifierExpression(_currentToken.toString());
+               String id = _currentToken.toString();
+               e = new IdentifierExpression(id);
+               nextToken();
+               if (_currentToken.code() == TokenCode.TK_LBRACKET)
+               {
+                  match(TokenCode.TK_LBRACKET);
+                  Expression index = parseExpression();
+                  match(TokenCode.TK_RBRACKET);
+                  e = new IdentifierExpression(id, index);
+               }
+	       else if (_currentToken.equals(TokenCode.TK_PLUSPLUS)) {
+		   match(TokenCode.TK_PLUSPLUS);
+		   return new PlusPlusExpression(e, false);
+	       }
+	       else if (_currentToken.equals(TokenCode.TK_MINUSMINUS)) {
+		   match(TokenCode.TK_MINUSMINUS);
+		   return new MinusMinusExpression(e, false);
+	       }
                break;
          }
-         nextToken();
       }
       return e;
    }
@@ -968,6 +1102,11 @@ public class Parser
                e = new IdentifierExpression(id);
             }
             break;
+         case TK_FLOAT:
+            e = new FloatConstantExpression(
+                  Float.parseFloat(_currentToken.toString()));
+            nextToken();
+            break;
          case TK_NUM:
             e = new IntegerConstantExpression(
                   Integer.parseInt(_currentToken.toString()));
@@ -1028,7 +1167,8 @@ public class Parser
    }
 
    private static boolean isUnaryOp(Token tk) {
-      return tk.equals(TokenCode.TK_NOT);
+       return tk.equals(TokenCode.TK_NOT) || tk.equals(TokenCode.TK_PLUSPLUS) || 
+	   tk.equals(TokenCode.TK_MINUSMINUS);
    }
 
    private Token parseBinaryOp() throws ScannerException

@@ -3,10 +3,10 @@ package ast;
 import visitor.ASTVisitor;
 import visitor.ExpressionVisitor;
 
-public class NotExpression
+public class NegativeExpression
    extends UnaryExpression
 {
-   public NotExpression(Expression oper)
+   public NegativeExpression(Expression oper)
    {
        super(oper, true);
    }

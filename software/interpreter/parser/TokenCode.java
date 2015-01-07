@@ -3,7 +3,7 @@ package parser;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.EnumSet;
-
+//do we want to add support for '%'??
 public enum TokenCode
 {
    TK_DISPLAY("display"),
@@ -20,7 +20,6 @@ public enum TokenCode
    TK_LED("led"),
    TK_MOTOR("motor"),
    TK_START("start"),
-   // To do: Change Read to Get
    TK_GET("get"),
    TK_SET("set"),
    TK_FUNC("func"),
@@ -30,6 +29,7 @@ public enum TokenCode
    TK_CHANGE("change"),
    TK_MODE("mode"),
    TK_IN("in"),
+   TK_STOP("stop"),
    TK_OUT("out"),
    TK_CLEAR("clear"),
    TK_SCREEN("screen"),
@@ -55,20 +55,23 @@ public enum TokenCode
    TK_AND("and"),
    TK_OR("or"),
    TK_EQ("equals"),
-   /*
-   TK_TL("TL"),
-   TK_TR("TR"),
-   TK_BL("BL"),
-   TK_BR("BR"),
-   */
+   TK_EQ2("eq"),
+   TK_NE("notequals"),
+   TK_NE2("noteq"),
    TK_ASSIGN("="),
    TK_LT("<"),
    TK_GT(">"),
-   TK_NE("not ="),
    TK_LE("<="),
    TK_GE(">="),
    TK_PLUS("+"),
    TK_MINUS("-"),
+   TK_PLUSPLUS("++"),
+   TK_MINUSMINUS("--"),
+   TK_PLUSEQ("+="),
+   TK_MINUSEQ("-="),
+   TK_MULTEQ("*="),
+   TK_DIVEQ("/="),
+   TK_MOD("%"),
    TK_MULT("*"),
    TK_DIVIDE("/"),
    TK_NUM("-- number --"),
@@ -77,6 +80,7 @@ public enum TokenCode
    TK_STRING("-- string --"),
    TK_EOF("eof"),
    TK_NONE("<*none*>");
+
 
    TokenCode(String s)
    {
