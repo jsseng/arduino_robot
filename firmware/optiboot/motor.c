@@ -24,8 +24,8 @@ void init_motor(void) {
   PORTD &= ~_BV(MOTOR0_DIR1_PIN);
 
   //test motor 1
-  PORTD |= _BV(MOTOR1_DIR1_PIN);
-  PORTD &= ~_BV(MOTOR1_DIR0_PIN);
+  PORTD |= _BV(MOTOR1_DIR0_PIN);
+  PORTD &= ~_BV(MOTOR1_DIR1_PIN);
 }
 
 void test_motor(void) {
@@ -35,7 +35,7 @@ void test_motor(void) {
    PORTB |= _BV(MOTOR0_EN_PIN);
    
    //test motor 1
-   PORTD |= _BV(MOTOR1_DIR1_PIN);
-   PORTD &= ~_BV(MOTOR1_DIR0_PIN);
+   PORTD |= _BV(MOTOR1_DIR0_PIN);
+   PORTD &= ~_BV(MOTOR1_DIR1_PIN);
    PORTB |= _BV(MOTOR1_EN_PIN);
 }

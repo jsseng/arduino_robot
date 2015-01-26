@@ -689,7 +689,7 @@ void debug_mode() {
       send_address(0x1,1);
       read_register(&x_reading, 1);
 
-      option = (x_reading / 10) % 6;
+      option = (x_reading / 10) % 7;
 
       switch(option) {
       case 0:
@@ -709,6 +709,9 @@ void debug_mode() {
          break;
       case 5:
          print_string("Battery");
+         break;
+      case 6:
+         print_string("IR Test");
          break;
       }
 
@@ -772,10 +775,10 @@ void debug_mode() {
 
          if (test_motor == 0) {
             OCR2A = speed * 255 / 100;
-            OCR0A = 0;
+            OCR0A = 10;
          } else  {
             OCR0A = speed * 255 / 100;
-            OCR2A = 0;
+            OCR2A = 10;
          }
 
          lcd_cursor(6,0);
@@ -835,5 +838,27 @@ void debug_mode() {
          _delay_ms(200);
       }
       break;
+   case 6:
+      clear_screen();
+      print_string("IR Test");
+      lcd_cursor(0,1);
+      print_num(0);
+      uint16_t counter=0;
+      while(1) {
+         //flash LED1 if IR detected
+         if (PIND & _BV(IR_PIN)) {
+            led_on(1);
+         } else {
+            led_off(1);
+            _delay_ms(20);
+            counter++;
+            lcd_cursor(0,1);
+            print_num(counter);
+         }
+
+         _delay_us(100);
+      }
+      break;
+
    }
 }

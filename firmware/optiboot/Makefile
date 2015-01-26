@@ -209,7 +209,9 @@ atmega325pa: $(PROGRAM)_atmega325pa.hex
 atmega325pa: $(PROGRAM)_atmega325pa.lst
 
 fuse:
-	avrdude -F -pm325 -cusbtiny -E noreset -U lfuse:w:0xef:m
+	avrdude -F -pm325 -cusbtiny -E noreset -U efuse:w:0xfb:m #
+	avrdude -F -pm325 -cusbtiny -E noreset -U lfuse:w:0xff:m #65ms startup delay
+	#avrdude -F -pm325 -cusbtiny -E noreset -U lfuse:w:0xef:m #no startup delay
 	avrdude -F -pm325 -cusbtiny -E noreset -U hfuse:w:0xd8:m #use bootloader
 
 program:
