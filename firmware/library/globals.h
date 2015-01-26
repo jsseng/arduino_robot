@@ -97,6 +97,7 @@ void print_num(u16 number);
 void lcd_cursor(uint8_t col, uint8_t row);
 
 void test_motor(void);
+void set_motor(u08 num, signed char speed);
 
-void set_position(u08 servo_num, u08 position);
+void set_servo(u08 servo_num, u08 position);
 #endif

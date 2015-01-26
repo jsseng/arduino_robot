@@ -20,7 +20,7 @@ ISR(TIMER1_COMPA_vect) {
    servo_state &= 7;
 }
 
-void set_position(u08 servo_num, u08 position) {
+void set_servo(u08 servo_num, u08 position) {
    //position from 0 to 250
    servo_high_time[servo_num] = 2500 + 10 * position;
    servo_low_time[servo_num] = 12500 - servo_high_time[servo_num];

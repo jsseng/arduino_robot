@@ -3,7 +3,28 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-void set_motor(u08 num, signed char direction) {
+void set_motor(u08 num, signed char speed) {
+    if (num == 0) {
+        OCR2A = speed * 255 / 100;
+
+        if (speed > 0) {
+            PORTD |= _BV(MOTOR0_DIR0_PIN);
+            PORTD &= ~_BV(MOTOR0_DIR1_PIN);
+        } else {
+            PORTD |= _BV(MOTOR0_DIR1_PIN);
+            PORTD &= ~_BV(MOTOR0_DIR0_PIN);
+        }
+    } else  {
+        OCR0A = speed * 255 / 100;
+
+        if (speed > 0) {
+            PORTD |= _BV(MOTOR1_DIR0_PIN);
+            PORTD &= ~_BV(MOTOR1_DIR1_PIN);
+        } else {
+            PORTD |= _BV(MOTOR1_DIR1_PIN);
+            PORTD &= ~_BV(MOTOR1_DIR0_PIN);
+        }
+    }
 }
 
 void init_motor(void) {
@@ -21,6 +42,9 @@ void init_motor(void) {
   //motor 1
   TCCR0A |= _BV(WGM01) | _BV(WGM00) | _BV(COM0A1); //fast PWM, non-inverting
   TCCR0A |= _BV(CS01);
+
+  OCR0A = 10;
+  OCR2A = 10;
 }
 
 void test_motor(void) {
