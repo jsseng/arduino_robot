@@ -1,5 +1,7 @@
 //http://www.kerrywong.com/2012/01/09/interfacing-mma8453q-with-arduino/
 
+#define byte unsigned char
+
 const byte REG_STATUS = 0x00; //(R) Real time status
 const byte REG_OUT_X_MSB = 0x01; //(R) [7:0] are 8 MSBs of 10-bit sample
 const byte REG_OUT_X_LSB = 0x02; //(R) [7:6] are 2 LSBs of 10-bit sample
