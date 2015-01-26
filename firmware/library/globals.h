@@ -1,4 +1,5 @@
 //Global defines
+#include<stdint.h>
 
 #ifndef GLOBALS_H
 #define GLOBALS_H
@@ -67,7 +68,8 @@ typedef unsigned int u16;
 #define I2C_DELAY 1
 #define MMA8453_ADDR 0x1C
 
-void print_string(char* string, u08 num_bytes);
+//void print_string(char* string, u08 num_bytes);
+void print_string(char* string);
 void i2c_start(void);
 void i2c_stop(void);
 void unlock_bus(void);
@@ -76,10 +78,20 @@ void send_address(u08 reg, u08 read);
 void write_register(u08* data, u08 num);
 void read_register(u08* data, u08 num);
 
-u08 get_sw1(void);
+u08 get_sw(void);
 void led_on(u08 num);
 void led_off(u08 num);
 void init(void);
 void clear_screen(void);
 
+void init_adc();
+void init_lcd();
+void init_servo();
+void init_motor();
+
+void print_string(char* string);
+void print_num(u16 number);
+void lcd_cursor(uint8_t col, uint8_t row);
+
+void test_motor(void);
 #endif
