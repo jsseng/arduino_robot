@@ -3,7 +3,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-u08 get_sw1(void) {
+u08 get_sw(void) {
    if (PINE & _BV(SW1_PIN))
       return 0;
    return 1;
@@ -82,6 +82,6 @@ void init(void) {
 
    init_adc();
    init_lcd();
-//   init_servo();
+   init_servo();
    init_motor();
 }

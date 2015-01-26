@@ -239,3 +239,15 @@ void read_register(u08* data, u08 num) {
 
    i2c_stop();
 }
+
+void i2c_regwrite(u08 address, u08 data) {
+   send_address(address,0);
+   write_register(&data,1);
+}
+
+u08 i2c_regread(u08 address) {
+   u08 temp;
+   send_address(address,1);
+   read_register(&temp,1);
+   return temp;
+}
