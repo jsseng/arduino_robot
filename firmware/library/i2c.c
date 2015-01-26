@@ -79,7 +79,7 @@ void send_address(u08 reg, u08 read) {
 
    //read the ACK
    if (I2C_PIN & _BV(SDA_PIN)) {
-      print_string ("addrNACK",8);
+      print_string ("addrNACK");
       while(1){}
    } else {
       //received ACK
@@ -110,7 +110,7 @@ void send_address(u08 reg, u08 read) {
 
    //read the ACK
    if (I2C_PIN & _BV(SDA_PIN)) {
-      print_string ("NACK",4);
+      print_string ("NACK");
       while(1){}
    } else {
       //received ACK
@@ -151,7 +151,7 @@ void write_register(u08* data, u08 num) {
 
       //read the ACK
       if (I2C_PIN & _BV(SDA_PIN)) {
-         print_string ("wr_NACK",7);
+         print_string ("wr_NACK");
          while(1){}
       } else {
       }
@@ -196,7 +196,7 @@ void read_register(u08* data, u08 num) {
 
    //read the ACK
    if (I2C_PIN & _BV(SDA_PIN)) {
-      print_string ("readNACK",8);
+      print_string ("readNACK");
       while(1) {}
    } else {
       //received ACK
@@ -238,4 +238,16 @@ void read_register(u08* data, u08 num) {
    _delay_us(1);
 
    i2c_stop();
+}
+
+void i2c_regwrite(u08 address, u08 data) {
+   send_address(address,0);
+   write_register(&data,1);
+}
+
+u08 i2c_regread(u08 address) {
+   u08 temp;
+   send_address(address,1);
+   read_register(&temp,1);
+   return temp;
 }

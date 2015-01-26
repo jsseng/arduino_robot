@@ -41,6 +41,7 @@ void lcd_cursor(uint8_t col, uint8_t row)
 
    u08 addr = _HOME_ADDR + row * _LINE_INCR + col;
    write_control(addr);
+   _delay_us(37);
 }
 
 void init_lcd(void) {
@@ -48,7 +49,7 @@ void init_lcd(void) {
    DDRF |= _BV(LCD_RS_PIN);
    DDRA = 0xFF; //make all the data pins output
 
-/*   write_control(0x38);  //function set
+//   write_control(0x38);  //function set
    _delay_ms(5);
 
    write_control(0x38);  //function set
@@ -63,7 +64,7 @@ void init_lcd(void) {
    write_control(0x01);  //clear display
    _delay_us(4000);
    write_control(0x06);  //set entry mode
-   _delay_us(160);*/
+   _delay_us(160);//*/
 
    write_control(0x38); //function set
    _delay_us(100);
@@ -72,12 +73,17 @@ void init_lcd(void) {
    
 }
 
-void print_string(char* string, u08 num_bytes) {
-  u08 i;
+void print_string(char* string) {
+  u08 i=0;
 
-  for (i=0;i<num_bytes;i++) {
+  /*for (i=0;i<num_bytes;i++) {
     write_data(string[i]);
     _delay_us(160);
+  }*/
+  while(string[i] != 0) {
+     write_data(string[i]);
+     _delay_us(160);
+     i++;
   }
 }
 
