@@ -3,6 +3,9 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
+#define _HOME_ADDR      0x80
+#define _LINE_INCR      0x40
+
 void e_Clk(void) {
   _delay_us(2);
   sbi(PORTC,LCD_E_PIN);
@@ -27,10 +30,6 @@ void write_data(u08 data) {
   sbi(PORTF,LCD_RS_PIN); //set RS high
   write_lcd(data);
 }
-
-// Other Constants
-#define _HOME_ADDR      0x80
-#define _LINE_INCR      0x40
 
 void lcd_cursor(uint8_t col, uint8_t row)
 {
@@ -76,10 +75,6 @@ void init_lcd(void) {
 void print_string(char* string) {
   u08 i=0;
 
-  /*for (i=0;i<num_bytes;i++) {
-    write_data(string[i]);
-    _delay_us(160);
-  }*/
   while(string[i] != 0) {
      write_data(string[i]);
      _delay_us(160);
@@ -120,26 +115,6 @@ void print_num(u16 number) {
 
       base = base / 10;
    }
-
-
-/*
-  u08 test[5];
-  u08 size;
-
-  if (number>9999) {
-    size = 5;
-  } else if (number>999) {
-    size = 4;
-  } else if (number>99) {
-    size = 3;
-  } else if (number>9) {
-    size = 2;
-  } else {
-    size = 1;
-  }
-  itoa(number,test,10);
-  print_string(test,size);
-  */
 }
 
 void clear_screen(void) {
