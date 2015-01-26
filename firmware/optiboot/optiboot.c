@@ -668,7 +668,6 @@ void debug_mode() {
    u08 option,i;
    u08 speed;
    unsigned long int battery;
-   u16 battery1;
    u08 test_motor=0;
 
    led_on(1);

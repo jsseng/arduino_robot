@@ -68,6 +68,9 @@ typedef unsigned int u16;
 #define I2C_DELAY 1
 #define MMA8453_ADDR 0x1C
 
+
+u08 digital(u08 num);
+u08 analog(u08 num);
 //void print_string(char* string, u08 num_bytes);
 void print_string(char* string);
 void i2c_start(void);
@@ -94,4 +97,6 @@ void print_num(u16 number);
 void lcd_cursor(uint8_t col, uint8_t row);
 
 void test_motor(void);
+
+void set_position(u08 servo_num, u08 position);
 #endif
