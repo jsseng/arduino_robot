@@ -34,6 +34,7 @@
 #
 # program name should not be changed...
 PROGRAM    = optiboot
+BOARD_LIB = ../library
 
 # The default behavior is to build using tools that are in the users
 # current path variables, but we can also build using an installed
@@ -200,9 +201,10 @@ endif
 # Test platforms
 # Virtual boot block test
 
+VPATH = .:../library
 atmega325pa: TARGET = atmega325pa
 atmega325pa: MCU_TARGET = atmega325pa
-atmega325pa: CFLAGS += -Wall $(COMMON_OPTIONS) -DSOFT_UART=1
+atmega325pa: CFLAGS += -I$(BOARD_LIB) -Wall $(COMMON_OPTIONS) -DSOFT_UART=1
 atmega325pa: AVR_FREQ ?= 20000000L
 atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
 atmega325pa: $(PROGRAM)_atmega325pa.hex

@@ -324,7 +324,7 @@ int main(void) {
 #endif
 
   init();
-  if(get_sw1()) {
+  if(get_sw()) {
      /* Get MCUCR*/ 
      temp = MCUCR; 
      /* Enable change of Interrupt Vectors */ 
@@ -682,7 +682,7 @@ void debug_mode() {
    _delay_ms(100);
    unlock_bus();
 
-   while(get_sw1()) {}
+   while(get_sw()) {}
    
    while(1) {
       lcd_cursor(0,1);
@@ -715,7 +715,7 @@ void debug_mode() {
          break;
       }
 
-      if (get_sw1())
+      if (get_sw())
          break;
 
       _delay_ms(50);
@@ -740,9 +740,9 @@ void debug_mode() {
    case 1: //analog
       test_motor = 0;
       while(1) {
-         if(get_sw1()) {
+         if(get_sw()) {
             test_motor ^= 1;
-            while(get_sw1()) {}
+            while(get_sw()) {}
          }
          clear_screen();
 
@@ -788,9 +788,9 @@ void debug_mode() {
          print_num(speed);
          print_string(" ");
 
-         if (get_sw1()) {
+         if (get_sw()) {
             test_motor ^= 1;
-            while(get_sw1()) {}
+            while(get_sw()) {}
          }
 
          _delay_ms(50);
