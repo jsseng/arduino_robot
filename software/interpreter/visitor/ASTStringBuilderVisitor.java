@@ -693,19 +693,19 @@ extends ASTVisitor<StringBuilder>
    }
    
    public StringBuilder visit(PlusEqStatement t) {
-       return new StringBuilder().append(t.getIdentifier() + "+=" + t.getExpression());
+       return new StringBuilder().append(visit(t.getTarget()) + "+=" + t.getSource().visit(this));
    }
 
    public StringBuilder visit(MinusEqStatement t) {
-       return new StringBuilder().append(t.getIdentifier() + "-=" + t.getExpression());
+       return new StringBuilder().append(visit(t.getTarget()) + "-=" + t.getSource().visit(this));
    }
 
    public StringBuilder visit(MultEqStatement t) {
-       return new StringBuilder().append(t.getIdentifier() + "*=" + t.getExpression());
+       return new StringBuilder().append(visit(t.getTarget()) + "*=" + t.getSource().visit(this));
    }
 
    public StringBuilder visit(DivEqStatement t) {
-       return new StringBuilder().append(t.getIdentifier() + "/=" + t.getExpression());
+       return new StringBuilder().append(visit(t.getTarget()) + "/=" + t.getSource().visit(this));
    }
 
    public StringBuilder visit(PlusPlusExpression t) {
