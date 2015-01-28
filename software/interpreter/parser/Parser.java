@@ -334,27 +334,38 @@ public class Parser
             break;
          case TK_ID:
             t = _currentToken;
+            Expression lft = parsePrimaryExpression();
             //check here for next tokens
-            match(TokenCode.TK_ID);
+            //match(TokenCode.TK_ID);
             if (_currentToken.code() == TokenCode.TK_ASSIGN) {
-               ungetToken(t);
-               s = parseAssignStatement();
+               //ungetToken(t);
+               s = parseAssignStatement(lft);
             }
             else if (_currentToken.equals(TokenCode.TK_PLUSEQ)) {
-               ungetToken(t);
-               s = parsePlusEqStatement();
+               //ungetToken(t);
+               s = parsePlusEqStatement(lft);
             }
             else if (_currentToken.equals(TokenCode.TK_MINUSEQ)) {
-               ungetToken(t);
-               s = parseMinusEqStatement();
+               //ungetToken(t);
+               s = parseMinusEqStatement(lft);
             }
             else if (_currentToken.equals(TokenCode.TK_MULTEQ)) {
-               ungetToken(t);
-               s = parseMultEqStatement();
+               //ungetToken(t);
+               s = parseMultEqStatement(lft);
             }
             else if (_currentToken.equals(TokenCode.TK_DIVEQ)) {
+               //ungetToken(t);
+               s = parseDivEqStatement(lft);
+            }
+            else if (_currentToken.equals(TokenCode.TK_LPAREN)) {
+               // This Identifier is a function name
                ungetToken(t);
-               s = parseDivEqStatement();
+               s = new ExpressionStatement(parseCallExpression());
+            }
+            else
+            {
+               System.err.println("Expected a statement, found a lonely identifier with the next token " + _currentToken);
+               System.exit(0);
             }
             break;
          case TK_NUM:
@@ -697,43 +708,48 @@ public class Parser
          }
       }
 */
-   private Statement parseAssignStatement()
+   private Statement parseAssignStatement(Expression lft)
       throws ScannerException {
        //need to add +=, -=. *=, /= to this parse method!!
-       Expression lft = parseConditionalExpression();
-       nextToken();
+       //Expression lft = parseConditionalExpression();
+       //nextToken();
+       match(TokenCode.TK_ASSIGN);
        Expression rht = parseConditionalExpression();
        return new AssignmentStatement((IdentifierExpression)lft, rht);
    }
 
-    private Statement parsePlusEqStatement()
+    private Statement parsePlusEqStatement(Expression lft)
        throws ScannerException {
-          Expression lft = parsePrimaryExpression();
-          nextToken();
+          //Expression lft = parsePrimaryExpression();
+          match(TokenCode.TK_PLUSEQ);
+          //nextToken();
           Expression rht = parseConditionalExpression();
           return new PlusEqStatement(lft, rht);
        }
     
-    private Statement parseMinusEqStatement() 
+    private Statement parseMinusEqStatement(Expression lft) 
        throws ScannerException {
-	Expression lft = parsePrimaryExpression();
-	nextToken();
+	//Expression lft = parsePrimaryExpression();
+	//nextToken();
+    match(TokenCode.TK_MINUSEQ);
 	Expression rht = parseConditionalExpression();
 	return new MinusEqStatement(lft, rht);
     }
     
-    private Statement parseMultEqStatement() 
+    private Statement parseMultEqStatement(Expression lft) 
        throws ScannerException {
-	Expression lft = parsePrimaryExpression();
-	nextToken();
+	//Expression lft = parsePrimaryExpression();
+	//nextToken();
+   match(TokenCode.TK_MULTEQ);
 	Expression rht = parseConditionalExpression();
 	return new MultEqStatement(lft, rht);
     }
     
-    private Statement parseDivEqStatement()
+    private Statement parseDivEqStatement(Expression lft)
        throws ScannerException {
-	Expression lft = parsePrimaryExpression();
-	nextToken();
+	//Expression lft = parsePrimaryExpression();
+	//nextToken();
+   match(TokenCode.TK_DIVEQ);
 	Expression rht = parseConditionalExpression();
 	return new DivEqStatement(lft, rht);
     }
