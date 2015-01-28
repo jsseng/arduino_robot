@@ -304,8 +304,8 @@ public class Parser
             s = parseSleep();
             break;
          case TK_STOP:
-	    s = parseStop();
-	    break;
+            s = parseStop();
+            break;
          case TK_IF:
             s = parseIfStatement();
             break;
@@ -333,30 +333,30 @@ public class Parser
             }
             break;
          case TK_ID:
-	     t = _currentToken;
-	     //check here for next tokens
-	     match(TokenCode.TK_ID);
-	     if (_currentToken.code() == TokenCode.TK_EQ) {
-		 ungetToken(t);
-		 s = parseAssignStatement();
-	     }
-	     else if (_currentToken.equals(TokenCode.TK_PLUSEQ)) {
-		 ungetToken(t);
-		 s = parsePlusEqStatement();
-	     }
-	     else if (_currentToken.equals(TokenCode.TK_MINUSEQ)) {
-		 ungetToken(t);
-		 s = parseMinusEqStatement();
-	     }
-	     else if (_currentToken.equals(TokenCode.TK_MULTEQ)) {
-		 ungetToken(t);
-		 s = parseMultEqStatement();
-	     }
-	     else if (_currentToken.equals(TokenCode.TK_DIVEQ)) {
-		 ungetToken(t);
-		 s = parseDivEqStatement();
-	     }
-	     break;
+            t = _currentToken;
+            //check here for next tokens
+            match(TokenCode.TK_ID);
+            if (_currentToken.code() == TokenCode.TK_ASSIGN) {
+               ungetToken(t);
+               s = parseAssignStatement();
+            }
+            else if (_currentToken.equals(TokenCode.TK_PLUSEQ)) {
+               ungetToken(t);
+               s = parsePlusEqStatement();
+            }
+            else if (_currentToken.equals(TokenCode.TK_MINUSEQ)) {
+               ungetToken(t);
+               s = parseMinusEqStatement();
+            }
+            else if (_currentToken.equals(TokenCode.TK_MULTEQ)) {
+               ungetToken(t);
+               s = parseMultEqStatement();
+            }
+            else if (_currentToken.equals(TokenCode.TK_DIVEQ)) {
+               ungetToken(t);
+               s = parseDivEqStatement();
+            }
+            break;
          case TK_NUM:
          case TK_GET:
          case TK_STRING:
@@ -708,11 +708,11 @@ public class Parser
 
     private Statement parsePlusEqStatement()
        throws ScannerException {
-	Expression lft = parsePrimaryExpression();
-	nextToken();
-	Expression rht = parseConditionalExpression();
-	return new PlusEqStatement(lft, rht);
-    }
+          Expression lft = parsePrimaryExpression();
+          nextToken();
+          Expression rht = parseConditionalExpression();
+          return new PlusEqStatement(lft, rht);
+       }
     
     private Statement parseMinusEqStatement() 
        throws ScannerException {
