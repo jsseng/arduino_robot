@@ -15,7 +15,7 @@ void repeatAlways(void)
 printf("%s%d\n","Thermometer reading is: ",analog(thermometer));
 set_servo(leftServo, 15);
 set_servo(rightServo, 75);
-printf("%s%d\n","Temperature in Celcius is: ",(((analog(thermometer) - 32) * 5) /(float) 9));
+printf("%s%d\n","Temperature in Celsius is: ",(((analog(thermometer) - 32) * 5) /(float) 9));
 }
 int main(void) {
 start();

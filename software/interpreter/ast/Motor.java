@@ -16,7 +16,7 @@ public class Motor extends Machinery implements Settable {
 
    public String toSetString(CharSequence seq)
    {
-      return String.format("motor(%s, %s)", getIdentifier(), seq);
+      return String.format("set_motor(%s, %s)", getIdentifier(), seq);
    }
 
    public <T> T visit(ASTVisitor<T> guest)
