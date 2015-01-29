@@ -32,7 +32,7 @@ void set_servo(int s, int v)
    printf("Servo %d set to: %d\n", s, v);
 }
 
-void motor(int m, int v)
+void set_motor(int m, int v)
 {
    printf("Motor %d set to: %d\n", m, v);
 }

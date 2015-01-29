@@ -167,28 +167,30 @@ public class Scanner
 
    private String multiSymbol(int c, int[] need, boolean optional) 
       throws InvalidSymbolException {
-      StringBuilder s = new StringBuilder();
-      s.append((char)c);
-      int lookahead = _in.lookahead();
+         StringBuilder s = new StringBuilder();
+         s.append((char)c);
+         int lookahead = _in.lookahead();
 
-      for (int i = 0; i < need.length; i++) {
-	  if (lookahead == need[i])
-	  {
-	      _in.read();
-	      s.append((char)need[i]);
-	      return s.toString();
-	  }
-	  else if (optional)
-	  {
-	      return s.toString();
-	  }
-	  else
-	  {
-	      throw new InvalidSymbolException();
-	  }
-      }
+         for (int i = 0; i < need.length; i++) {
+            if (lookahead == need[i])
+            {
+               _in.read();
+               s.append((char)need[i]);
+               return s.toString();
+            }
+         }
+         if (optional)
+         {
+            return s.toString();
+         }
+         else
+         {
+            if (s.length() == 1)
+               throw new InvalidSymbolException();
+            else
+               return s.toString();
+         }
 
-      return s.toString();
    }
 
    private Token buildSymbol()

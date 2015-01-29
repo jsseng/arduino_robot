@@ -1,0 +1,5 @@
+java Interpreter -dumpAST $1 > main.c
+mv main.c ../../firmware/testing/main.c
+cd ../../firmware/testing
+make
+make usbprogram
