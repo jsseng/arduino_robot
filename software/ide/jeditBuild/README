@@ -1,0 +1,18 @@
+This directory is for building the jEdit installers.  Run the script buildinstallers.sh on Mac/Linux and the script will:
+
+1.  download the source for jEdit 5.1.1
+2.  copy over new versions of ld and windres (needed for Mac)
+3.  copy the AithonLibrary from the git repository
+4.  build the installers
+
+You will find the installers in the 'dist' directory.
+
+---------------
+
+Building the Windows installer:
+
+1.  Copy jedit5.1.1-dist-win-finish.tar.bz2 to a Windows machine
+2.  Replace build.properties
+3.  Replace win32installer.iss in package-files/windows
+
+
