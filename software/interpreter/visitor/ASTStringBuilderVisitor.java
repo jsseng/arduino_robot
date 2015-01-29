@@ -28,10 +28,19 @@ extends ASTVisitor<StringBuilder>
       buf.append("#include <stdio.h>\n");
       buf.append("#include <stdlib.h>\n\n");
 
+      /* These are the arduino headers */
+      buf.append("#include \"globals.h\"\n");
+      buf.append("#include <util/delay.h>\n");
+      buf.append("#include <avr/io.h>\n");
+      buf.append("#include \"USI_TWI_Master.h\"\n");
+      buf.append("#include <avr/interrupt.h>\n\n");
+
+
       buf.append("int _arrayCheck(int size, int index) { if (index >= size) { fprintf(stderr, \"Index out of bounds\\n\"); exit(0); } return index; }\n");
 
       buf.append(visit(t.getDeclarations()));
       buf.append(String.format("int chng_temp;\n"));
+      buf.append(String.format("char _printBuffer[64];\n"));
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
@@ -39,6 +48,7 @@ extends ASTVisitor<StringBuilder>
       buf.append(visitRepeat(elems));
 
       buf.append("int main(void) {\n");
+      buf.append("init();\n");
       buf.append("start();\n");
 
       buf.append(visitNonRepeats(elems));
@@ -578,7 +588,10 @@ extends ASTVisitor<StringBuilder>
    {
       lineNum = t.getLineNum();
       StringBuilder formatStr = new StringBuilder();
-      formatStr.append("printf(\"");
+      formatStr.append("sprintf(_printBuffer, \"");
+      //formatStr.append("print_string
+
+      //formatStr.append("printf(\"");
       StringBuilder args = new StringBuilder();
       List<Expression> exp = t.getArgs();
       for (Expression e : exp)
@@ -588,6 +601,7 @@ extends ASTVisitor<StringBuilder>
       }
       formatStr.append("\\n\"");
       formatStr.append(args + ");\n");
+      formatStr.append("print_string(_printBuffer);\n");
       return formatStr;
    }
    public StringBuilder visit(SetStatement t)

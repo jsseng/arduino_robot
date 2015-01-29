@@ -1,0 +1,5 @@
+java Interpreter -dumpAST $1.txt > $1.c
+mv $1.c ../../firmware/testing/main.c
+cd ../../firmware/testing
+make
+make usbprogram
