@@ -54,6 +54,20 @@ u08 digital(u08 num) {
    return 0;
 }
 
+void led(u08 num, u08 state) {
+   if (num == 0) {
+      if (state == 1)
+         sbi(PORTG,LED0_PIN);
+      else
+         cbi(PORTG,LED0_PIN);
+   } else {
+      if (state == 1)
+         sbi(PORTG,LED1_PIN);
+      else
+         cbi(PORTG,LED1_PIN);
+   }
+}
+
 void led_on(u08 num) {
    if (num == 0) {
       sbi(PORTG,LED0_PIN);
