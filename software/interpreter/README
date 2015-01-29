@@ -5,4 +5,4 @@ java Interpreter -dumpAST <STUDENT_SOURCE_FILE>
 There is a script to interpret a file then avr-gcc it onto the board
 It will overwrite arduino_robot/firmware/testing/main.c
 
-avrcompile <STUDENT_SOURCE_FILE_WITHOUT THE .TXT EXTENSION>
+./avrcompile <STUDENT_SOURCE_FILE>
