@@ -28,7 +28,7 @@ extends ASTVisitor<StringBuilder>
       buf.append("#include <stdio.h>\n");
       buf.append("#include <stdlib.h>\n\n");
 
-      buf.append("int _arrayCheck(int size, int index) { if (index >= size) { fprintf(stderr, \"Index out of bounds\n\"); exit(0); } return index; }\n");
+      buf.append("int _arrayCheck(int size, int index) { if (index >= size) { fprintf(stderr, \"Index out of bounds\\n\"); exit(0); } return index; }\n");
 
       buf.append(visit(t.getDeclarations()));
       buf.append(String.format("int chng_temp;\n"));
@@ -73,6 +73,7 @@ extends ASTVisitor<StringBuilder>
       buf.append(t.getTarget().visit(this));
       buf.append(" = ");
       buf.append(t.getSource().visit(this));
+      buf.append(";\n");
       Expression numType = numberType(t.getSource());
       if (type instanceof Machinery)
       {
@@ -693,19 +694,19 @@ extends ASTVisitor<StringBuilder>
    }
    
    public StringBuilder visit(PlusEqStatement t) {
-       return new StringBuilder().append(visit(t.getTarget()) + "+=" + t.getSource().visit(this));
+       return new StringBuilder().append(visit(t.getTarget()) + "+=" + t.getSource().visit(this) + ";\n");
    }
 
    public StringBuilder visit(MinusEqStatement t) {
-       return new StringBuilder().append(visit(t.getTarget()) + "-=" + t.getSource().visit(this));
+       return new StringBuilder().append(visit(t.getTarget()) + "-=" + t.getSource().visit(this) + ";\n");
    }
 
    public StringBuilder visit(MultEqStatement t) {
-       return new StringBuilder().append(visit(t.getTarget()) + "*=" + t.getSource().visit(this));
+       return new StringBuilder().append(visit(t.getTarget()) + "*=" + t.getSource().visit(this) + ";\n");
    }
 
    public StringBuilder visit(DivEqStatement t) {
-       return new StringBuilder().append(visit(t.getTarget()) + "/=" + t.getSource().visit(this));
+       return new StringBuilder().append(visit(t.getTarget()) + "/=" + t.getSource().visit(this) + ";\n");
    }
 
    public StringBuilder visit(PlusPlusExpression t) {
