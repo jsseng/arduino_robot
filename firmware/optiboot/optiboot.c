@@ -805,10 +805,10 @@ void debug_mode() {
 
          clear_screen();
          print_num(speed);
-         set_position(0,speed);
-         set_position(1,speed);
-         set_position(2,speed);
-         set_position(3,speed);
+         set_servo(0,speed);
+         set_servo(1,speed);
+         set_servo(2,speed);
+         set_servo(3,speed);
          _delay_ms(100);
          /*
          set_position(0,250);

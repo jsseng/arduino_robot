@@ -30,7 +30,7 @@ void init_servo(void) {
    u08 i;
 
    for(i=0;i<4;i++) {
-      set_position(i,0);
+      set_servo(i,0);
    }
 
    DDRC |= _BV(SERVO0_PIN) | _BV(SERVO1_PIN) | _BV(SERVO2_PIN) | _BV(SERVO3_PIN);
