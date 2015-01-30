@@ -84,6 +84,7 @@ void read_register(u08* data, u08 num);
 u08 get_sw(void);
 void led_on(u08 num);
 void led_off(u08 num);
+void led(u08 num, u08 state);
 void init(void);
 void clear_screen(void);
 
