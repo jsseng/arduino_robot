@@ -3,7 +3,8 @@
 
 # jEdit only needs to load the plugin the first time the user accesses it
 # the presence of this property also tells jEdit the plugin is using the new API
-plugin.AithonPlugin.activate=defer
+#plugin.AithonPlugin.activate=defer
+plugin.AithonPlugin.activate=startup
 
 # These two properties are required for all plugins
 plugin.AithonPlugin.name=Aithon

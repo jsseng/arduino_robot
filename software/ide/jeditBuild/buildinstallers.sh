@@ -2,7 +2,10 @@
 #run on Mac or Linux
 
 #checkout v.5.1.1 of jEdit
-svn co -r 23300 https://jedit.svn.sourceforge.net/svnroot/jedit/jEdit/branches/5.1.x jedit_temp
+#svn co -r 23300 https://jedit.svn.sourceforge.net/svnroot/jedit/jEdit/branches/5.1.x jedit_temp
+
+#checkout v5.2pre1
+svn co -r 23571 https://jedit.svn.sourceforge.net/svnroot/jedit/jEdit/branches/5.2.x jedit_temp
 
 
 #download launch4j
@@ -27,21 +30,22 @@ cd jedit_temp
 
 #copy over the most recent versions of 'ld' and 'windres' (needed for Mac installer)
 mkdir -p ./build/launch4j/bin
-cp ../ld-new ./build/launch4j/bin/ld
-cp ../windres ./build/launch4j/bin/windres
+cp -f ../ld-new ./build/launch4j/bin/ld
+cp -f ../windres ./build/launch4j/bin/windres
 
-ant dist
+cp ../launch4j-macosx.tgz ./lib/launch4j
+#ant dist
 
 mkdir -p ./lib/default-plugins
 cp ../../plugin/jars/Aithon.jar ./lib/default-plugins
 #set -e
 
-#copy the modified build.xml
-cp ../build.xml.modified_5.1.1 ./build.xml
+#copy the modified build.xml for 5.1.1
+cp ../build.xml.modified_5.2pre1 ./build.xml
 
 #copy the splash image
-mkdir -p ./org/gjt/sp/jedit/icons
-cp ../splash_aithon.png ./org/gjt/sp/jedit/icons/splash.png
+#mkdir -p ./org/gjt/sp/jedit/icons
+#cp ../splash_aithon.png ./org/gjt/sp/jedit/icons/splash.png
 
 #need for InnoSetup (needed for Windows installer)
 cp ../build.properties ./build.properties
@@ -49,7 +53,11 @@ cp ../build.properties ./build.properties
 mkdir -p ./package-files/windows
 cp ../win32installer.iss ./package-files/windows/win32installer.iss
 
-#cp Aithon plugin
+#copy over the most recent versions of 'ld' and 'windres' (needed for Mac installer)
+mkdir -p ./build/launch4j/bin
+cp ../ld-new ./build/launch4j/bin/ld
+cp ../windres ./build/launch4j/bin/windres
 
+#exit
 ant dist
 
