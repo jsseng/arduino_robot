@@ -22,7 +22,8 @@ extends ASTVisitor<StringBuilder>
       currentEnvir = new Environment();
       /* Initialize with 2 pieces of machinery */
       currentEnvir.put("button", new Button());
-      currentEnvir.put("LED", new LED());
+      currentEnvir.put("LED0", new LED(0));
+      currentEnvir.put("LED1", new LED(1));
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n");
@@ -34,6 +35,8 @@ extends ASTVisitor<StringBuilder>
       buf.append("#include <avr/io.h>\n");
       buf.append("#include \"USI_TWI_Master.h\"\n");
       buf.append("#include <avr/interrupt.h>\n\n");
+
+      buf.append(String.format("#define BUFFER_LEN %d\n\n", 128));
 
 
       buf.append("int _arrayCheck(int size, int index) { if (index >= size) { fprintf(stderr, \"Index out of bounds\\n\"); exit(0); } return index; }\n");
@@ -268,7 +271,7 @@ extends ASTVisitor<StringBuilder>
       str.append("motor(1, 50);\n");
       str.append("motor(2, -50);\n");
       str.append("motor(3, 50);\n");
-      str.append("delay_milliseconds(300);\n");
+      str.append("_delay_ms(300);\n");
       str.append("motor(0, 0);\n");
       str.append("motor(1, 0);\n");
       str.append("motor(2, 0);\n");
@@ -287,7 +290,7 @@ extends ASTVisitor<StringBuilder>
       str.append("motor(1, -50);\n");
       str.append("motor(2, 50);\n");
       str.append("motor(3, -50);\n");
-      str.append("delay_milliseconds(300);\n");
+      str.append("_delay_ms(300);\n");
       str.append("motor(0, 0);\n");
       str.append("motor(1, 0);\n");
       str.append("motor(2, 0);\n");
@@ -299,7 +302,7 @@ extends ASTVisitor<StringBuilder>
    public StringBuilder visit(SleepStatement t)
    {
       lineNum = t.getLineNum();
-      return new StringBuilder("delay_milliseconds(1000 * (" + t.getDuration().visit(this) + "));\n");
+      return new StringBuilder("_delay_ms(1000 * (" + t.getDuration().visit(this) + "));\n");
    }
 
    public StringBuilder visit(StopStatement t) {

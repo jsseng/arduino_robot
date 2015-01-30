@@ -4,14 +4,17 @@ import visitor.*;
 
 public class LED extends Machinery implements Settable
 {
-   public LED()
+   private int LEDnum;
+   public LED(int num)
    {
       super("");
+      LEDnum = num;
    }
 
    public String toSetString(CharSequence seq)
    {
-      return String.format("led1(%s", seq);
+      return String.format("led(%d, %s)", LEDnum, seq.toString());
+      //return String.format("led1(%s)", seq);
    }
 
    public int getMachineNumber()

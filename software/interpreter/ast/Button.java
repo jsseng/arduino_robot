@@ -11,7 +11,7 @@ public class Button extends Machinery implements Gettable
 
    public String toGetString()
    {
-      return "button()";
+      return "get_sw()";
    }
 
    public int getMachineNumber()
