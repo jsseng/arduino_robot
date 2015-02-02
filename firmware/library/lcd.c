@@ -6,6 +6,71 @@
 #define _HOME_ADDR      0x80
 #define _LINE_INCR      0x40
 
+#define SCROLLING 1
+
+#ifdef SCROLLING
+void update_scroll_message();
+void write_data(u08 data);
+
+u08 scroll_message[40];
+u08 scroll_index;
+u08 scroll_length;
+u08 int_counter = 0;
+
+ISR(TIMER1_OVF_vect) {
+   sei();
+   if (int_counter == 15) {
+      int_counter = 0;
+      update_scroll_message();
+   } else {
+      int_counter++;
+   }
+}
+
+//call this first to setup the scrolling variables
+void init_scrolling(char* m) {
+   u08 i=0;
+   scroll_index=255;
+   scroll_length=0;
+
+   while (m[i] != 0) {
+      scroll_message[i] = m[i];
+      i++;
+   }
+
+   scroll_length = i;
+}
+
+void update_scroll_message() {
+   u08 i, temp;
+   scroll_index++;
+   scroll_index %= scroll_length;
+
+   temp = scroll_index;
+   for(i=0;i<8;i++) {
+      //print the character to the display
+      lcd_cursor(i,0);
+
+      write_data(scroll_message[temp]);
+      _delay_us(160);
+
+      temp++;
+      if (temp >= scroll_length) {
+         temp = 0;
+      }
+
+      if (i >= scroll_length)
+         break;
+   }
+}
+
+//call this to toggle the scrolling status
+void toggle_scrolling() {
+   TIMSK1 ^= 1;
+}
+
+#endif
+
 void e_Clk(void) {
   _delay_us(2);
   sbi(PORTC,LCD_E_PIN);

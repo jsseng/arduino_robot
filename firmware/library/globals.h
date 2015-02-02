@@ -96,6 +96,8 @@ void init_motor();
 void print_string(char* string);
 void print_num(u16 number);
 void lcd_cursor(uint8_t col, uint8_t row);
+void init_scrolling(char* m);
+void toggle_scrolling();
 
 void test_motor(void);
 void set_motor(u08 num, signed char speed);
