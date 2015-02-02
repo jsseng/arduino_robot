@@ -58,9 +58,6 @@ void update_scroll_message() {
       if (temp >= scroll_length) {
          temp = 0;
       }
-
-      if (i >= scroll_length)
-         break;
    }
 }
 
