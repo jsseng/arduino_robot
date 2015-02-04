@@ -25,8 +25,9 @@ program: main
 	avrdude -F -pm325 -cusbtiny -E noreset -U flash:w:main.hex
 
 #edit the device to match the device on your computer
+MAC_DEVICE = `ls /dev/cu*serial*`
 usbprogram: main.elf
-	avrdude -pm325 -P /dev/tty.usbserial-A602FK47 -c arduino -F -u -U flash:w:main.hex
+	avrdude -pm325 -P $(MAC_DEVICE) -c arduino -F -u -U flash:w:main.hex
 
 usbprogram_linux : main.elf
 	avrdude -pm325 -P /dev/ttyUSB0 -c arduino -F -u -U flash:w:main.hex
