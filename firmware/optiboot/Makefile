@@ -204,7 +204,7 @@ endif
 VPATH = .:../library
 atmega325pa: TARGET = atmega325pa
 atmega325pa: MCU_TARGET = atmega325pa
-atmega325pa: CFLAGS += -I$(BOARD_LIB) -Wall $(COMMON_OPTIONS) -DSOFT_UART=1
+atmega325pa: CFLAGS += -I$(BOARD_LIB) -Wall $(COMMON_OPTIONS) -DSOFT_UART=1 -DBOOTLOADER
 atmega325pa: AVR_FREQ ?= 20000000L
 atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
 atmega325pa: $(PROGRAM)_atmega325pa.hex

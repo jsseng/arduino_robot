@@ -6,6 +6,8 @@
 #define _HOME_ADDR      0x80
 #define _LINE_INCR      0x40
 
+#ifndef BOOTLOADER
+
 #define SCROLLING 1
 
 #ifdef SCROLLING
@@ -65,6 +67,8 @@ void update_scroll_message() {
 void toggle_scrolling() {
    TIMSK1 ^= 1;
 }
+
+#endif
 
 #endif
 

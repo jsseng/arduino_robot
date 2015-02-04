@@ -54,6 +54,79 @@ u08 digital(u08 num) {
    return 0;
 }
 
+#ifndef BOOTLOADER
+
+void set_digital(u08 num, u08 dir) {
+   switch(num) {
+   case 0:
+   case 1:
+      if (dir) {
+         DDRE |= _BV(num);
+      } else {
+         DDRE &= ~_BV(num);
+      }
+      break;
+   case 2:
+   case 3:
+      if (dir) {
+         DDRG |= _BV(num+1);
+      } else {
+         DDRG &= ~_BV(num+1);
+      }
+      break;
+   case 4:
+      if (dir) {
+         DDRE |= _BV(6);
+      } else {
+         DDRE &= ~_BV(6);
+      }
+      break;
+   case 5:
+   case 6:
+      if (dir) {
+         DDRB |= _BV(num);
+      } else {
+         DDRB &= ~_BV(num);
+      }
+      break;
+   case 7:
+   case 8:
+   case 9:
+      if (dir) {
+         DDRC |= _BV(num-2);
+      } else {
+         DDRC &= ~_BV(num-2);
+      }
+      break;
+   case 10:
+      if (dir) {
+         DDRB |= _BV(0);
+      } else {
+         DDRB &= ~_BV(0);
+      }
+      break;
+   case 11:
+   case 12:
+      if (dir) {
+         DDRB |= _BV(num-9);
+      } else {
+         DDRB &= ~_BV(num-9);
+      }
+      break;
+   case 13:
+      if (dir) {
+         DDRB |= _BV(1);
+      } else {
+         DDRB &= ~_BV(1);
+      }
+      break;
+   }
+
+   return;
+}
+
+#endif
+
 void led(u08 num, u08 state) {
    if (num == 0) {
       if (state == 1)
