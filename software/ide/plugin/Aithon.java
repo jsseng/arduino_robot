@@ -186,6 +186,7 @@ implements ActionListener, EBComponent, AithonActions,
     t.start();
   }
 
+
   //invoked when the buttons are clicked
   public void actionPerformed(ActionEvent evt) {
     Buffer curr_buffer = jEdit.getLastBuffer();
@@ -264,98 +265,95 @@ implements ActionListener, EBComponent, AithonActions,
   }
   // }}}
 
-    // {{{ Member Functions
-    
-    // {{{ focusOnDefaultComponent
-	public void focusOnDefaultComponent() {
-	}
-    // }}}
+  //detect the board
+  //testing code
+  void detectBoard() {
+     t = new Thread(new Runnable() {
+           String os = System.getProperty("os.name").toLowerCase();
+           public void run() {
+           if (os.indexOf("win") >= 0) {
+           //detect board on Windows
+           } else if (os.indexOf("mac") >= 0) {
+           //Mac
+           } else if (os.indexOf("nux") >= 0) {
+           //Linux
+           }
 
-    // {{{ getFileName
-	public String getFilename() {
-		return filename;
-	}
-    // }}}
+            try {
+            Thread.sleep(500);
+            } catch (InterruptedException e) {
+            }
+           }
+           });
+     t.setDaemon(true);  //make this a daemon thread so the JVM will exit
+     t.start();
+  }
 
-	// EBComponent implementation
-	
-    // {{{ handleMessage
-	public void handleMessage(EBMessage message) {
-		if (message instanceof PropertiesChanged) {
-			propertiesChanged();
-		}
-	}
-    // }}}
-    
-    // {{{ propertiesChanged
-	private void propertiesChanged() {
-		String propertyFilename = jEdit
-				.getProperty(AithonPlugin.OPTION_PREFIX + "filepath");
-		if (!StandardUtilities.objectsEqual(defaultFilename, propertyFilename)) {
-			saveFile();
-			//toolPanel.propertiesChanged();
-			defaultFilename = propertyFilename;
-			filename = defaultFilename;
-		}
-		Font newFont = AithonOptionPane.makeFont();
-		//if (!newFont.equals(textArea.getFont())) {
-		//	textArea.setFont(newFont);
-		//}
-	}
-    // }}}
+  public void focusOnDefaultComponent() {
+  }
 
-	// These JComponent methods provide the appropriate points
-	// to subscribe and unsubscribe this object to the EditBus.
+  public String getFilename() {
+     return filename;
+  }
 
-    // {{{ addNotify
-	public void addNotify() {
-		super.addNotify();
-		EditBus.addToBus(this);
-	}
-     // }}}
+  public void handleMessage(EBMessage message) {
+     if (message instanceof PropertiesChanged) {
+        propertiesChanged();
+     }
+  }
+
+  private void propertiesChanged() {
+     String propertyFilename = jEdit
+        .getProperty(AithonPlugin.OPTION_PREFIX + "filepath");
+     if (!StandardUtilities.objectsEqual(defaultFilename, propertyFilename)) {
+        saveFile();
+        //toolPanel.propertiesChanged();
+        defaultFilename = propertyFilename;
+        filename = defaultFilename;
+     }
+     Font newFont = AithonOptionPane.makeFont();
+  }
+
+  // These JComponent methods provide the appropriate points
+  // to subscribe and unsubscribe this object to the EditBus.
+
+  public void addNotify() {
+     super.addNotify();
+     EditBus.addToBus(this);
+  }
      
-    // {{{ removeNotify
-	public void removeNotify() {
-		saveFile();
-		super.removeNotify();
-		EditBus.removeFromBus(this);
-	}
-    // }}}
-    
-	// AithonActions implementation
+  public void removeNotify() {
+     saveFile();
+     super.removeNotify();
+     EditBus.removeFromBus(this);
+  }
 
-    // {{{
-	public void saveFile() {
-		if (filename == null || filename.length() == 0)
-			return;
-		try {
-			FileWriter out = new FileWriter(filename);
-			//out.write(textArea.getText());
-			out.close();
-		} catch (IOException ioe) {
-			Log.log(Log.ERROR, Aithon.class,
-					"Could not write notepad text to " + filename);
-		}
-	}
-    // }}}
-    
-    // {{{ chooseFile
-	public void chooseFile() {
-		String[] paths = GUIUtilities.showVFSFileDialog(view, null,
-				JFileChooser.OPEN_DIALOG, false);
-		if (paths != null && !paths[0].equals(filename)) {
-			saveFile();
-			filename = paths[0];
-			//toolPanel.propertiesChanged();
-		}
-	}
-    // }}}
+  // AithonActions implementation
 
-    // {{{ copyToBuffer
-	public void copyToBuffer() {
-		jEdit.newFile(view);
-	}
-    // }}}
-    // }}}
+  public void saveFile() {
+     if (filename == null || filename.length() == 0)
+        return;
+     try {
+        FileWriter out = new FileWriter(filename);
+        //out.write(textArea.getText());
+        out.close();
+     } catch (IOException ioe) {
+        Log.log(Log.ERROR, Aithon.class,
+              "Could not write notepad text to " + filename);
+     }
+  }
+
+  public void chooseFile() {
+     String[] paths = GUIUtilities.showVFSFileDialog(view, null,
+           JFileChooser.OPEN_DIALOG, false);
+     if (paths != null && !paths[0].equals(filename)) {
+        saveFile();
+        filename = paths[0];
+        //toolPanel.propertiesChanged();
+     }
+  }
+
+  public void copyToBuffer() {
+     jEdit.newFile(view);
+  }
 }
-// }}}
