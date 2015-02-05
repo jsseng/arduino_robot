@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- Dockable component definition file for Aithon plugin -->
+<!-- Dockable component definition file for Bumblebee plugin -->
 <!-- $Id$
 -->
 
 <!DOCTYPE DOCKABLES SYSTEM "dockables.dtd">
 
-<!-- Aithon dockable windows -->
+<!-- Bumblebee dockable windows -->
 
 <DOCKABLES>
-	<DOCKABLE NAME="aithon">
-		new Aithon(view, position);
+	<DOCKABLE NAME="bumblebee">
+		new Bumblebee(view, position);
 	</DOCKABLE>
 </DOCKABLES>

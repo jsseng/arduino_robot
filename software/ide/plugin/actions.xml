@@ -1,4 +1,4 @@
-<!-- Action definition file for Aithon plugin -->
+<!-- Action definition file for Bumblebee plugin -->
 <!-- $Id$
 -->
 
@@ -7,22 +7,22 @@
 <ACTIONS>
 	<ACTION NAME="aithon.choose-file">
 		<CODE>
-			wm.addDockableWindow(AithonPlugin.NAME);
-			wm.getDockableWindow(AithonPlugin.NAME).chooseFile();
+			wm.addDockableWindow(BumblebeePlugin.NAME);
+			wm.getDockableWindow(BumblebeePlugin.NAME).chooseFile();
 		</CODE>
 	</ACTION>
 
 	<ACTION NAME="aithon.save-file">
 		<CODE>
-			wm.addDockableWindow(AithonPlugin.NAME);
-			wm.getDockableWindow(AithonPlugin.NAME).saveFile();
+			wm.addDockableWindow(BumblebeePlugin.NAME);
+			wm.getDockableWindow(BumblebeePlugin.NAME).saveFile();
 		</CODE>
 	</ACTION>
 
 	<ACTION NAME="aithon.copy-to-buffer">
 		<CODE>
-			wm.addDockableWindow(AithonPlugin.NAME);
-			wm.getDockableWindow(AithonPlugin.NAME).copyToBuffer();
+			wm.addDockableWindow(BumblebeePlugin.NAME);
+			wm.getDockableWindow(BumblebeePlugin.NAME).copyToBuffer();
 		</CODE>
 	</ACTION>
 </ACTIONS>

@@ -14,11 +14,3 @@ Installing Ant For Windows
 3.  Set the environment variable $ANT_HOME to point to the directory
 4.  Add the directory $ANT_HOME\bin to the Path environment variable
 
-----
-
-Install the ARM toolchain (arm-none-eabi-gcc)
-
-https://launchpad.net/gcc-arm-embedded
-
-1.  Test the compiler by running 'arm-none-eabi-gcc' from the command line.
-

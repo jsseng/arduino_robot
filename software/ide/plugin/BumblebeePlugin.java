@@ -1,5 +1,5 @@
 /*
- * AithonPlugin.java
+ * BumblebeePlugin.java
  * Copyright (C) 2001 John Gellene
  * jgellene@nyc.rr.com
  *
@@ -23,11 +23,11 @@
 import org.gjt.sp.jedit.EditPlugin;
 
 /**
- * The Aithon plugin
+ * The Bumblebee plugin
  * 
- * @author Aithon Development Team
+ * @author Bumblebee Development Team
  */
-public class AithonPlugin extends EditPlugin {
+public class BumblebeePlugin extends EditPlugin {
 	public static final String NAME = "aithon";
 	public static final String OPTION_PREFIX = "options.aithon.";
 }

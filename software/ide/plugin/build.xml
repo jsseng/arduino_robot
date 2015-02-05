@@ -1,6 +1,6 @@
-<project name="Aithon" default="build">
+<project name="Bumblebee" default="build">
   <description>
-    This is an ant build.xml file for building the Aithon plugin for jEdit.
+    This is an ant build.xml file for building the Bumblebee plugin for jEdit.
   </description>
 
   <property file="./build.properties"/>

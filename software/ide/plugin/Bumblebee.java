@@ -47,14 +47,14 @@ import org.gjt.sp.util.Log;
 import org.gjt.sp.util.StandardUtilities;
 // }}}
 
-// {{{ Aithon_Plugin class
+// {{{ Bumblebee_Plugin class
 /**
  * 
- * Aithon Plugin
+ * Bumblebee Plugin
  *
  */
-public class Aithon extends JPanel
-implements ActionListener, EBComponent, AithonActions, 
+public class Bumblebee extends JPanel
+implements ActionListener, EBComponent, BumblebeeActions, 
            DefaultFocusComponent {
 
   // {{{ Instance Variables
@@ -83,7 +83,7 @@ implements ActionListener, EBComponent, AithonActions,
    * 	which can be DockableWindowManager.FLOATING, TOP, BOTTOM, LEFT, RIGHT, etc.
    * 	see @ref DockableWindowManager for possible values.
    */
-  public Aithon(View view, String position) throws IOException{
+  public Bumblebee(View view, String position) throws IOException{
     //The top level layout is a BoxLayout with the boxes side by side.
     //The buttons on the left and the console on the right.
     this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -95,8 +95,8 @@ implements ActionListener, EBComponent, AithonActions,
 
     //The buttons panel is a FlowLayout with a fixed maximum size which
     //forces the buttons to be arranged in a single column.
-    BufferedImage aithon_logo = ImageIO.read(getClass().getResource("/images/AithonEmblemRedClear.png"));
-    JLabel picLabel = new JLabel(new ImageIcon(aithon_logo));
+    BufferedImage bumeblee_logo = ImageIO.read(getClass().getResource("/images/AithonEmblemRedClear.png"));
+    JLabel picLabel = new JLabel(new ImageIcon(bumeblee_logo));
     add(picLabel);
     
     Dimension button_size = new Dimension(120, 25);
@@ -131,7 +131,7 @@ implements ActionListener, EBComponent, AithonActions,
     add(buttons);
 
     //create the console area
-    console_area = new JTextArea("Aithon console area:\n");
+    console_area = new JTextArea("Bumblebee console area:\n");
     console_area.setLineWrap(true);
     console_area.setWrapStyleWord(true);
     console_area.setEditable(false);
@@ -151,17 +151,17 @@ implements ActionListener, EBComponent, AithonActions,
     
     //If property for any of the paths hasn't been set (is null or empty string)
     //Calls functions to find a default directory and sets the property
-    String prop = jEdit.getProperty(AithonPlugin.OPTION_PREFIX + "gcc-filepath");
+    String prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath");
     if (prop == null || prop.equals("")) {
       autoDetectGcc();
     }
-    prop = jEdit.getProperty(AithonPlugin.OPTION_PREFIX + "library-filepath");
+    prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
     if (prop == null || prop.equals("")) {
-      aithonLibraryPath();
+      bumblebeeLibraryPath();
     }
-    prop = jEdit.getProperty(AithonPlugin.OPTION_PREFIX + "programmer-filepath");
+    prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath");
     if (prop == null || prop.equals("")) {
-      aithonProgrammerPath();
+      bumblebeeProgrammerPath();
     }
     
   }
@@ -193,19 +193,19 @@ implements ActionListener, EBComponent, AithonActions,
     Process compile;
     String line, makefile_path, lib_path;
     
-    lib_path = jEdit.getProperty(AithonPlugin.OPTION_PREFIX + "library-filepath");
+    lib_path = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
     //Location of makefile and main.c - make general with working directory somehow
     makefile_path = lib_path + "/../ProjectTemplate/";
-    //File dir = new File("C:\\Users\\Justine Dunham\\Documents\\GitHub\\aithon\\ProjectTemplate");
+    //File dir = new File("C:\\Users\\Justine Dunham\\Documents\\GitHub\\bumblebee\\ProjectTemplate");
     //File dir = new File("/Users/jseng/Desktop/jEdit.app/Contents/Resources/Java/ProjectTemplate");
     File dir = new File(makefile_path);    
     Object src = evt.getSource();
     
     if (src == uploadButton) { //check if upload clicked
       //Using for testing - prints out current directories from property values
-      console_area.append("Compiler: " + jEdit.getProperty(AithonPlugin.OPTION_PREFIX + "gcc-filepath") + "\n");
-      console_area.append("Library: " + jEdit.getProperty(AithonPlugin.OPTION_PREFIX + "library-filepath") + "\n");
-      console_area.append("Programmer: " + jEdit.getProperty(AithonPlugin.OPTION_PREFIX + "programmer-filepath") + "\n");
+      console_area.append("Compiler: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath") + "\n");
+      console_area.append("Library: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath") + "\n");
+      console_area.append("Programmer: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath") + "\n");
       //scroll the area
       console_area.setCaretPosition (console_area.getDocument().getLength());
     } else if (src == detectButton) { //check if detect clicked
@@ -246,21 +246,21 @@ implements ActionListener, EBComponent, AithonActions,
       path = userDir + "/Linux";
     }
 
-    jEdit.setProperty(AithonPlugin.OPTION_PREFIX + "gcc-filepath", path);
+    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath", path);
     return path;
   }
 
   //Finds default directory for library
-  private String aithonLibraryPath() {
-    String path = jEdit.getJEditHome() + "/AithonLibrary/";
-    jEdit.setProperty(AithonPlugin.OPTION_PREFIX + "library-filepath", path);
+  private String bumblebeeLibraryPath() {
+    String path = jEdit.getJEditHome() + "/BumblebeeLibrary/";
+    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath", path);
     return path;
   }
 
   //Finds default directory for programmer/uploader
-  private String aithonProgrammerPath() {
-    String path = jEdit.getJEditHome() + "/AithonLibrary/Programmer";
-    jEdit.setProperty(AithonPlugin.OPTION_PREFIX + "programmer-filepath", path);    
+  private String bumblebeeProgrammerPath() {
+    String path = jEdit.getJEditHome() + "/BumblebeeLibrary/Programmer";
+    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath", path);    
     return path;
   }
   // }}}
@@ -304,14 +304,14 @@ implements ActionListener, EBComponent, AithonActions,
 
   private void propertiesChanged() {
      String propertyFilename = jEdit
-        .getProperty(AithonPlugin.OPTION_PREFIX + "filepath");
+        .getProperty(BumblebeePlugin.OPTION_PREFIX + "filepath");
      if (!StandardUtilities.objectsEqual(defaultFilename, propertyFilename)) {
         saveFile();
         //toolPanel.propertiesChanged();
         defaultFilename = propertyFilename;
         filename = defaultFilename;
      }
-     Font newFont = AithonOptionPane.makeFont();
+     Font newFont = BumblebeeOptionPane.makeFont();
   }
 
   // These JComponent methods provide the appropriate points
@@ -328,7 +328,7 @@ implements ActionListener, EBComponent, AithonActions,
      EditBus.removeFromBus(this);
   }
 
-  // AithonActions implementation
+  // BumblebeeActions implementation
 
   public void saveFile() {
      if (filename == null || filename.length() == 0)
@@ -338,7 +338,7 @@ implements ActionListener, EBComponent, AithonActions,
         //out.write(textArea.getText());
         out.close();
      } catch (IOException ioe) {
-        Log.log(Log.ERROR, Aithon.class,
+        Log.log(Log.ERROR, Bumblebee.class,
               "Could not write notepad text to " + filename);
      }
   }

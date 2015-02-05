@@ -1,4 +1,4 @@
-interface AithonActions {
+interface BumblebeeActions {
 	void chooseFile();
 
 	void saveFile();
