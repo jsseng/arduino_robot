@@ -103,4 +103,10 @@ void test_motor(void);
 void set_motor(u08 num, signed char speed);
 
 void set_servo(u08 servo_num, u08 position);
+
+void i2c_regwrite(u08 address, u08 data);
+u08 i2c_regread(u08 address);
+u08 get_accel_x();
+u08 get_accel_y();
+u08 get_accel_z();
 #endif

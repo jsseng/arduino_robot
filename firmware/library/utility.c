@@ -171,4 +171,9 @@ void init(void) {
    init_lcd();
    init_servo();
    init_motor();
+
+   //initialize the accelerometer
+   i2c_regwrite(0x2A,0x1);  //change to WAKE mode
+   _delay_ms(100);
+   unlock_bus();
 }
