@@ -1,38 +1,13 @@
 // {{{ imports
-import java.awt.image.BufferedImage;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.JToolBar;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+import javax.swing.*;
+import javax.swing.text.*;
 
 import org.gjt.sp.jedit.Buffer;
 import org.gjt.sp.jedit.EBComponent;
@@ -68,12 +43,13 @@ implements ActionListener, EBComponent, BumblebeeActions,
   private JButton uploadButton;
   private JButton compileButton;
   private JToggleButton showSerialTerminal;
-  private JTextArea console_area;
+  private JTextPane console_area;
   private JScrollPane console_scrollbars;
   private Runtime r;
   private Process p;
-  private Thread t;
+  private Thread t, t_detect;
   private BufferedWriter out;
+  private String os;
     // }}}
 
     // {{{ Constructor
@@ -96,8 +72,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
 
     //The buttons panel is a FlowLayout with a fixed maximum size which
     //forces the buttons to be arranged in a single column.
-    BufferedImage bumeblee_logo = ImageIO.read(getClass().getResource("/images/AithonEmblemRedClear.png"));
-    JLabel picLabel = new JLabel(new ImageIcon(bumeblee_logo));
+    BufferedImage bumblebee_logo = ImageIO.read(getClass().getResource("/images/AithonEmblemRedClear.png"));
+    JLabel picLabel = new JLabel(new ImageIcon(bumblebee_logo));
     add(picLabel);
     
     Dimension button_size = new Dimension(120, 25);
@@ -124,7 +100,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
     showSerialTerminal = new JToggleButton("Serial Terminal");
     showSerialTerminal.setPreferredSize(button_size);
     
-    buttons.add(detectButton);
+    //buttons.add(detectButton);
     buttons.add(compileButton);
     buttons.add(uploadButton);
     buttons.add(showSerialTerminal);
@@ -132,10 +108,11 @@ implements ActionListener, EBComponent, BumblebeeActions,
     add(buttons);
 
     //create the console area
-    console_area = new JTextArea("Bumblebee console area:\n");
-    console_area.setLineWrap(true);
-    console_area.setWrapStyleWord(true);
+    console_area = new JTextPane();
+    //console_area.setLineWrap(true);
+    //console_area.setWrapStyleWord(true);
     console_area.setEditable(false);
+    console_area.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
 
     console_scrollbars = new JScrollPane (console_area,
     	    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
@@ -151,6 +128,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
     r = Runtime.getRuntime();
     
     detectBoard();
+    os = System.getProperty("os.name").toLowerCase();
 
     //If property for any of the paths hasn't been set (is null or empty string)
     //Calls functions to find a default directory and sets the property
@@ -169,82 +147,86 @@ implements ActionListener, EBComponent, BumblebeeActions,
     
   }
 
-  //starts a thread that reads an OutputStream and displays it to the console
-  void inputStreamToOutputStream(final InputStream inputStream) {
-    t = new Thread(new Runnable() {
-          public void run() {
-            try {
-              int d;
-              //if there is nothing to read then block, otherwise print
-              while ((d = inputStream.read()) != -1) {
-                console_area.append(Character.toString((char)d));
-                console_area.setCaretPosition (console_area.getDocument().getLength());
-              }
-            } catch (IOException e) {
-              System.err.println("Caught IOException: " + e.getMessage());
-            }
-          }
-        });
-    t.setDaemon(true);  //make this a daemon thread so the JVM will exit
-    t.start();
-  }
-
-
   //invoked when the buttons are clicked
   public void actionPerformed(ActionEvent evt) {
-    Buffer curr_buffer = jEdit.getLastBuffer();
-    Process compile;
-    String line, makefile_path, lib_path;
-    
-    lib_path = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
-    //Location of makefile and main.c - make general with working directory somehow
-    makefile_path = lib_path + "/../ProjectTemplate/";
-    //File dir = new File("C:\\Users\\Justine Dunham\\Documents\\GitHub\\bumblebee\\ProjectTemplate");
-    //File dir = new File("/Users/jseng/Desktop/jEdit.app/Contents/Resources/Java/ProjectTemplate");
-    File dir = new File(makefile_path);    
-    Object src = evt.getSource();
-    
-    if (src == uploadButton) { //check if upload clicked
-      //Using for testing - prints out current directories from property values
-      console_area.append("Compiler: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath") + "\n");
-      console_area.append("Library: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath") + "\n");
-      console_area.append("Programmer: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath") + "\n");
-      //scroll the area
-      console_area.setCaretPosition (console_area.getDocument().getLength());
-    } else if (src == detectButton) { //check if detect clicked
-      console_area.append("Detect board\n");
-      //scroll the area
-      console_area.setCaretPosition (console_area.getDocument().getLength());
-    } else if (src == compileButton) { //check if compile clicked
-      try {
-      	//Path environment variables - required for mac/linux, use null for windows
-        //String env[] = {"PATH=/usr/bin:/bin:/usr/sbin:/Users/jseng/gccarm/bin"};
-        String env[] = null;
-        String user_src = "USERFOLDER=\"" + curr_buffer.getDirectory().replace(" ", "\\s") + "\"";
-        
-        String make_cmd[] = {"make", user_src};
-        console_area.append(user_src + "\n");
-      	compile = r.exec(make_cmd, env, dir);
-      	inputStreamToOutputStream(compile.getInputStream());
-      	inputStreamToOutputStream(compile.getErrorStream());
+     Buffer curr_buffer = jEdit.getLastBuffer();
+     Process compile;
+     ProcessBuilder pb;
+     String line, makefile_path, lib_path;
+
+     lib_path = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
+     //Location of makefile and main.c - make general with working directory somehow
+     makefile_path = lib_path + "/../ProjectTemplate/";
+     //File dir = new File("C:\\Users\\Justine Dunham\\Documents\\GitHub\\bumblebee\\ProjectTemplate");
+     //File dir = new File("/Users/jseng/Desktop/jEdit.app/Contents/Resources/Java/ProjectTemplate");
+     File dir = new File(makefile_path);    
+     Object src = evt.getSource();
+
+     if (src == uploadButton) { //check if upload clicked
+        //Using for testing - prints out current directories from property values
+        append("Compiler: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath") + "\n", Color.red);
+        append("Library: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath") + "\n", Color.red);
+        append("Programmer: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath") + "\n", Color.red);
         //scroll the area
         console_area.setCaretPosition (console_area.getDocument().getLength());
-      } catch (IOException e) {
-        System.err.println("Caught IOException: " + e.getMessage());
-      }
-    }
+     } else if (src == detectButton) { //check if detect clicked
+        append("Detect board\n", Color.blue);
+        //scroll the area
+        console_area.setCaretPosition (console_area.getDocument().getLength());
+     } else if (src == compileButton) { //check if compile clicked
+        try {
+           //Path environment variables - required for mac/linux, use null for windows
+           String env[] = {"PATH=/usr/bin:/bin:/usr/sbin"};
+           //String env[] = null;
+           //String user_src = "USERFOLDER=\"" + curr_buffer.getDirectory().replace(" ", "\\s") + "\"";
+           dir = new File(jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath"));
+           String cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
+           String gcc_cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath") + "/avr-gcc";
+
+           pb = new ProcessBuilder("java",  "Interpreter", "-dumpAST", curr_buffer.getPath(), "> ./.test.c");
+           pb.directory(new File(jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath")));
+           Map<String, String> e = pb.environment();
+           e.put("PATH", "/usr/bin:/bin:/usr/sbin");
+           Process pro1 = pb.start();
+           InputStream is = pro1.getInputStream();
+           InputStreamReader isr = new InputStreamReader(is);
+           BufferedReader br = new BufferedReader(isr);
+
+           InputStream es = pro1.getErrorStream();
+           InputStreamReader esr = new InputStreamReader(es);
+           BufferedReader br_error = new BufferedReader(esr);
+
+           console_area.setText("");
+
+           append("Stdout:\n", Color.red);
+           Font font = new Font("Verdana", Font.BOLD, 12);
+           while ((line = br.readLine()) != null) {
+              append(line + "\n", Color.red);
+           }
+
+           append("Stderr:\n", Color.yellow);
+           while ((line = br_error.readLine()) != null) {
+              append(line + "\n", Color.yellow);
+           }
+
+           //scroll the area
+           console_area.setCaretPosition (console_area.getDocument().getLength());
+        } catch (IOException e) {
+           System.err.println("Caught IOException: " + e.getMessage());
+        }
+     }
   }
 
     //Finds default directory for compiler
   private String autoDetectGcc() {
     String path = "";
-    String os = System.getProperty("os.name").toLowerCase();
     String userDir = System.getProperty("user.dir");
 
     if (os.indexOf("win") >= 0) {
       path = userDir + "/Windows";
     } else if (os.indexOf("mac") >= 0) {
-      path = userDir + "/MacOSX";
+      //path = userDir + "/MacOSX";
+      path = "/usr/local/CrossPack-AVR/bin";
     } else if (os.indexOf("nux") >= 0) {
       path = userDir + "/Linux";
     }
@@ -279,8 +261,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
 
   //testing code
   void detectBoard() {
-     t = new Thread(new Runnable() {
-           String os = System.getProperty("os.name").toLowerCase();
+     t_detect = new Thread(new Runnable() {
            public void run() {
            while(true) {
            if (os.indexOf("win") >= 0) {
@@ -307,8 +288,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
             }
            } //end run()
            });
-     t.setDaemon(true);  //make this a daemon thread so the JVM will exit
-     t.start();
+     t_detect.setDaemon(true);  //make this a daemon thread so the JVM will exit
+     t_detect.start();
   }
 
   public void focusOnDefaultComponent() {
@@ -377,5 +358,18 @@ implements ActionListener, EBComponent, BumblebeeActions,
 
   public void copyToBuffer() {
      jEdit.newFile(view);
+  }
+
+  public void append(String s, Color c) {
+     try {
+        StyledDocument doc = (StyledDocument) console_area.getDocument();
+
+        SimpleAttributeSet set = new SimpleAttributeSet();
+        StyleConstants.setForeground(set, c);
+
+        doc.insertString(doc.getLength(), s, set);
+     } catch(BadLocationException exc) {
+        exc.printStackTrace();
+     }
   }
 }

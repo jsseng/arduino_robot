@@ -5,21 +5,21 @@
 <!DOCTYPE ACTIONS SYSTEM "actions.dtd">
 
 <ACTIONS>
-	<ACTION NAME="aithon.choose-file">
+	<ACTION NAME="bumblebee.choose-file">
 		<CODE>
 			wm.addDockableWindow(BumblebeePlugin.NAME);
 			wm.getDockableWindow(BumblebeePlugin.NAME).chooseFile();
 		</CODE>
 	</ACTION>
 
-	<ACTION NAME="aithon.save-file">
+	<ACTION NAME="bumblebee.save-file">
 		<CODE>
 			wm.addDockableWindow(BumblebeePlugin.NAME);
 			wm.getDockableWindow(BumblebeePlugin.NAME).saveFile();
 		</CODE>
 	</ACTION>
 
-	<ACTION NAME="aithon.copy-to-buffer">
+	<ACTION NAME="bumblebee.copy-to-buffer">
 		<CODE>
 			wm.addDockableWindow(BumblebeePlugin.NAME);
 			wm.getDockableWindow(BumblebeePlugin.NAME).copyToBuffer();

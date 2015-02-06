@@ -28,6 +28,6 @@ import org.gjt.sp.jedit.EditPlugin;
  * @author Bumblebee Development Team
  */
 public class BumblebeePlugin extends EditPlugin {
-	public static final String NAME = "aithon";
-	public static final String OPTION_PREFIX = "options.aithon.";
+	public static final String NAME = "bumblebee";
+	public static final String OPTION_PREFIX = "options.bumblebee.";
 }

@@ -29,12 +29,12 @@ ActionListener {
 
   public void _init() {
     String prop;
-    showPath = new JCheckBox(jEdit
-        .getProperty(BumblebeePlugin.OPTION_PREFIX
-          + "show-filepath.title"), jEdit.getProperty(
-            BumblebeePlugin.OPTION_PREFIX + "show-filepath").equals(
-              "true"));
-    addComponent(showPath);
+    //showPath = new JCheckBox(jEdit
+    //    .getProperty(BumblebeePlugin.OPTION_PREFIX
+    //      + "show-filepath.title"), jEdit.getProperty(
+    //        BumblebeePlugin.OPTION_PREFIX + "show-filepath").equals(
+    //          "true"));
+    //addComponent(showPath);
 
     //Textfield for finding the compiler's location
     gccPath = new JTextField(jEdit

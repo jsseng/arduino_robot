@@ -54,7 +54,7 @@ options.bumblebee.choose-font=Font:
 options.bumblebee.show-filepath.title=Display notepad file path
 options.bumblebee.gcc-label=Compiler Location:
 options.bumblebee.library-label=Library Location:
-options.bumblebee.prog-label=Programmer Location:
+options.bumblebee.prog-label=Interpreter Location:
 
 # window title
 bumblebee.title=Bumblebee
