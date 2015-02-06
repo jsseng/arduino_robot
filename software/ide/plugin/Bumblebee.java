@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -149,6 +150,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
 
     r = Runtime.getRuntime();
     
+    detectBoard();
+
     //If property for any of the paths hasn't been set (is null or empty string)
     //Calls functions to find a default directory and sets the property
     String prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath");
@@ -266,14 +269,32 @@ implements ActionListener, EBComponent, BumblebeeActions,
   // }}}
 
   //detect the board
+  public static File[] findFilesForId(File dir, final String id) {
+     return dir.listFiles(new FileFilter() {
+           public boolean accept(File pathname) {
+           return pathname.getName().contains(id);
+           }
+           });
+  }
+
   //testing code
   void detectBoard() {
      t = new Thread(new Runnable() {
            String os = System.getProperty("os.name").toLowerCase();
            public void run() {
+           while(true) {
            if (os.indexOf("win") >= 0) {
            //detect board on Windows
            } else if (os.indexOf("mac") >= 0) {
+           File[] matchingFiles = findFilesForId(new File("/dev/"), "usbserial");
+           boolean exists = matchingFiles.length > 0;
+           if (exists) {
+            showSerialTerminal.setSelected(true);
+            showSerialTerminal.setText(matchingFiles[0].getName());
+            } else {
+            showSerialTerminal.setSelected(false);
+            showSerialTerminal.setText("no board");
+            }
            //Mac
            } else if (os.indexOf("nux") >= 0) {
            //Linux
@@ -283,7 +304,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
             Thread.sleep(500);
             } catch (InterruptedException e) {
             }
-           }
+            }
+           } //end run()
            });
      t.setDaemon(true);  //make this a daemon thread so the JVM will exit
      t.start();
