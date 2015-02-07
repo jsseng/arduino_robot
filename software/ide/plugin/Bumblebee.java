@@ -40,9 +40,10 @@ implements ActionListener, EBComponent, BumblebeeActions,
   private boolean floating;
 
   private JButton detectButton;
+  private JButton helpButton;
   private JButton uploadButton;
   private JButton compileButton;
-  private JToggleButton showSerialTerminal;
+  private JLabel showSerialTerminal;
   private JTextPane console_area;
   private JScrollPane console_scrollbars;
   private Runtime r;
@@ -87,6 +88,11 @@ implements ActionListener, EBComponent, BumblebeeActions,
     detectButton.setPreferredSize(button_size);
     detectButton.addActionListener(this);
     
+    helpButton = new JButton("Help");
+    helpButton.setText("Help");
+    helpButton.setPreferredSize(button_size);
+    helpButton.addActionListener(this);
+
     compileButton = new JButton("Compile");
     compileButton.setText("<html><center>"+"Compile"+"</center></html>");
     compileButton.setPreferredSize(button_size);
@@ -97,12 +103,13 @@ implements ActionListener, EBComponent, BumblebeeActions,
     uploadButton.setPreferredSize(button_size);
     uploadButton.addActionListener(this);
     
-    showSerialTerminal = new JToggleButton("Serial Terminal");
+    showSerialTerminal = new JLabel("Serial Terminal");
     showSerialTerminal.setPreferredSize(button_size);
     
     //buttons.add(detectButton);
     buttons.add(compileButton);
     buttons.add(uploadButton);
+    buttons.add(helpButton);
     buttons.add(showSerialTerminal);
 
     add(buttons);
@@ -214,6 +221,36 @@ implements ActionListener, EBComponent, BumblebeeActions,
         } catch (IOException e) {
            System.err.println("Caught IOException: " + e.getMessage());
         }
+     } else if (src == helpButton) {
+      console_area.setText("");
+      append("define label = analogPinIn[0]\n", Color.yellow);
+      append("define label = digitalPinIn[0]\n", Color.yellow);
+      append("define label = digitalPinOut[0]\n", Color.yellow);
+      append("define label = motor[0]\n", Color.yellow);
+      append("define label = servo[0]\n", Color.yellow);
+      append("\n", Color.yellow);
+      append("variable x = 1   declare a new variable x and set it equal to 1\n", Color.yellow);
+      append("when start {} = first block to run in the program\n", Color.yellow);
+      append("repeat {} = continuously loop\n", Color.yellow);
+      append("repeat 5 times {} = repeat this block 5 times\n", Color.yellow);
+      append("\n", Color.yellow);
+      append("\n", Color.yellow);
+      append("if x < 5 {} = if x is less than 5 run block\n", Color.yellow);
+      append("\n", Color.yellow);
+      append("\n", Color.yellow);
+      append("func f1 () {} = function f1 with no parameters\n", Color.yellow);
+      append("func f1 (variable x) {} = function f1 with 1 parameter x\n", Color.yellow);
+      append("\n", Color.yellow);
+      append("\n", Color.yellow);
+      append("sleep(500)    sleep 500 milliseconds\n", Color.yellow);
+      append("set x 50      set x to 50\n", Color.yellow);
+
+
+
+
+
+
+
      }
   }
 
@@ -270,11 +307,11 @@ implements ActionListener, EBComponent, BumblebeeActions,
            File[] matchingFiles = findFilesForId(new File("/dev/"), "usbserial");
            boolean exists = matchingFiles.length > 0;
            if (exists) {
-            showSerialTerminal.setSelected(true);
+            //showSerialTerminal.setSelected(true);
             showSerialTerminal.setText(matchingFiles[0].getName());
             } else {
-            showSerialTerminal.setSelected(false);
-            showSerialTerminal.setText("no board");
+            //showSerialTerminal.setSelected(false);
+            showSerialTerminal.setText("no board detected");
             }
            //Mac
            } else if (os.indexOf("nux") >= 0) {
