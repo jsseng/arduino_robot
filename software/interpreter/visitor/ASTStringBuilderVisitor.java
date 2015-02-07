@@ -302,7 +302,7 @@ extends ASTVisitor<StringBuilder>
    public StringBuilder visit(SleepStatement t)
    {
       lineNum = t.getLineNum();
-      return new StringBuilder("_delay_ms(1000 * (" + t.getDuration().visit(this) + "));\n");
+      return new StringBuilder("_delay_ms(" + t.getDuration().visit(this) + ");\n");
    }
 
    public StringBuilder visit(StopStatement t) {
