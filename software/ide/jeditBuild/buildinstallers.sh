@@ -37,7 +37,7 @@ cp ../launch4j-macosx.tgz ./lib/launch4j
 #ant dist
 
 mkdir -p ./lib/default-plugins
-cp ../../plugin/jars/Aithon.jar ./lib/default-plugins
+cp ../../plugin/jars/Bumblebee.jar ./lib/default-plugins
 #set -e
 
 #copy the modified build.xml for 5.1.1
