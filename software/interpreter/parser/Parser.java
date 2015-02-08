@@ -220,15 +220,15 @@ public class Parser
             nextToken();
             match(TokenCode.TK_RBRACKET);
             return new DigitalPin(id, num, num2, false);
-         case TK_GYROSCOPE:
-            match(TokenCode.TK_GYROSCOPE);
+         case TK_ACCELEROMETER:
+            match(TokenCode.TK_ACCELEROMETER);
             match(TokenCode.TK_LBRACKET);
             Token t = _currentToken;
             String s = matchIdentifier();
             match(TokenCode.TK_RBRACKET);
             if (!Arrays.asList(new String[]{"X", "Y", "Z"}).contains(s))
             {
-               expected("'X' | 'Y' | 'Z' for gyroscope axis", t);
+               expected("'X' | 'Y' | 'Z' for accelerometer axis", t);
             }
             return new Gyroscope(id, s);
          case TK_MOTOR:
@@ -246,7 +246,7 @@ public class Parser
             match(TokenCode.TK_RBRACKET);
             return new Servo(id, num);
          default:
-            expected("'analogPinIn | digitalPinsOut | digitalPinsIn | servo | TL | TR | BL | BR'", _currentToken);
+            expected("'analogIn | digitalOut | digitalIn | servo | motor'", _currentToken);
             return null;
       }
    }
