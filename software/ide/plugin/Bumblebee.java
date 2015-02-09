@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.Map;
+//import bumblebee.Interpreter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -51,6 +52,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
   private Thread t, t_detect;
   private BufferedWriter out;
   private String os;
+  private Interpreter i;
+  private String board_device;
     // }}}
 
     // {{{ Constructor
@@ -62,96 +65,96 @@ implements ActionListener, EBComponent, BumblebeeActions,
    * 	see @ref DockableWindowManager for possible values.
    */
   public Bumblebee(View view, String position) throws IOException{
-    //The top level layout is a BoxLayout with the boxes side by side.
-    //The buttons on the left and the console on the right.
-    this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-    this.view = view;
-    this.floating = position.equals(DockableWindowManager.FLOATING);
+     //The top level layout is a BoxLayout with the boxes side by side.
+     //The buttons on the left and the console on the right.
+     this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+     this.view = view;
+     this.floating = position.equals(DockableWindowManager.FLOATING);
 
-    if (floating)
-      this.setPreferredSize(new Dimension(500, 250));
+     if (floating)
+        this.setPreferredSize(new Dimension(500, 250));
 
-    //The buttons panel is a FlowLayout with a fixed maximum size which
-    //forces the buttons to be arranged in a single column.
-    BufferedImage bumblebee_logo = ImageIO.read(getClass().getResource("/images/AithonEmblemRedClear.png"));
-    JLabel picLabel = new JLabel(new ImageIcon(bumblebee_logo));
-    add(picLabel);
-    
-    Dimension button_size = new Dimension(120, 25);
-    JPanel buttons = new JPanel();
-    buttons.setLayout(new FlowLayout());
-    buttons.setPreferredSize(new Dimension(150,180));
-    buttons.setMaximumSize(new Dimension(150, 180));
-    
-    detectButton = new JButton("Detect\nBoard");
-    detectButton.setText("Detect Board");
-    detectButton.setPreferredSize(button_size);
-    detectButton.addActionListener(this);
-    
-    helpButton = new JButton("Help");
-    helpButton.setText("Help");
-    helpButton.setPreferredSize(button_size);
-    helpButton.addActionListener(this);
+     //The buttons panel is a FlowLayout with a fixed maximum size which
+     //forces the buttons to be arranged in a single column.
+     BufferedImage bumblebee_logo = ImageIO.read(getClass().getResource("/images/AithonEmblemRedClear.png"));
+     JLabel picLabel = new JLabel(new ImageIcon(bumblebee_logo));
+     add(picLabel);
 
-    compileButton = new JButton("Compile");
-    compileButton.setText("<html><center>"+"Compile"+"</center></html>");
-    compileButton.setPreferredSize(button_size);
-    compileButton.addActionListener(this);
-    
-    uploadButton = new JButton("Upload");
-    uploadButton.setText("<html><center>"+"Upload"+"</center></html>");
-    uploadButton.setPreferredSize(button_size);
-    uploadButton.addActionListener(this);
-    
-    showSerialTerminal = new JLabel("Serial Terminal");
-    showSerialTerminal.setPreferredSize(button_size);
-    
-    //buttons.add(detectButton);
-    buttons.add(compileButton);
-    buttons.add(uploadButton);
-    buttons.add(helpButton);
-    buttons.add(showSerialTerminal);
+     Dimension button_size = new Dimension(120, 25);
+     JPanel buttons = new JPanel();
+     buttons.setLayout(new FlowLayout());
+     buttons.setPreferredSize(new Dimension(150,180));
+     buttons.setMaximumSize(new Dimension(150, 180));
 
-    add(buttons);
+     detectButton = new JButton("Detect\nBoard");
+     detectButton.setText("Detect Board");
+     detectButton.setPreferredSize(button_size);
+     detectButton.addActionListener(this);
 
-    //create the console area
-    console_area = new JTextPane();
-    //console_area.setLineWrap(true);
-    //console_area.setWrapStyleWord(true);
-    console_area.setEditable(false);
-    console_area.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+     helpButton = new JButton("Help");
+     helpButton.setText("Help");
+     helpButton.setPreferredSize(button_size);
+     helpButton.addActionListener(this);
 
-    console_scrollbars = new JScrollPane (console_area,
-    	    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
-    	    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    Color color=new Color(0,0,0); //set background to black
-    console_area.setBackground(color);
+     compileButton = new JButton("Compile");
+     compileButton.setText("<html><center>"+"Compile"+"</center></html>");
+     compileButton.setPreferredSize(button_size);
+     compileButton.addActionListener(this);
 
-    Color color2=new Color(180,180,180); //set foreground to gray
-    console_area.setForeground(color2);
+     uploadButton = new JButton("Upload");
+     uploadButton.setText("<html><center>"+"Upload"+"</center></html>");
+     uploadButton.setPreferredSize(button_size);
+     uploadButton.addActionListener(this);
 
-    add(console_scrollbars);
+     showSerialTerminal = new JLabel("Serial Terminal");
+     showSerialTerminal.setPreferredSize(button_size);
 
-    r = Runtime.getRuntime();
-    
-    detectBoard();
-    os = System.getProperty("os.name").toLowerCase();
+     //buttons.add(detectButton);
+     buttons.add(compileButton);
+     buttons.add(uploadButton);
+     buttons.add(helpButton);
+     buttons.add(showSerialTerminal);
 
-    //If property for any of the paths hasn't been set (is null or empty string)
-    //Calls functions to find a default directory and sets the property
-    String prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath");
-    if (prop == null || prop.equals("")) {
-      autoDetectGcc();
-    }
-    prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
-    if (prop == null || prop.equals("")) {
-      bumblebeeLibraryPath();
-    }
-    prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath");
-    if (prop == null || prop.equals("")) {
-      bumblebeeProgrammerPath();
-    }
-    
+     add(buttons);
+
+     //create the console area
+     console_area = new JTextPane();
+     //console_area.setLineWrap(true);
+     //console_area.setWrapStyleWord(true);
+     console_area.setEditable(false);
+     console_area.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+
+     console_scrollbars = new JScrollPane (console_area,
+           JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
+           JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+     Color color=new Color(0,0,0); //set background to black
+     console_area.setBackground(color);
+
+     Color color2=new Color(180,180,180); //set foreground to gray
+     console_area.setForeground(color2);
+
+     add(console_scrollbars);
+
+     r = Runtime.getRuntime();
+
+     detectBoard();
+     os = System.getProperty("os.name").toLowerCase();
+
+     //If property for any of the paths hasn't been set (is null or empty string)
+     //Calls functions to find a default directory and sets the property
+     String prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath");
+     if (prop == null || prop.equals("")) {
+        autoDetectGcc();
+     }
+     prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
+     if (prop == null || prop.equals("")) {
+        bumblebeeLibraryPath();
+     }
+     prop = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath");
+     if (prop == null || prop.equals("")) {
+        bumblebeeProgrammerPath();
+     }
+
   }
 
   //invoked when the buttons are clicked
@@ -182,6 +185,13 @@ implements ActionListener, EBComponent, BumblebeeActions,
         console_area.setCaretPosition (console_area.getDocument().getLength());
      } else if (src == compileButton) { //check if compile clicked
         try {
+           //try {
+           //   System.setOut(new PrintStream(new FileOutputStream("/Users/jseng/output-file.txt"), true));
+           //} catch (Exception e) {
+           //   e.printStackTrace();
+           //}
+           //String a[] = {"-dumpAST", curr_buffer.getPath()};
+           //Interpreter.main(a);
            //Path environment variables - required for mac/linux, use null for windows
            String env[] = {"PATH=/usr/bin:/bin:/usr/sbin"};
            //String env[] = null;
@@ -206,10 +216,18 @@ implements ActionListener, EBComponent, BumblebeeActions,
            console_area.setText("");
 
            append("Stdout:\n", Color.red);
+           //append(jEdit.getLastBuffer().getDirectory() + "/.test.c", Color.red);
+
+           File fout = new File(jEdit.getLastBuffer().getDirectory() + ".test.c");
+           FileOutputStream fos = new FileOutputStream(fout);
+           BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+                
            Font font = new Font("Verdana", Font.BOLD, 12);
            while ((line = br.readLine()) != null) {
               append(line + "\n", Color.red);
+              bw.write(line + "\n");
            }
+           bw.close();
 
            append("Stderr:\n", Color.yellow);
            while ((line = br_error.readLine()) != null) {
@@ -222,68 +240,61 @@ implements ActionListener, EBComponent, BumblebeeActions,
            System.err.println("Caught IOException: " + e.getMessage());
         }
      } else if (src == helpButton) {
-      console_area.setText("");
-      append("define label = analogPinIn[0]\n", Color.yellow);
-      append("define label = digitalPinIn[0]\n", Color.yellow);
-      append("define label = digitalPinOut[0]\n", Color.yellow);
-      append("define label = motor[0]\n", Color.yellow);
-      append("define label = servo[0]\n", Color.yellow);
-      append("\n", Color.yellow);
-      append("variable x = 1   declare a new variable x and set it equal to 1\n", Color.yellow);
-      append("when start {} = first block to run in the program\n", Color.yellow);
-      append("repeat {} = continuously loop\n", Color.yellow);
-      append("repeat 5 times {} = repeat this block 5 times\n", Color.yellow);
-      append("\n", Color.yellow);
-      append("\n", Color.yellow);
-      append("if x < 5 {} = if x is less than 5 run block\n", Color.yellow);
-      append("\n", Color.yellow);
-      append("\n", Color.yellow);
-      append("func f1 () {} = function f1 with no parameters\n", Color.yellow);
-      append("func f1 (variable x) {} = function f1 with 1 parameter x\n", Color.yellow);
-      append("\n", Color.yellow);
-      append("\n", Color.yellow);
-      append("sleep(500)    sleep 500 milliseconds\n", Color.yellow);
-      append("set x 50      set x to 50\n", Color.yellow);
-
-
-
-
-
-
-
+        console_area.setText("");
+        append("define label = analogIn[0]\n", Color.yellow);
+        append("define label = digitalIn[0]\n", Color.yellow);
+        append("define label = digitalOut[0]\n", Color.yellow);
+        append("define label = motor[0]\n", Color.yellow);
+        append("define label = servo[0]\n", Color.yellow);
+        append("\n", Color.yellow);
+        append("var x = 1   declare a new variable x and set it equal to 1\n", Color.yellow);
+        append("when start {} = first block to run in the program\n", Color.yellow);
+        append("repeat {} = continuously loop\n", Color.yellow);
+        append("repeat 5 times {} = repeat this block 5 times\n", Color.yellow);
+        append("\n", Color.yellow);
+        append("\n", Color.yellow);
+        append("if x < 5 {} = if x is less than 5 run block\n", Color.yellow);
+        append("\n", Color.yellow);
+        append("\n", Color.yellow);
+        append("func f1 () {} = function f1 with no parameters\n", Color.yellow);
+        append("func f1 (var x) {} = function f1 with 1 parameter x\n", Color.yellow);
+        append("\n", Color.yellow);
+        append("\n", Color.yellow);
+        append("sleep(500)    sleep 500 milliseconds\n", Color.yellow);
+        append("set x 50      set x to 50\n", Color.yellow);
      }
   }
 
-    //Finds default directory for compiler
+  //Finds default directory for compiler
   private String autoDetectGcc() {
-    String path = "";
-    String userDir = System.getProperty("user.dir");
+     String path = "";
+     String userDir = System.getProperty("user.dir");
 
-    if (os.indexOf("win") >= 0) {
-      path = userDir + "/Windows";
-    } else if (os.indexOf("mac") >= 0) {
-      //path = userDir + "/MacOSX";
-      path = "/usr/local/CrossPack-AVR/bin";
-    } else if (os.indexOf("nux") >= 0) {
-      path = userDir + "/Linux";
-    }
+     if (os.indexOf("win") >= 0) {
+        path = userDir + "/Windows";
+     } else if (os.indexOf("mac") >= 0) {
+        //path = userDir + "/MacOSX";
+        path = "/usr/local/CrossPack-AVR/bin";
+     } else if (os.indexOf("nux") >= 0) {
+        path = userDir + "/Linux";
+     }
 
-    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath", path);
-    return path;
+     jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath", path);
+     return path;
   }
 
   //Finds default directory for library
   private String bumblebeeLibraryPath() {
-    String path = jEdit.getJEditHome() + "/BumblebeeLibrary/";
-    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath", path);
-    return path;
+     String path = jEdit.getJEditHome() + "/BumblebeeLibrary/";
+     jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath", path);
+     return path;
   }
 
   //Finds default directory for programmer/uploader
   private String bumblebeeProgrammerPath() {
-    String path = jEdit.getJEditHome() + "/BumblebeeLibrary/Programmer";
-    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath", path);    
-    return path;
+     String path = jEdit.getJEditHome() + "/BumblebeeLibrary/Programmer";
+     jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath", path);    
+     return path;
   }
   // }}}
 
@@ -299,32 +310,34 @@ implements ActionListener, EBComponent, BumblebeeActions,
   //testing code
   void detectBoard() {
      t_detect = new Thread(new Runnable() {
-           public void run() {
-           while(true) {
-           if (os.indexOf("win") >= 0) {
-           //detect board on Windows
-           } else if (os.indexOf("mac") >= 0) {
-           File[] matchingFiles = findFilesForId(new File("/dev/"), "usbserial");
-           boolean exists = matchingFiles.length > 0;
-           if (exists) {
-            //showSerialTerminal.setSelected(true);
-            showSerialTerminal.setText(matchingFiles[0].getName());
+       public void run() {
+         while(true) {
+         if (os.indexOf("win") >= 0) {
+         //detect board on Windows
+         } else if (os.indexOf("mac") >= 0) {
+            File[] matchingFiles = findFilesForId(new File("/dev/"), "usbserial");
+            boolean exists = matchingFiles.length > 0;
+            if (exists) {
+               //showSerialTerminal.setSelected(true);
+               showSerialTerminal.setText(matchingFiles[0].getName());
+               board_device = matchingFiles[0].getName();
             } else {
-            //showSerialTerminal.setSelected(false);
-            showSerialTerminal.setText("no board detected");
+               //showSerialTerminal.setSelected(false);
+               showSerialTerminal.setText("no board detected");
+               board_device = "";
             }
            //Mac
            } else if (os.indexOf("nux") >= 0) {
            //Linux
            }
 
-            try {
-            Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
-            }
+           try {
+              Thread.sleep(500);
+           } catch (InterruptedException e) {
+           }
+           }
            } //end run()
-           });
+     });
      t_detect.setDaemon(true);  //make this a daemon thread so the JVM will exit
      t_detect.start();
   }
@@ -361,7 +374,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
      super.addNotify();
      EditBus.addToBus(this);
   }
-     
+
   public void removeNotify() {
      saveFile();
      super.removeNotify();
@@ -410,3 +423,5 @@ implements ActionListener, EBComponent, BumblebeeActions,
      }
   }
 }
+
+// vim: noai:ts=3:sw=3
