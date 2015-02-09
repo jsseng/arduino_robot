@@ -1,8 +1,14 @@
-BOARD_LIB = ../library
+SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
+BOARD_LIB = $(SELF_DIR)../library
 
 main: main.c $(wildcard $(BOARD_LIB)/*.c)
-	#avr-gcc -DF_CPU=20000000L -Wall -mmcu=atmega325pa -O2 -o main.elf main.c adc.c servo.c motor.c lcd.c utility.c i2c.c
 	avr-gcc -I$(BOARD_LIB) -DF_CPU=20000000L -Wall -mmcu=atmega325pa -O2 -o main.elf main.c $(wildcard $(BOARD_LIB)/*.c)
+	avr-objcopy -O ihex main.elf main.hex
+	avr-size main.elf
+
+ide: .test.c $(wildcard $(BOARD_LIB)/*.c)
+	echo $(SELF_DIR)
+	avr-gcc -I$(BOARD_LIB) -DF_CPU=20000000L -Wall -mmcu=atmega325pa -O2 -o main.elf .test.c $(wildcard $(BOARD_LIB)/*.c)
 	avr-objcopy -O ihex main.elf main.hex
 	avr-size main.elf
 
