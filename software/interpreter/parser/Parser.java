@@ -294,12 +294,14 @@ public class Parser
          case TK_DISPLAY:
             s = parseDisplay();
             break;
+         /*
          case TK_MOVE:
             s = parseMove();
             break;
          case TK_TURN:
             s = parseTurn();
             break;
+         */
          case TK_SLEEP:
             s = parseSleep();
             break;
@@ -485,6 +487,7 @@ public class Parser
       }
    }
 
+   /*
    private TokenCode matchDirection() throws ScannerException
    {
       switch(_currentToken.code()) {
@@ -505,6 +508,7 @@ public class Parser
             return null;
       }
    }
+   */
 
    private Statement[] parseBlockStatement() throws ScannerException
    {
@@ -644,6 +648,7 @@ public class Parser
       return s;
    }
 
+   /*
    private Statement parseMove() throws ScannerException
    {
       match(TokenCode.TK_MOVE);
@@ -674,6 +679,7 @@ public class Parser
             return null;
       }
    }
+   */
 
    private Statement parseRotateStatement(Servo s) throws ScannerException
    {
@@ -1250,7 +1256,7 @@ public class Parser
          || tk.equals(TokenCode.TK_LBRACE)
          || tk.equals(TokenCode.TK_IF)
          || tk.equals(TokenCode.TK_REPEAT)
-         || tk.equals(TokenCode.TK_MOVE)
+         // || tk.equals(TokenCode.TK_MOVE)
          || tk.equals(TokenCode.TK_SET)
          || tk.equals(TokenCode.TK_SLEEP)
          ;
@@ -1321,7 +1327,6 @@ public class Parser
 
    private static void error(String msg)
    {
-      Thread.dumpStack();
       System.err.println(msg);
       System.exit(1);
    }

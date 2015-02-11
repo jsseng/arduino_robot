@@ -275,6 +275,10 @@ public class Scanner
       {
          return new Token(TokenCode.TK_NE, id, lineNumber);
       }
+      if (tk == TokenCode.TK_VARIABLE2)
+      {
+         return new Token(TokenCode.TK_VARIABLE, id, lineNumber);
+      }
       if (tk != TokenCode.TK_NONE)
       {
          return new Token(tk, lineNumber);
