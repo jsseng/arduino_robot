@@ -83,3 +83,5 @@ public class Interpreter
       }
    }
 }
+
+// vim: ts=3:sw=3
