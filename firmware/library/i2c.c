@@ -45,10 +45,10 @@ void clock_scl() {
 }
 
 //send the register address to read
-void send_address(u08 reg, u08 read) {
+void send_address(u08 addr, u08 reg, u08 read) {
    u08 i;
-   //u08 addr = MMA8453_ADDR;
-   u08 addr = 0x1C;
+   //u08 addr = 0x1C; //MMA8453 accelerometer
+   //addr = 0x1E; //compass
 
    unlock_bus();
 
@@ -165,9 +165,10 @@ void write_register(u08* data, u08 num) {
 
 }
 
-void read_register(u08* data, u08 num) {
+void read_register(u08 addr, u08* data, u08 num) {
    u08 i,j;
-   u08 addr = MMA8453_ADDR;
+   //u08 addr = MMA8453_ADDR;
+   //addr = COMPASS_ADDR; //compass
 
    i2c_start(); //send start bit
 
@@ -240,26 +241,26 @@ void read_register(u08* data, u08 num) {
    i2c_stop();
 }
 
-void i2c_regwrite(u08 address, u08 data) {
-   send_address(address,0);
+void i2c_regwrite(u08 dev_addr, u08 address, u08 data) {
+   send_address(dev_addr, address,0);
    write_register(&data,1);
 }
 
-u08 i2c_regread(u08 address) {
+u08 i2c_regread(u08 dev_addr, u08 address) {
    u08 temp;
-   send_address(address,1);
-   read_register(&temp,1);
+   send_address(dev_addr, address,1);
+   read_register(dev_addr, &temp,1);
    return temp;
 }
 
 u08 get_accel_x() {
-   return i2c_regread(0x1);
+   return i2c_regread(MMA8453_ADDR,0x1);
 }
 
 u08 get_accel_y() {
-   return i2c_regread(0x3);
+   return i2c_regread(MMA8453_ADDR,0x3);
 }
 
 u08 get_accel_z() {
-   return i2c_regread(0x5);
+   return i2c_regread(MMA8453_ADDR,0x5);
 }

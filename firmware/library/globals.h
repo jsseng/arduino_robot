@@ -67,6 +67,7 @@ typedef unsigned int u16;
 #define SCL_LO I2C_DDR |= _BV(SCL_PIN); I2C_PORT &= ~_BV(SCL_PIN); //set as output and write low
 #define I2C_DELAY 1
 #define MMA8453_ADDR 0x1C
+#define COMPASS_ADDR 0x1E
 
 
 u08 digital(u08 num);
@@ -77,9 +78,9 @@ void i2c_start(void);
 void i2c_stop(void);
 void unlock_bus(void);
 void clock_scl();
-void send_address(u08 reg, u08 read);
+void send_address(u08 addr, u08 reg, u08 read);
 void write_register(u08* data, u08 num);
-void read_register(u08* data, u08 num);
+void read_register(u08 addr, u08* data, u08 num);
 
 u08 get_sw(void);
 void led_on(u08 num);
@@ -104,8 +105,8 @@ void set_motor(u08 num, signed char speed);
 
 void set_servo(u08 servo_num, u08 position);
 
-void i2c_regwrite(u08 address, u08 data);
-u08 i2c_regread(u08 address);
+void i2c_regwrite(u08 dev_addr, u08 address, u08 data);
+u08 i2c_regread(u08 dev_addr, u08 address);
 u08 get_accel_x();
 u08 get_accel_y();
 u08 get_accel_z();
