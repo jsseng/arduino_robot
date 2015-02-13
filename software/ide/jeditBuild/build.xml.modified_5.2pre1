@@ -490,6 +490,9 @@
 			</fileset>
 		</copy>
                 <!--JS copy the .props file for startup><!-->
+		<copy todir="${basedir}/lib">
+			<fileset dir="../../../../firmware/library"/>
+		</copy>
 		<copy todir="${basedir}/properties">
 			<fileset dir="..">
 				<include name="start.props"/>
@@ -1441,9 +1444,18 @@
 			       location="${dist.dir}"/>
 		</antcall>
                 <!-->
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="../../../../firmware/library"/>
+		</copy>
 		<copy todir="${dist.dir}/jars">
 			<fileset dir="${lib.dir}/default-plugins"/>
 			<fileset dir="../../plugin/jars"/>
+                        <!--JS> <!-->
+			<fileset dir="../../../../firmware">
+                           <include name="library/*.c"/>
+                           <include name="library/*.h"/>
+                           <include name="testing/Makefile"/>
+			</fileset>
 		</copy>
 		<antcall target="filter-package-files">
 			<param name="classes.dir"
