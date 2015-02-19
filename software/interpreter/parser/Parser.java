@@ -193,33 +193,27 @@ public class Parser
       int num, num2;
       switch (_currentToken.code())
       {
-         case TK_ANALOGPININ:
-            match(TokenCode.TK_ANALOGPININ);
+         case TK_ANALOGIN:
+            match(TokenCode.TK_ANALOGIN);
             match(TokenCode.TK_LBRACKET);
             num = Integer.parseInt(_currentToken.toString());
             nextToken();
             match(TokenCode.TK_RBRACKET);
             return new AnalogPin(id, num);
-         case TK_DIGITALPINSOUT:
-            match(TokenCode.TK_DIGITALPINSOUT);
+         case TK_DIGITALOUT:
+            match(TokenCode.TK_DIGITALOUT);
             match(TokenCode.TK_LBRACKET);
             num = Integer.parseInt(_currentToken.toString());
             nextToken();
-            match(TokenCode.TK_COMMA);
-            num2 = Integer.parseInt(_currentToken.toString());
-            nextToken();
             match(TokenCode.TK_RBRACKET);
-            return new DigitalPin(id, num, num2, true);
-         case TK_DIGITALPINSIN:
-            match(TokenCode.TK_DIGITALPINSIN);
+            return new DigitalPin(id, num, true);
+         case TK_DIGITALIN:
+            match(TokenCode.TK_DIGITALIN);
             match(TokenCode.TK_LBRACKET);
             num = Integer.parseInt(_currentToken.toString());
             nextToken();
-            match(TokenCode.TK_COMMA);
-            num2 = Integer.parseInt(_currentToken.toString());
-            nextToken();
             match(TokenCode.TK_RBRACKET);
-            return new DigitalPin(id, num, num2, false);
+            return new DigitalPin(id, num, false);
          case TK_ACCELEROMETER:
             match(TokenCode.TK_ACCELEROMETER);
             match(TokenCode.TK_LBRACKET);
