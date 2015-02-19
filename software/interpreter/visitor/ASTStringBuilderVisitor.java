@@ -9,6 +9,7 @@ import java.util.*;
 
 import visitor.*;
 import ast.*;
+import parser.*;
 
 public class ASTStringBuilderVisitor
 extends ASTVisitor<StringBuilder>
@@ -929,6 +930,6 @@ extends ASTVisitor<StringBuilder>
    private void expected(String s)
    {
       System.err.println(s + " at line " + lineNum);
-      System.exit(0);
+      throw new ExpectedException(s + " at line " + lineNum);
    }
 }

@@ -2,6 +2,7 @@ package ast;
 
 import visitor.ASTVisitor;
 import visitor.StatementVisitor;
+import parser.*;
 
 public class AssignmentStatement
    extends Statement
@@ -12,8 +13,7 @@ public class AssignmentStatement
    public AssignmentStatement(Expression dest, Expression src)
    {
        if (!(dest instanceof IdentifierExpression)) {
-	   System.out.println("Expected an identifier expression.");
-	   System.exit(0);
+	   throw new ExpectedException("Expected an identifier expression.");
        }
        else {
 	   _dest = (IdentifierExpression)dest;

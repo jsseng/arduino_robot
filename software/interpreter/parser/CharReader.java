@@ -68,9 +68,8 @@ public class CharReader
       catch (IOException e)
       {
          System.err.println("Unexpected I/O error.");
-         System.exit(1);
+         throw new ExpectedException("Unexpected I/O error.");
       }
-      return -1;
    }
 }
 

@@ -52,7 +52,7 @@ public class Scanner
       else
       {
          System.err.println("Already one in unget");
-         System.exit(0);
+         throw new ExpectedException("Already one in unget");
       }
    }
 

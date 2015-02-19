@@ -366,8 +366,7 @@ public class Parser
             }
             else
             {
-               System.err.println("Expected a statement, found a lonely identifier with the next token " + _currentToken);
-               System.exit(0);
+               throw new ExpectedException("Expected a statement, found a lonely identifier with the next token " + _currentToken);
             }
             break;
          case TK_NUM:
@@ -1327,7 +1326,6 @@ public class Parser
 
    private static void error(String msg)
    {
-      System.err.println(msg);
-      System.exit(1);
+      throw new ExpectedException(msg);
    }
 }
