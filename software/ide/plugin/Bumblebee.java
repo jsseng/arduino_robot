@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.Map;
-//import bumblebee.Interpreter;
+//import Interpreter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -52,7 +52,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
   private Thread t, t_detect;
   private BufferedWriter out;
   private String os;
-  private Interpreter i;
+  private Interpreter interp;
   private String board_device;
     // }}}
 
@@ -70,6 +70,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
      this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
      this.view = view;
      this.floating = position.equals(DockableWindowManager.FLOATING);
+   
+     interp = new Interpreter();
 
      if (floating)
         this.setPreferredSize(new Dimension(500, 250));
@@ -185,13 +187,6 @@ implements ActionListener, EBComponent, BumblebeeActions,
         console_area.setCaretPosition (console_area.getDocument().getLength());
      } else if (src == compileButton) { //check if compile clicked
         try {
-           //try {
-           //   System.setOut(new PrintStream(new FileOutputStream("/Users/jseng/output-file.txt"), true));
-           //} catch (Exception e) {
-           //   e.printStackTrace();
-           //}
-           //String a[] = {"-dumpAST", curr_buffer.getPath()};
-           //Interpreter.main(a);
            //Path environment variables - required for mac/linux, use null for windows
            String env[] = {"PATH=/usr/bin:/bin:/usr/sbin"};
            //String env[] = null;
@@ -200,39 +195,57 @@ implements ActionListener, EBComponent, BumblebeeActions,
            String cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
            String gcc_cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath") + "/avr-gcc";
 
-           pb = new ProcessBuilder("java",  "Interpreter", "-dumpAST", curr_buffer.getPath(), "> ./.test.c");
-           pb.directory(new File(jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath")));
-           Map<String, String> e = pb.environment();
-           e.put("PATH", "/usr/bin:/bin:/usr/sbin");
-           Process pro1 = pb.start();
-           InputStream is = pro1.getInputStream();
+//--------------
+           /*InputStream is = pro1.getInputStream();
            InputStreamReader isr = new InputStreamReader(is);
            BufferedReader br = new BufferedReader(isr);
 
            InputStream es = pro1.getErrorStream();
            InputStreamReader esr = new InputStreamReader(es);
-           BufferedReader br_error = new BufferedReader(esr);
-
-           console_area.setText("");
-
-           append("Stdout:\n", Color.red);
-           //append(jEdit.getLastBuffer().getDirectory() + "/.test.c", Color.red);
+           BufferedReader br_error = new BufferedReader(esr); 
 
            File fout = new File(jEdit.getLastBuffer().getDirectory() + ".test.c");
            FileOutputStream fos = new FileOutputStream(fout);
-           BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-                
+           BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));*/
+           ByteArrayOutputStream baos = new ByteArrayOutputStream();
+           System.setOut(new PrintStream(baos));
+           StringReader sr1= new StringReader(baos.toString()); // wrap your String
+           BufferedReader br= new BufferedReader(sr1); // wrap your StringReader
+
+           ByteArrayOutputStream baes = new ByteArrayOutputStream();
+           System.setErr(new PrintStream(baes));
+           StringReader sr2= new StringReader(baes.toString()); // wrap your String
+           BufferedReader br_error = new BufferedReader(sr2); // wrap your StringReader
+
+           console_area.setText("");
+           try {
+             //run the interpreter
+             interp.run(curr_buffer.getPath());
+           } catch (Exception e) {
+             console_area.setText("Caught Exception: " + e.getMessage() + "\n\n\n");
+           }    
+
+           //restore stdout and stderr
+           new PrintStream(new FileOutputStream(FileDescriptor.out));
+           new PrintStream(new FileOutputStream(FileDescriptor.err));
+//--------------
+
+           //display stdout in red
+           append("Stdout:\n", Color.red);
+           append(baos.toString(), Color.red);
            Font font = new Font("Verdana", Font.BOLD, 12);
            while ((line = br.readLine()) != null) {
               append(line + "\n", Color.red);
-              bw.write(line + "\n");
+              //bw.write(line + "\n");
            }
-           bw.close();
+           //bw.close();
 
+           //display stderr in yellow
            append("Stderr:\n", Color.yellow);
-           while ((line = br_error.readLine()) != null) {
-              append(line + "\n", Color.yellow);
-           }
+           append(baes.toString(), Color.yellow);
+           //while ((line = br_error.readLine()) != null) {
+           //   append(line + "\n", Color.yellow);
+           //}
 
            //scroll the area
            console_area.setCaretPosition (console_area.getDocument().getLength());
@@ -247,21 +260,34 @@ implements ActionListener, EBComponent, BumblebeeActions,
         append("define label = motor[0]\n", Color.yellow);
         append("define label = servo[0]\n", Color.yellow);
         append("\n", Color.yellow);
-        append("var x = 1   declare a new variable x and set it equal to 1\n", Color.yellow);
-        append("when start {} = first block to run in the program\n", Color.yellow);
-        append("repeat {} = continuously loop\n", Color.yellow);
-        append("repeat 5 times {} = repeat this block 5 times\n", Color.yellow);
+        append("var x = 1     ", Color.yellow);
+        append("declare a new variable x and set it equal to 1\n", Color.green);
+        append("var x[10] = 1 ", Color.yellow);
+        append("declare an array of 10 elements with each element set to 1\n", Color.green);
+        append("when start {} ", Color.yellow);
+        append("first block to run in the program\n", Color.green);
+        append("repeat {}     ", Color.yellow);
+        append("continuously loop\n", Color.green);
+        append("repeat 5 times {}     ", Color.yellow);
+        append("repeat this block 5 times\n", Color.green);
+        append("repeat (condition) {} ", Color.yellow);
+        append("repeat while condition is true\n", Color.green);
         append("\n", Color.yellow);
         append("\n", Color.yellow);
-        append("if x < 5 {} = if x is less than 5 run block\n", Color.yellow);
+        append("if x < 5 {}        ", Color.yellow);
+        append("if x is less than 5, then run block\n", Color.green);
         append("\n", Color.yellow);
         append("\n", Color.yellow);
-        append("func f1 () {} = function f1 with no parameters\n", Color.yellow);
-        append("func f1 (var x) {} = function f1 with 1 parameter x\n", Color.yellow);
+        append("func f1 () {}      ", Color.yellow);
+        append("function f1 with no parameters\n", Color.green);
+        append("func f1 (var x) {} ", Color.yellow);
+        append("function f1 with 1 parameter x\n", Color.green);
         append("\n", Color.yellow);
         append("\n", Color.yellow);
-        append("sleep(500)    sleep 500 milliseconds\n", Color.yellow);
-        append("set x 50      set x to 50\n", Color.yellow);
+        append("sleep(500)         ", Color.yellow);
+        append("sleep 500 milliseconds\n", Color.green);
+        append("set x 50           ", Color.yellow);
+        append("set x to 50\n", Color.green);
      }
   }
 
@@ -315,7 +341,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
          if (os.indexOf("win") >= 0) {
          //detect board on Windows
          } else if (os.indexOf("mac") >= 0) {
-            File[] matchingFiles = findFilesForId(new File("/dev/"), "usbserial");
+            File[] matchingFiles = findFilesForId(new File("/dev/"), "usbmodem");
             boolean exists = matchingFiles.length > 0;
             if (exists) {
                //showSerialTerminal.setSelected(true);
