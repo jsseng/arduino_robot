@@ -882,7 +882,7 @@ extends ASTVisitor<StringBuilder>
       {
          return "%d";
       }
-      System.err.println("Type is not String, float, or int");
+      expected("Type is not String, float, or int");
       return "";
    }
 
@@ -919,6 +919,10 @@ extends ASTVisitor<StringBuilder>
       return buf;
    }
 
+
+   /****
+      Error Handling
+   **/
    private void uniqueID(String id)
    {
       if (currentEnvir.containsKey(id))
@@ -929,7 +933,6 @@ extends ASTVisitor<StringBuilder>
 
    private void expected(String s)
    {
-      System.err.println(s + " at line " + lineNum);
-      throw new ExpectedException(s + " at line " + lineNum);
+      throw new ExpectedException(s + " [Line " + lineNum + "]");
    }
 }

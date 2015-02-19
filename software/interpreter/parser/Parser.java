@@ -456,7 +456,7 @@ public class Parser
             }
             else
             {
-               expected("an identifier or button");
+               expected("an identifier or button", _currentToken);
                return null;
             }
 
@@ -1315,13 +1315,15 @@ public class Parser
    /************************
      error handling
     ************************/
+    /*
    private static void expected(String msg)
    {
       error("expected " + msg);
    }
+   */
    private static void expected(String msg, Token tk)
    {
-      error("expected " + msg + ", found '" + tk + "'" + " at line " + tk.getLine());
+      error("expected " + msg + ", found '" + tk + "'" + " [Line " + tk.getLine() + "]");
    }
 
    private static void error(String msg)
