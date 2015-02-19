@@ -2,6 +2,7 @@ package ast;
 
 import visitor.ASTVisitor;
 import visitor.StatementVisitor;
+import parser.*;
 
 public class RotateStatement
    extends Statement
@@ -12,8 +13,7 @@ public class RotateStatement
    public RotateStatement(Machinery servo, Expression angle)
    {
        if (! (servo instanceof Servo)) {
-	   System.out.println("Machinery must be initialized to Servo to rotate");
-	   System.exit(0);
+	   throw new ExpectedException("Machinery must be initialized to Servo to rotate");
        }
        else {
 	   _servo = (Servo)servo;
