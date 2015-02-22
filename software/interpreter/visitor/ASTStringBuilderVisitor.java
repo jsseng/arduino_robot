@@ -34,7 +34,6 @@ extends ASTVisitor<StringBuilder>
       buf.append("#include \"globals.h\"\n");
       buf.append("#include <util/delay.h>\n");
       buf.append("#include <avr/io.h>\n");
-      buf.append("#include \"USI_TWI_Master.h\"\n");
       buf.append("#include <avr/interrupt.h>\n\n");
 
       buf.append(String.format("#define BUFFER_LEN %d\n\n", 128));
@@ -605,7 +604,7 @@ extends ASTVisitor<StringBuilder>
       }
       formatStr.append("\\n\"");
       formatStr.append(args + ");\n");
-      formatStr.append("print_string(_printBuffer);\n");
+      formatStr.append("print_string(_printBuffer);");
       return formatStr;
    }
    public StringBuilder visit(SetStatement t)
