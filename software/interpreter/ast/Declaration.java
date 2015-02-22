@@ -15,7 +15,7 @@ public class Declaration extends SourceElement
 
    public String getIdentifier()
    {
-      return _id;
+      return "" + _id;
    }
 
    public Machinery getMachinery()

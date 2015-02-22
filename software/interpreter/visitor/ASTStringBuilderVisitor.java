@@ -44,7 +44,7 @@ extends ASTVisitor<StringBuilder>
 
       buf.append(visit(t.getDeclarations()));
       buf.append(String.format("int chng_temp;\n"));
-      buf.append(String.format("char _printBuffer[64];\n"));
+      buf.append(String.format("char printBuffer[64];\n"));
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
@@ -592,7 +592,7 @@ extends ASTVisitor<StringBuilder>
    {
       lineNum = t.getLineNum();
       StringBuilder formatStr = new StringBuilder();
-      formatStr.append("sprintf(_printBuffer, \"");
+      formatStr.append("sprintf(printBuffer, \"");
       //formatStr.append("print_string
 
       //formatStr.append("printf(\"");
@@ -605,7 +605,7 @@ extends ASTVisitor<StringBuilder>
       }
       formatStr.append("\\n\"");
       formatStr.append(args + ");\n");
-      formatStr.append("print_string(_printBuffer);\n");
+      formatStr.append("print_string(printBuffer);\n");
       return formatStr;
    }
    public StringBuilder visit(SetStatement t)

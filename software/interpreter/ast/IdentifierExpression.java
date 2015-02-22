@@ -26,7 +26,7 @@ public class IdentifierExpression
 
    public String getIdentifier()
    {
-      return _id;
+      return "" + _id;
    }
 
    public boolean isArrayAccess()

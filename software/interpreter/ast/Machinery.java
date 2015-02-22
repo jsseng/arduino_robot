@@ -12,7 +12,7 @@ public abstract class Machinery implements Visitable {
    public abstract int getMachineNumber();
 
    public String getIdentifier() { 
-      return _id;
+      return "" + _id;
    }
 }
 

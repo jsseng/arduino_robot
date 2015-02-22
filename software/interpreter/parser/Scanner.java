@@ -125,6 +125,10 @@ public class Scanner
       _in.read();
       while (_in.lookahead() != '"')
       {
+         if (_in.gotEOF())
+         {
+            throw new ExpectedException(String.format("Missing closing \" for string starting at [Line %d]", lineNumber));
+         }
          buf.append((char)_in.read());
       }
       _in.read();
