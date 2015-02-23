@@ -158,6 +158,9 @@ void led_off(u08 num) {
 }
 
 void init(void) {
+   //make TX pin output
+   DDRD |= _BV(2);
+
    //make LED0 and LED1 outputs
    DDRG |= _BV(LED1_PIN) | _BV(LED0_PIN);
 
@@ -169,11 +172,15 @@ void init(void) {
 
    init_adc();
    init_lcd();
+#ifndef BOOTLOADER
    init_servo();
+#endif
    init_motor();
 
    //initialize the accelerometer
-   i2c_regwrite(0x2A,0x1);  //change to WAKE mode
-   _delay_ms(100);
-   unlock_bus();
+#ifndef BOOTLOADER
+//   i2c_regwrite(0x2A,0x1);  //change to WAKE mode
+//   _delay_ms(100);
+//   unlock_bus();
+#endif
 }
