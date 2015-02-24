@@ -32,5 +32,4 @@ public class SetStatement extends Statement
    {
       return guest.visit(this);
    }
-
 }

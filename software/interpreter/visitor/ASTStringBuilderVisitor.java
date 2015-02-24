@@ -23,8 +23,8 @@ extends ASTVisitor<StringBuilder>
       currentEnvir = new Environment();
       /* Initialize with 2 pieces of machinery */
       currentEnvir.put("button", new Button());
-      currentEnvir.put("LED0", new LED(0));
-      currentEnvir.put("LED1", new LED(1));
+      currentEnvir.put("led0", new LED(0));
+      currentEnvir.put("led1", new LED(1));
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n");

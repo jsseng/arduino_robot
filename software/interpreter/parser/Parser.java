@@ -273,10 +273,15 @@ public class Parser
    {
       String s;
       match(TokenCode.TK_SET);
-      if (_currentToken.code() == TokenCode.TK_LED)
+      if (_currentToken.code() == TokenCode.TK_LED0U || _currentToken.code() == TokenCode.TK_LED0L)
       {
-         match(TokenCode.TK_LED);
-         s = "LED";
+         nextToken();
+         s = "led0";
+      }
+      else if (_currentToken.code() == TokenCode.TK_LED1U || _currentToken.code() == TokenCode.TK_LED1L)
+      {
+         nextToken();
+         s = "led1";
       }
       else
       {
