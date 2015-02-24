@@ -197,6 +197,10 @@ public class Parser
             match(TokenCode.TK_ANALOGIN);
             match(TokenCode.TK_LBRACKET);
             num = Integer.parseInt(_currentToken.toString());
+            if (num < 0 || num > 5)
+            {
+               throw new ExpectedException(String.format("Analog pins limited to between 0 and 5 at [Line %d]", _currentToken.getLine()));
+            }
             nextToken();
             match(TokenCode.TK_RBRACKET);
             return new AnalogPin(id, num);
