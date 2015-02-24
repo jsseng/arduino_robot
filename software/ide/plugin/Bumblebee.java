@@ -4,7 +4,9 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.Map;
-//import bumblebee.Interpreter;
+import java.util.List;
+import java.util.ArrayList;
+//import Interpreter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -52,8 +54,9 @@ implements ActionListener, EBComponent, BumblebeeActions,
   private Thread t, t_detect;
   private BufferedWriter out;
   private String os;
-  private Interpreter i;
+  private Interpreter interp;
   private String board_device;
+  private String c_output;
     // }}}
 
     // {{{ Constructor
@@ -70,6 +73,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
      this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
      this.view = view;
      this.floating = position.equals(DockableWindowManager.FLOATING);
+   
+     interp = new Interpreter();
 
      if (floating)
         this.setPreferredSize(new Dimension(500, 250));
@@ -157,11 +162,142 @@ implements ActionListener, EBComponent, BumblebeeActions,
 
   }
 
+  public void runGcc() {
+     Buffer curr_buffer = jEdit.getLastBuffer();
+     ProcessBuilder pb;
+     //Path environment variables - required for mac/linux, use null for windows
+     String avrdude_cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath") + "/avrdude";
+     String lib_path = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
+     String gcc_path = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath");
+     String gcc_cmd = gcc_path + "/avr-gcc";
+
+     try {
+        String[] lib_files = {"adc.c", "i2c.c", "lcd.c", "motor.c", "servo.c", "utility.c"};
+        List<String> command = new ArrayList<String>();
+
+        //run gcc
+        command.add(gcc_cmd);
+        command.add("-I" + lib_path);
+        command.add("-DF_CPU=16000000L");
+        command.add("-Wall");
+        command.add("-mmcu=atmega645a");
+        command.add("-O2");
+        command.add("-o");
+        command.add("main.elf");
+        command.add(curr_buffer.getDirectory() + ".test.c");
+
+        for (String e : lib_files) {
+          command.add(lib_path + "/" + e);
+        }
+          
+        pb = new ProcessBuilder(command);
+
+        /*for (String element : pb.command()) {
+           append ("\n\n", Color.green);
+           append (element, Color.green);
+        }*/
+
+        pb.directory(new File(curr_buffer.getDirectory()));
+
+        Map<String, String> env = pb.environment();
+        env.put("PATH", ".:/usr/bin:/bin:/usr/sbin");
+        Process pro1 = pb.start();
+
+        InputStream is = pro1.getInputStream();
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+
+        InputStream es = pro1.getErrorStream();
+        InputStreamReader esr = new InputStreamReader(es);
+        BufferedReader br_error = new BufferedReader(esr); 
+
+        //display stdout in blue
+        append("\n\nGCC Stdout:\n", Color.blue);
+        String line;
+        while ((line = br.readLine()) != null) {
+           append(line + "\n", Color.blue);
+        }
+        append("Stderr:\n", Color.blue);
+        while ((line = br_error.readLine()) != null) {
+           append(line + "\n", Color.blue);
+        }
+
+        //run avr-objcopy
+        command = new ArrayList<String>();
+        command.add(gcc_path + "/avr-objcopy");
+        command.add("-O");
+        command.add("ihex");
+        command.add("main.elf");
+        command.add("main.hex");
+        pb = new ProcessBuilder(command);
+
+        for (String element : pb.command()) {
+           append ("\n\n", Color.green);
+           append (element, Color.green);
+        }
+
+        pb.directory(new File(curr_buffer.getDirectory()));
+
+        env = pb.environment();
+        env.put("PATH", ".:/usr/bin:/bin:/usr/sbin");
+        pro1 = pb.start();
+
+        if (!board_device.equals("")) {
+           //run avrdude
+           command = new ArrayList<String>();
+           command.add(gcc_path + "/avrdude");
+           //command.add("-C");
+           //command.add("/Users/jseng/trunk/avrdude/avrdude.conf");
+           command.add("-pm645");
+           command.add("-P");
+           command.add(board_device);
+           command.add("-c");
+           command.add("arduino");
+           command.add("-F");
+           command.add("-u");
+           command.add("-U");
+           command.add("flash:w:main.hex");
+
+           pb = new ProcessBuilder(command);
+
+           for (String element : pb.command()) {
+              append ("\n\n", Color.green);
+              append (element, Color.green);
+           }
+
+           pb.directory(new File(curr_buffer.getDirectory()));
+
+           env = pb.environment();
+           env.put("PATH", ".:/usr/bin:/bin:/usr/sbin");
+           pro1 = pb.start();
+
+           InputStream is2 = pro1.getInputStream();
+           InputStreamReader isr2 = new InputStreamReader(is2);
+           BufferedReader br2 = new BufferedReader(isr2);
+
+           InputStream es2 = pro1.getErrorStream();
+           InputStreamReader esr2 = new InputStreamReader(es2);
+           BufferedReader br_error2 = new BufferedReader(esr2); 
+
+           //display stdout in blue
+           append("\n\navrdude Stdout:\n", Color.blue);
+           while ((line = br2.readLine()) != null) {
+              append(line + "\n", Color.blue);
+           }
+           append("avrdude Stderr:\n", Color.blue);
+           while ((line = br_error2.readLine()) != null) {
+              append(line + "\n", Color.blue);
+           }
+        }
+     } catch (Exception e) {
+        System.err.println("Caught IOException: " + e.getMessage());
+     }
+  }
+
   //invoked when the buttons are clicked
   public void actionPerformed(ActionEvent evt) {
      Buffer curr_buffer = jEdit.getLastBuffer();
      Process compile;
-     ProcessBuilder pb;
      String line, makefile_path, lib_path;
 
      lib_path = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
@@ -173,10 +309,9 @@ implements ActionListener, EBComponent, BumblebeeActions,
      Object src = evt.getSource();
 
      if (src == uploadButton) { //check if upload clicked
-        //Using for testing - prints out current directories from property values
-        append("Compiler: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath") + "\n", Color.red);
-        append("Library: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath") + "\n", Color.red);
-        append("Programmer: " + jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath") + "\n", Color.red);
+        console_area.setText("");
+        runGcc();
+
         //scroll the area
         console_area.setCaretPosition (console_area.getDocument().getLength());
      } else if (src == detectButton) { //check if detect clicked
@@ -185,54 +320,49 @@ implements ActionListener, EBComponent, BumblebeeActions,
         console_area.setCaretPosition (console_area.getDocument().getLength());
      } else if (src == compileButton) { //check if compile clicked
         try {
-           //try {
-           //   System.setOut(new PrintStream(new FileOutputStream("/Users/jseng/output-file.txt"), true));
-           //} catch (Exception e) {
-           //   e.printStackTrace();
-           //}
-           //String a[] = {"-dumpAST", curr_buffer.getPath()};
-           //Interpreter.main(a);
-           //Path environment variables - required for mac/linux, use null for windows
-           String env[] = {"PATH=/usr/bin:/bin:/usr/sbin"};
-           //String env[] = null;
-           //String user_src = "USERFOLDER=\"" + curr_buffer.getDirectory().replace(" ", "\\s") + "\"";
-           dir = new File(jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath"));
-           String cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath");
-           String gcc_cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath") + "/avr-gcc";
+           ByteArrayOutputStream baos = new ByteArrayOutputStream();
+           System.setOut(new PrintStream(baos));
+           StringReader sr1= new StringReader(baos.toString()); // wrap your String
+           BufferedReader br= new BufferedReader(sr1); // wrap your StringReader
 
-           pb = new ProcessBuilder("java",  "Interpreter", "-dumpAST", curr_buffer.getPath(), "> ./.test.c");
-           pb.directory(new File(jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath")));
-           Map<String, String> e = pb.environment();
-           e.put("PATH", "/usr/bin:/bin:/usr/sbin");
-           Process pro1 = pb.start();
-           InputStream is = pro1.getInputStream();
-           InputStreamReader isr = new InputStreamReader(is);
-           BufferedReader br = new BufferedReader(isr);
-
-           InputStream es = pro1.getErrorStream();
-           InputStreamReader esr = new InputStreamReader(es);
-           BufferedReader br_error = new BufferedReader(esr);
+           ByteArrayOutputStream baes = new ByteArrayOutputStream();
+           System.setErr(new PrintStream(baes));
+           StringReader sr2= new StringReader(baes.toString()); // wrap your String
+           BufferedReader br_error = new BufferedReader(sr2); // wrap your StringReader
 
            console_area.setText("");
 
-           append("Stdout:\n", Color.red);
-           //append(jEdit.getLastBuffer().getDirectory() + "/.test.c", Color.red);
+           try {
+             //run the interpreter
+             interp.run(curr_buffer.getPath());
+           } catch (Exception e) {
+             console_area.setText("Caught Exception: " + e.getMessage() + "\n\n\n");
+           }    
 
-           File fout = new File(jEdit.getLastBuffer().getDirectory() + ".test.c");
-           FileOutputStream fos = new FileOutputStream(fout);
-           BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-                
+           c_output = baos.toString();
+
+           //write the C to a file
+           PrintWriter c_file_out = new PrintWriter(curr_buffer.getDirectory() + "/.test.c");
+           c_file_out.println(c_output);
+           c_file_out.close();
+
+           //restore stdout and stderr
+           new PrintStream(new FileOutputStream(FileDescriptor.out));
+           new PrintStream(new FileOutputStream(FileDescriptor.err));
+
+           //display stdout in red
+           append("Stdout:\n", Color.red);
+           append(c_output, Color.red);
            Font font = new Font("Verdana", Font.BOLD, 12);
            while ((line = br.readLine()) != null) {
               append(line + "\n", Color.red);
-              bw.write(line + "\n");
+              //bw.write(line + "\n");
            }
-           bw.close();
+           //bw.close();
 
+           //display stderr in yellow
            append("Stderr:\n", Color.yellow);
-           while ((line = br_error.readLine()) != null) {
-              append(line + "\n", Color.yellow);
-           }
+           append(baes.toString(), Color.yellow);
 
            //scroll the area
            console_area.setCaretPosition (console_area.getDocument().getLength());
@@ -247,21 +377,34 @@ implements ActionListener, EBComponent, BumblebeeActions,
         append("define label = motor[0]\n", Color.yellow);
         append("define label = servo[0]\n", Color.yellow);
         append("\n", Color.yellow);
-        append("var x = 1   declare a new variable x and set it equal to 1\n", Color.yellow);
-        append("when start {} = first block to run in the program\n", Color.yellow);
-        append("repeat {} = continuously loop\n", Color.yellow);
-        append("repeat 5 times {} = repeat this block 5 times\n", Color.yellow);
+        append("var x = 1     ", Color.yellow);
+        append("declare a new variable x and set it equal to 1\n", Color.green);
+        append("var x[10] = 1 ", Color.yellow);
+        append("declare an array of 10 elements with each element set to 1\n", Color.green);
+        append("when start {} ", Color.yellow);
+        append("first block to run in the program\n", Color.green);
+        append("repeat {}     ", Color.yellow);
+        append("continuously loop\n", Color.green);
+        append("repeat 5 times {}     ", Color.yellow);
+        append("repeat this block 5 times\n", Color.green);
+        append("repeat (condition) {} ", Color.yellow);
+        append("repeat while condition is true\n", Color.green);
         append("\n", Color.yellow);
         append("\n", Color.yellow);
-        append("if x < 5 {} = if x is less than 5 run block\n", Color.yellow);
+        append("if x < 5 {}        ", Color.yellow);
+        append("if x is less than 5, then run block\n", Color.green);
         append("\n", Color.yellow);
         append("\n", Color.yellow);
-        append("func f1 () {} = function f1 with no parameters\n", Color.yellow);
-        append("func f1 (var x) {} = function f1 with 1 parameter x\n", Color.yellow);
+        append("func f1 () {}      ", Color.yellow);
+        append("function f1 with no parameters\n", Color.green);
+        append("func f1 (var x) {} ", Color.yellow);
+        append("function f1 with 1 parameter x\n", Color.green);
         append("\n", Color.yellow);
         append("\n", Color.yellow);
-        append("sleep(500)    sleep 500 milliseconds\n", Color.yellow);
-        append("set x 50      set x to 50\n", Color.yellow);
+        append("sleep(500)         ", Color.yellow);
+        append("sleep 500 milliseconds\n", Color.green);
+        append("set x 50           ", Color.yellow);
+        append("set x to 50\n", Color.green);
      }
   }
 
@@ -315,12 +458,12 @@ implements ActionListener, EBComponent, BumblebeeActions,
          if (os.indexOf("win") >= 0) {
          //detect board on Windows
          } else if (os.indexOf("mac") >= 0) {
-            File[] matchingFiles = findFilesForId(new File("/dev/"), "usbserial");
+            File[] matchingFiles = findFilesForId(new File("/dev/"), "usbmodem");
             boolean exists = matchingFiles.length > 0;
             if (exists) {
                //showSerialTerminal.setSelected(true);
                showSerialTerminal.setText(matchingFiles[0].getName());
-               board_device = matchingFiles[0].getName();
+               board_device = "/dev/" + matchingFiles[0].getName();
             } else {
                //showSerialTerminal.setSelected(false);
                showSerialTerminal.setText("no board detected");
@@ -332,7 +475,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
            }
 
            try {
-              Thread.sleep(500);
+              Thread.sleep(750);
            } catch (InterruptedException e) {
            }
            }

@@ -34,7 +34,6 @@ extends ASTVisitor<StringBuilder>
       buf.append("#include \"globals.h\"\n");
       buf.append("#include <util/delay.h>\n");
       buf.append("#include <avr/io.h>\n");
-      buf.append("#include \"USI_TWI_Master.h\"\n");
       buf.append("#include <avr/interrupt.h>\n\n");
 
       buf.append(String.format("#define BUFFER_LEN %d\n\n", 128));
@@ -44,7 +43,7 @@ extends ASTVisitor<StringBuilder>
 
       buf.append(visit(t.getDeclarations()));
       buf.append(String.format("int chng_temp;\n"));
-      buf.append(String.format("char printBuffer[64];\n"));
+      buf.append(String.format("char _printBuffer[64];\n"));
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
@@ -592,7 +591,7 @@ extends ASTVisitor<StringBuilder>
    {
       lineNum = t.getLineNum();
       StringBuilder formatStr = new StringBuilder();
-      formatStr.append("sprintf(printBuffer, \"");
+      formatStr.append("sprintf(_printBuffer, \"");
       //formatStr.append("print_string
 
       //formatStr.append("printf(\"");
@@ -605,7 +604,7 @@ extends ASTVisitor<StringBuilder>
       }
       formatStr.append("\\n\"");
       formatStr.append(args + ");\n");
-      formatStr.append("print_string(printBuffer);\n");
+      formatStr.append("print_string(_printBuffer);");
       return formatStr;
    }
    public StringBuilder visit(SetStatement t)
