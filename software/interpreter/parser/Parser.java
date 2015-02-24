@@ -196,14 +196,20 @@ public class Parser
          case TK_ANALOGIN:
             match(TokenCode.TK_ANALOGIN);
             match(TokenCode.TK_LBRACKET);
+            int numberLine = _currentToken.getLine();
             num = Integer.parseInt(_currentToken.toString());
-            if (num < 0 || num > 5)
-            {
-               throw new ExpectedException(String.format("Analog pins limited to between 0 and 5 at [Line %d]", _currentToken.getLine()));
-            }
             nextToken();
             match(TokenCode.TK_RBRACKET);
-            return new AnalogPin(id, num);
+            AnalogPin pin = null;
+            try
+            {
+               pin = new AnalogPin(id, num);
+            }
+            catch (ExpectedException e)
+            {
+               throw new ExpectedException(String.format("%s at [Line %d]", e.getMessage(), numberLine));
+            }
+            return pin;
          case TK_DIGITALOUT:
             match(TokenCode.TK_DIGITALOUT);
             match(TokenCode.TK_LBRACKET);
