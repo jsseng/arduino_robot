@@ -375,7 +375,7 @@ public class Parser
             }
             else
             {
-               throw new ExpectedException("Expected a statement, found a lonely identifier with the next token " + _currentToken);
+               throw new ExpectedException("Expected a statement, found a lonely identifier with the next token " + _currentToken + String.format(" at [Line %d]", _currentToken.getLine()));
             }
             break;
          case TK_NUM:
