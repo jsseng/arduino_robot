@@ -138,8 +138,13 @@ public class Scanner
    private Token buildIdentifier()
    {
       StringBuilder buf = new StringBuilder();
+      
+      if (Character.isLetter((char)_in.lookahead()) || (char)_in.lookahead() == '_')
+      {
+         buf.append((char)_in.read());
+      }
 
-      while (Character.isLetterOrDigit((char)_in.lookahead()))
+      while (Character.isLetterOrDigit((char)_in.lookahead()) | (char)_in.lookahead() == '_')
       {
          buf.append((char)_in.read());
       }
