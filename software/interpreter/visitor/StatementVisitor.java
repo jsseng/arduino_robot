@@ -27,6 +27,14 @@ public abstract class StatementVisitor<T>
    {
       return visit((Statement)t);
    }
+   public T visit(SetCursorStatement t)
+   {
+      return visit((Statement)t);
+   }
+   public T visit(ClearScreenStatement t)
+   {
+      return visit((Statement)t);
+   }
    public T visit(StopStatement t) {
        return visit((Statement) t);
    }

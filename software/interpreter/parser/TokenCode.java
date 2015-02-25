@@ -36,7 +36,6 @@ public enum TokenCode
    TK_STOP("stop"),
    TK_OUT("out"),
    TK_CLEAR("clear"),
-   TK_SCREEN("screen"),
    TK_CURSOR("cursor"),
    TK_IF("if"),
    //TK_TURN("turn"),

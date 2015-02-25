@@ -592,9 +592,6 @@ extends ASTVisitor<StringBuilder>
       lineNum = t.getLineNum();
       StringBuilder formatStr = new StringBuilder();
       formatStr.append("sprintf(_printBuffer, \"");
-      //formatStr.append("print_string
-
-      //formatStr.append("printf(\"");
       StringBuilder args = new StringBuilder();
       List<Expression> exp = t.getArgs();
       for (Expression e : exp)
@@ -604,7 +601,7 @@ extends ASTVisitor<StringBuilder>
       }
       formatStr.append("\\n\"");
       formatStr.append(args + ");\n");
-      formatStr.append("print_string(_printBuffer);");
+      formatStr.append("print_string(_printBuffer);\n");
       return formatStr;
    }
    public StringBuilder visit(SetStatement t)
@@ -756,6 +753,20 @@ extends ASTVisitor<StringBuilder>
       buf.append(t.getBody().visit(this));
       return buf;
    }
+   public StringBuilder visit(ClearScreenStatement t)
+   {
+      StringBuilder buf = new StringBuilder();
+      buf.append("clear_screen();\n");
+      return buf;
+   }
+
+   public StringBuilder visit(SetCursorStatement t)
+   {
+      StringBuilder buf = new StringBuilder();
+      buf.append(String.format("lcd_cursor(%s, %s);\n", t.getRow().visit(this), t.getCol().visit(this)));
+      return buf;
+   }
+
    private StringBuilder visitBinary(BinaryExpression t, String op)
    {
       StringBuilder buf = new StringBuilder();
@@ -787,6 +798,7 @@ extends ASTVisitor<StringBuilder>
 
       return buf;
    }
+
    /* ===== End Trivial Functions ===== */
 
    private Expression numberType(Expression e)

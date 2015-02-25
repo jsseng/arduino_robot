@@ -51,6 +51,16 @@ public abstract class ASTVisitor<T>
       return visit((ASTRoot)t);
    }
 
+   public T visit(ClearScreenStatement t)
+   {
+      return visit((ASTRoot)t);
+   }
+
+   public T visit(SetCursorStatement t)
+   {
+      return visit((ASTRoot)t);
+   }
+
    public T visit(ExpressionStatement t)
    {
       return visit((ASTRoot)t);

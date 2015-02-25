@@ -426,17 +426,13 @@ public class Parser
     private Statement parseSetCursorStatement() throws ScannerException {
        match(TokenCode.TK_SET);
        match(TokenCode.TK_CURSOR);
-       match(TokenCode.TK_LPAREN);
        Expression row = parseExpression();
-       match(TokenCode.TK_COMMA);
        Expression column = parseExpression();
-       match(TokenCode.TK_RPAREN);
        return new SetCursorStatement(row, column);
     }
 
     private Statement parseClearScreenStatement() throws ScannerException {
        match(TokenCode.TK_CLEAR);
-       match(TokenCode.TK_SCREEN);
        return new ClearScreenStatement();
     }
     
