@@ -346,7 +346,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
              Matcher m = error_pattern.matcher(e.getMessage());
              m.find();
              error_line = Integer.parseInt(m.group(0).split(" ")[1]);
-             console_area.setText("error line: " + error_line);
+             //console_area.setText("error line: " + error_line);
 
              //ta.selectLine(error_line); //highlight the line with the error
              //ta.setFirstLine(error_line);
