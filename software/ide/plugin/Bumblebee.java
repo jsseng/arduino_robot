@@ -6,11 +6,12 @@ import java.io.*;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-//import Interpreter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import org.gjt.sp.jedit.Buffer;
 import org.gjt.sp.jedit.EBComponent;
@@ -19,6 +20,7 @@ import org.gjt.sp.jedit.EditBus;
 import org.gjt.sp.jedit.GUIUtilities;
 import org.gjt.sp.jedit.View;
 import org.gjt.sp.jedit.jEdit;
+import org.gjt.sp.jedit.textarea.JEditTextArea;
 import org.gjt.sp.jedit.gui.DefaultFocusComponent;
 import org.gjt.sp.jedit.gui.DockableWindowManager;
 import org.gjt.sp.jedit.msg.PropertiesChanged;
@@ -338,6 +340,21 @@ implements ActionListener, EBComponent, BumblebeeActions,
              interp.run(curr_buffer.getPath());
            } catch (Exception e) {
              console_area.setText("Caught Exception: " + e.getMessage() + "\n\n\n");
+             int error_line;
+             Pattern error_pattern = Pattern.compile("Line \\d+");
+             JEditTextArea ta = jEdit.getActiveView().getTextArea();
+             Matcher m = error_pattern.matcher(e.getMessage());
+             m.find();
+             error_line = Integer.parseInt(m.group(0).split(" ")[1]);
+             console_area.setText("error line: " + error_line);
+
+             //ta.selectLine(error_line); //highlight the line with the error
+             //ta.setFirstLine(error_line);
+             ta.goToBufferStart(false);
+             //ta.setMagicCaretPosition(error_line);
+             for (int i=1;i<error_line;i++) {
+               ta.goToNextLine(false);
+             } 
            }    
 
            c_output = baos.toString();
@@ -391,21 +408,20 @@ implements ActionListener, EBComponent, BumblebeeActions,
         append("repeat (condition) {} ", Color.yellow);
         append("repeat while condition is true\n", Color.green);
         append("\n", Color.yellow);
-        append("\n", Color.yellow);
         append("if x < 5 {}        ", Color.yellow);
         append("if x is less than 5, then run block\n", Color.green);
-        append("\n", Color.yellow);
         append("\n", Color.yellow);
         append("func f1 () {}      ", Color.yellow);
         append("function f1 with no parameters\n", Color.green);
         append("func f1 (var x) {} ", Color.yellow);
         append("function f1 with 1 parameter x\n", Color.green);
         append("\n", Color.yellow);
-        append("\n", Color.yellow);
-        append("sleep(500)         ", Color.yellow);
+        append("sleep  500         ", Color.yellow);
         append("sleep 500 milliseconds\n", Color.green);
         append("set x 50           ", Color.yellow);
         append("set x to 50\n", Color.green);
+        append("set cursor 1 3     ", Color.yellow);
+        append("set cursor to row 1, column 3\n", Color.green);
      }
   }
 
