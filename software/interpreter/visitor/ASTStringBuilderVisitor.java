@@ -38,12 +38,10 @@ extends ASTVisitor<StringBuilder>
 
       buf.append(String.format("#define BUFFER_LEN %d\n\n", 128));
 
-
-      buf.append("int _arrayCheck(int size, int index) { if (index >= size) { fprintf(stderr, \"Index out of bounds\\n\"); exit(0); } return index; }\n");
-
       buf.append(visit(t.getDeclarations()));
       buf.append(String.format("int chng_temp;\n"));
       buf.append(String.format("char _printBuffer[64];\n"));
+      buf.append("int _arrayCheck(int size, int index) { if (index >= size) { clear_screen(); print_string(\"Array In\"); lcd_cursor(0,1); print_string(\"Error\"); exit(0); } return index; }\n");
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
@@ -599,7 +597,7 @@ extends ASTVisitor<StringBuilder>
          formatStr.append(typeToFormatStr(numberType(e)));
          args.append("," + e.visit(this));
       }
-      formatStr.append("\\n\"");
+      formatStr.append("\"");
       formatStr.append(args + ");\n");
       formatStr.append("print_string(_printBuffer);\n");
       return formatStr;
