@@ -172,7 +172,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
      String gcc_cmd = gcc_path + "/avr-gcc";
 
      try {
-        String[] lib_files = {"adc.c", "i2c.c", "lcd.c", "motor.c", "servo.c", "utility.c"};
+        //String[] lib_files = {"adc.c", "i2c.c", "lcd.c", "motor.c", "servo.c", "utility.c"};
+        String[] lib_files = {"adc.o", "i2c.o", "lcd.o", "motor.o", "servo.o", "utility.o"};
         List<String> command = new ArrayList<String>();
 
         //run gcc
