@@ -416,12 +416,16 @@ implements ActionListener, EBComponent, BumblebeeActions,
         append("func f1 (var x) {} ", Color.yellow);
         append("function f1 with 1 parameter x\n", Color.green);
         append("\n", Color.yellow);
-        append("sleep  500         ", Color.yellow);
+        append("set cursor 1 3     ", Color.yellow);
+        append("set cursor to row 1, column 3\n", Color.green);
+        append("display \"word\"     ", Color.yellow);
+        append("show \"word\" on the LCD screen\n", Color.green);
+        append("clear              ", Color.yellow);
+        append("clear the LCD screen\n", Color.green);
+        append("sleep 500          ", Color.yellow);
         append("sleep 500 milliseconds\n", Color.green);
         append("set x 50           ", Color.yellow);
         append("set x to 50\n", Color.green);
-        append("set cursor 1 3     ", Color.yellow);
-        append("set cursor to row 1, column 3\n", Color.green);
      }
   }
 
