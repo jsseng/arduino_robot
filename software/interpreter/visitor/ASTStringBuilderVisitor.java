@@ -330,6 +330,21 @@ extends ASTVisitor<StringBuilder>
       }
       return buf;
    }
+   public StringBuilder visit(WhileStatement t)
+   {
+      lineNum = t.getLineNum();
+      StringBuilder buf = new StringBuilder();
+      Expression guard = t.getGuard();
+      if (!isConditional(guard))
+      {
+         expected("while condition must be a true or false expression");
+      }
+      buf.append("while (" + guard.visit(this) + ")\n");
+      buf.append("{\n");
+      buf.append(visit(t.getBody()));
+      buf.append("}\n");
+      return buf;
+   }
    public StringBuilder visit(IfStatement t)
    {
       lineNum = t.getLineNum();
@@ -741,16 +756,6 @@ extends ASTVisitor<StringBuilder>
    {
       return new StringBuilder("unit");
    }
-   public StringBuilder visit(WhileStatement t)
-   {
-      lineNum = t.getLineNum();
-      StringBuilder buf = new StringBuilder();
-      buf.append("while (");
-      buf.append(t.getGuard().visit(this));
-      buf.append(")\n");
-      buf.append(t.getBody().visit(this));
-      return buf;
-   }
    public StringBuilder visit(ClearScreenStatement t)
    {
       StringBuilder buf = new StringBuilder();
@@ -875,6 +880,47 @@ extends ASTVisitor<StringBuilder>
          return false;
       }
       return true;
+   }
+
+   private boolean isConditional(Expression e)
+   {
+      if (e instanceof OrExpression)
+      {
+         return true;
+      }
+      if (e instanceof AndExpression)
+      {
+         return true;
+      }
+      if (e instanceof EqualExpression)
+      {
+         return true;
+      }
+      if (e instanceof NotEqualExpression)
+      {
+         return true;
+      }
+      if (e instanceof LessThanExpression)
+      {
+         return true;
+      }
+      if (e instanceof LessEqualExpression)
+      {
+         return true;
+      }
+      if (e instanceof GreaterThanExpression)
+      {
+         return true;
+      }
+      if (e instanceof GreaterEqualExpression)
+      {
+         return true;
+      }
+      if (e instanceof NotExpression)
+      {
+         return true;
+      }
+      return false;
    }
 
    private String typeToFormatStr(Expression e)
