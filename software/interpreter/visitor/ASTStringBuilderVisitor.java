@@ -337,7 +337,7 @@ extends ASTVisitor<StringBuilder>
       Expression guard = t.getGuard();
       if (!isConditional(guard))
       {
-         expected("while condition must be a true or false expression");
+         System.err.println(String.format("WARNING: while expects a conditional expression at [Line %d]", lineNum));
       }
       buf.append("while (" + guard.visit(this) + ")\n");
       buf.append("{\n");
