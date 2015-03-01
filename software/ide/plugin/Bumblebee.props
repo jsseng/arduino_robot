@@ -74,3 +74,4 @@ options.bumblebee.fontsize=14
 options.bumblebee.gcc-filepath=
 options.bumblebee.library-filepath=
 options.bumblebee.programmer-filepath=
+options.bumblebee.debugging-mode=

@@ -165,7 +165,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
   }
 
   public void runGcc() {
-     Buffer curr_buffer = jEdit.getLastBuffer();
+     Buffer curr_buffer = jEdit.getActiveView().getBuffer();
      ProcessBuilder pb;
      //Path environment variables - required for mac/linux, use null for windows
      String avrdude_cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath") + "/avrdude";
@@ -323,6 +323,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
         console_area.setCaretPosition (console_area.getDocument().getLength());
      } else if (src == compileButton) { //check if compile clicked
         try {
+           int error_line=0;
            ByteArrayOutputStream baos = new ByteArrayOutputStream();
            System.setOut(new PrintStream(baos));
            StringReader sr1= new StringReader(baos.toString()); // wrap your String
@@ -340,7 +341,6 @@ implements ActionListener, EBComponent, BumblebeeActions,
              interp.run(curr_buffer.getPath());
            } catch (Exception e) {
              console_area.setText("Caught Exception: " + e.getMessage() + "\n\n\n");
-             int error_line;
              Pattern error_pattern = Pattern.compile("Line \\d+");
              JEditTextArea ta = jEdit.getActiveView().getTextArea();
              Matcher m = error_pattern.matcher(e.getMessage());
@@ -369,18 +369,23 @@ implements ActionListener, EBComponent, BumblebeeActions,
            new PrintStream(new FileOutputStream(FileDescriptor.err));
 
            //display stdout in red
-           append("Stdout:\n", Color.red);
-           append(c_output, Color.red);
-           Font font = new Font("Verdana", Font.BOLD, 12);
-           while ((line = br.readLine()) != null) {
-              append(line + "\n", Color.red);
-              //bw.write(line + "\n");
-           }
-           //bw.close();
+           if(jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "debugging-mode").equals("true")) {
+              append("Stdout:\n", Color.red);
+              append(c_output, Color.red);
+              Font font = new Font("Verdana", Font.BOLD, 12);
+              while ((line = br.readLine()) != null) {
+                 append(line + "\n", Color.red);
+                 //bw.write(line + "\n");
+              }
+              //bw.close();
 
-           //display stderr in yellow
-           append("Stderr:\n", Color.yellow);
-           append(baes.toString(), Color.yellow);
+              //display stderr in yellow
+              append("Stderr:\n", Color.yellow);
+              append(baes.toString(), Color.yellow);
+           } else {
+              if (error_line == 0)
+                 append("No errors.\n", Color.red);
+           }
 
            //scroll the area
            console_area.setCaretPosition (console_area.getDocument().getLength());
