@@ -81,7 +81,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
 
      //The buttons panel is a FlowLayout with a fixed maximum size which
      //forces the buttons to be arranged in a single column.
-     BufferedImage bumblebee_logo = ImageIO.read(getClass().getResource("/images/AithonEmblemRedClear.png"));
+     BufferedImage bumblebee_logo = ImageIO.read(getClass().getResource("/images/BumbleBeeLogo.png"));
      JLabel picLabel = new JLabel(new ImageIcon(bumblebee_logo));
      add(picLabel);
 
