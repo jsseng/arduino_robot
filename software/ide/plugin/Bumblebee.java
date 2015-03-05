@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
+import javax.swing.border.Border;
 
 import org.gjt.sp.jedit.Buffer;
 import org.gjt.sp.jedit.EBComponent;
@@ -462,13 +463,18 @@ implements ActionListener, EBComponent, BumblebeeActions,
             boolean exists = matchingFiles.length > 0;
             if (exists) {
                //showSerialTerminal.setSelected(true);
-               showSerialTerminal.setText(matchingFiles[0].getName());
+               showSerialTerminal.setText(matchingFiles[0].getName() + "\n Board Found");
                board_device = "/dev/" + matchingFiles[0].getName();
+                Border border = BorderFactory.createLineBorder(Color.GREEN, 2);
+                showSerialTerminal.setBorder(border);
             } else {
                //showSerialTerminal.setSelected(false);
-               showSerialTerminal.setText("no board detected");
+               showSerialTerminal.setText(" Board Not Found");
                board_device = "";
+                Border border = BorderFactory.createLineBorder(Color.RED, 2);
+                showSerialTerminal.setBorder(border);
             }
+            
            //Mac
            } else if (os.indexOf("nux") >= 0) {
            //Linux
