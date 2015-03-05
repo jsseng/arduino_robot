@@ -85,7 +85,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
      //forces the buttons to be arranged in a single column.
      BufferedImage bumblebee_logo = ImageIO.read(getClass().getResource("/images/AithonEmblemRedClear.png"));
      JLabel picLabel = new JLabel(new ImageIcon(bumblebee_logo));
-     add(picLabel);
+     //add(picLabel);
 
      Dimension button_size = new Dimension(120, 25);
      JPanel buttons = new JPanel();
@@ -121,6 +121,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
      buttons.add(uploadButton);
      buttons.add(helpButton);
      buttons.add(showSerialTerminal);
+     buttons.add(picLabel);
 
      add(buttons);
 
@@ -394,16 +395,27 @@ implements ActionListener, EBComponent, BumblebeeActions,
         }
      } else if (src == helpButton) {
         console_area.setText("");
-        append("define label = analogIn[0]\n", Color.yellow);
-        append("define label = digitalIn[0]\n", Color.yellow);
-        append("define label = digitalOut[0]\n", Color.yellow);
-        append("define label = motor[0]\n", Color.yellow);
-        append("define label = servo[0]\n", Color.yellow);
-        append("\n", Color.yellow);
+        append("define label = analogIn[0]                     ", Color.yellow);
+        append("|\n", Color.red);
+        append("define label = digitalIn[0]                    ", Color.yellow);
+        append("|\n", Color.red);
+        append("define label = digitalOut[0]                   ", Color.yellow);
+        append("|\n", Color.red);
+        append("define label = motor[0]                        ", Color.yellow);
+        append("|\n", Color.red);
+        append("define label = servo[0]                        ", Color.yellow);
+        append("|\n", Color.red);
+        append("                                               |\n", Color.red);
         append("var x = 1     ", Color.yellow);
-        append("declare a new variable x and set it equal to 1\n", Color.green);
+        append(" declare a new variable x        ", Color.green);
+        append("|\n", Color.red);
+        append("               and set it equal to 1           ", Color.green);
+        append("|\n", Color.red);
         append("var x[10] = 1 ", Color.yellow);
-        append("declare an array of 10 elements with each element set to 1\n", Color.green);
+        append(" declare an array of 10 elements ", Color.green);
+        append("|\n", Color.red);
+        append("               with each element set to 1      ", Color.green);
+        append("|\n", Color.red);
         append("when start {} ", Color.yellow);
         append("first block to run in the program\n", Color.green);
         append("repeat {}     ", Color.yellow);
