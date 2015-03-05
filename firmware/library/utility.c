@@ -56,7 +56,8 @@ u08 digital(u08 num) {
 
 #ifndef BOOTLOADER
 
-void set_digital(u08 num, u08 dir) {
+//set the direction for a digital pin
+void set_digital_dir(u08 num, u08 dir) {
    switch(num) {
    case 0:
    case 1:
@@ -118,6 +119,76 @@ void set_digital(u08 num, u08 dir) {
          DDRB |= _BV(1);
       } else {
          DDRB &= ~_BV(1);
+      }
+      break;
+   }
+
+   return;
+}
+
+//set the output value for a digital pin
+void set_digital_out(u08 num, u08 out) {
+   switch(num) {
+   case 0:
+   case 1:
+      if (out) {
+         PORTE |= _BV(num);
+      } else {
+         PORTE &= ~_BV(num);
+      }
+      break;
+   case 2:
+   case 3:
+      if (out) {
+         PORTG |= _BV(num+1);
+      } else {
+         PORTG &= ~_BV(num+1);
+      }
+      break;
+   case 4:
+      if (out) {
+         PORTE |= _BV(6);
+      } else {
+         PORTE &= ~_BV(6);
+      }
+      break;
+   case 5:
+   case 6:
+      if (out) {
+         PORTB |= _BV(num);
+      } else {
+         PORTB &= ~_BV(num);
+      }
+      break;
+   case 7:
+   case 8:
+   case 9:
+      if (out) {
+         PORTC |= _BV(num-2);
+      } else {
+         PORTC &= ~_BV(num-2);
+      }
+      break;
+   case 10:
+      if (out) {
+         PORTB |= _BV(0);
+      } else {
+         PORTB &= ~_BV(0);
+      }
+      break;
+   case 11:
+   case 12:
+      if (out) {
+         PORTB |= _BV(num-9);
+      } else {
+         PORTB &= ~_BV(num-9);
+      }
+      break;
+   case 13:
+      if (out) {
+         PORTB |= _BV(1);
+      } else {
+         PORTB &= ~_BV(1);
       }
       break;
    }

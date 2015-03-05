@@ -6,12 +6,13 @@ import java.io.*;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-//import Interpreter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.Border;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import org.gjt.sp.jedit.Buffer;
 import org.gjt.sp.jedit.EBComponent;
@@ -20,6 +21,7 @@ import org.gjt.sp.jedit.EditBus;
 import org.gjt.sp.jedit.GUIUtilities;
 import org.gjt.sp.jedit.View;
 import org.gjt.sp.jedit.jEdit;
+import org.gjt.sp.jedit.textarea.JEditTextArea;
 import org.gjt.sp.jedit.gui.DefaultFocusComponent;
 import org.gjt.sp.jedit.gui.DockableWindowManager;
 import org.gjt.sp.jedit.msg.PropertiesChanged;
@@ -84,7 +86,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
      //forces the buttons to be arranged in a single column.
      BufferedImage bumblebee_logo = ImageIO.read(getClass().getResource("/images/BumbleBeeLogo.png"));
      JLabel picLabel = new JLabel(new ImageIcon(bumblebee_logo));
-     add(picLabel);
+     //add(picLabel);
 
      Dimension button_size = new Dimension(120, 25);
      JPanel buttons = new JPanel();
@@ -120,6 +122,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
      buttons.add(uploadButton);
      buttons.add(helpButton);
      buttons.add(showSerialTerminal);
+     buttons.add(picLabel);
 
      add(buttons);
 
@@ -164,7 +167,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
   }
 
   public void runGcc() {
-     Buffer curr_buffer = jEdit.getLastBuffer();
+     Buffer curr_buffer = jEdit.getActiveView().getBuffer();
      ProcessBuilder pb;
      //Path environment variables - required for mac/linux, use null for windows
      String avrdude_cmd = jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "programmer-filepath") + "/avrdude";
@@ -173,7 +176,8 @@ implements ActionListener, EBComponent, BumblebeeActions,
      String gcc_cmd = gcc_path + "/avr-gcc";
 
      try {
-        String[] lib_files = {"adc.c", "i2c.c", "lcd.c", "motor.c", "servo.c", "utility.c"};
+        //String[] lib_files = {"adc.c", "i2c.c", "lcd.c", "motor.c", "servo.c", "utility.c"};
+        String[] lib_files = {"adc.o", "i2c.o", "lcd.o", "motor.o", "servo.o", "utility.o"};
         List<String> command = new ArrayList<String>();
 
         //run gcc
@@ -321,6 +325,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
         console_area.setCaretPosition (console_area.getDocument().getLength());
      } else if (src == compileButton) { //check if compile clicked
         try {
+           int error_line=0;
            ByteArrayOutputStream baos = new ByteArrayOutputStream();
            System.setOut(new PrintStream(baos));
            StringReader sr1= new StringReader(baos.toString()); // wrap your String
@@ -338,6 +343,20 @@ implements ActionListener, EBComponent, BumblebeeActions,
              interp.run(curr_buffer.getPath());
            } catch (Exception e) {
              console_area.setText("Caught Exception: " + e.getMessage() + "\n\n\n");
+             Pattern error_pattern = Pattern.compile("Line \\d+");
+             JEditTextArea ta = jEdit.getActiveView().getTextArea();
+             Matcher m = error_pattern.matcher(e.getMessage());
+             m.find();
+             error_line = Integer.parseInt(m.group(0).split(" ")[1]);
+             //console_area.setText("error line: " + error_line);
+
+             //ta.selectLine(error_line); //highlight the line with the error
+             //ta.setFirstLine(error_line);
+             ta.goToBufferStart(false);
+             //ta.setMagicCaretPosition(error_line);
+             for (int i=1;i<error_line;i++) {
+               ta.goToNextLine(false);
+             } 
            }    
 
            c_output = baos.toString();
@@ -352,18 +371,23 @@ implements ActionListener, EBComponent, BumblebeeActions,
            new PrintStream(new FileOutputStream(FileDescriptor.err));
 
            //display stdout in red
-           append("Stdout:\n", Color.red);
-           append(c_output, Color.red);
-           Font font = new Font("Verdana", Font.BOLD, 12);
-           while ((line = br.readLine()) != null) {
-              append(line + "\n", Color.red);
-              //bw.write(line + "\n");
-           }
-           //bw.close();
+           if(jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX + "debugging-mode").equals("true")) {
+              append("Stdout:\n", Color.red);
+              append(c_output, Color.red);
+              Font font = new Font("Verdana", Font.BOLD, 12);
+              while ((line = br.readLine()) != null) {
+                 append(line + "\n", Color.red);
+                 //bw.write(line + "\n");
+              }
+              //bw.close();
 
-           //display stderr in yellow
-           append("Stderr:\n", Color.yellow);
-           append(baes.toString(), Color.yellow);
+              //display stderr in yellow
+              append("Stderr:\n", Color.yellow);
+              append(baes.toString(), Color.yellow);
+           } else {
+              if (error_line == 0)
+                 append("No errors.\n", Color.red);
+           }
 
            //scroll the area
            console_area.setCaretPosition (console_area.getDocument().getLength());
@@ -372,16 +396,27 @@ implements ActionListener, EBComponent, BumblebeeActions,
         }
      } else if (src == helpButton) {
         console_area.setText("");
-        append("define label = analogIn[0]\n", Color.yellow);
-        append("define label = digitalIn[0]\n", Color.yellow);
-        append("define label = digitalOut[0]\n", Color.yellow);
-        append("define label = motor[0]\n", Color.yellow);
-        append("define label = servo[0]\n", Color.yellow);
-        append("\n", Color.yellow);
+        append("define label = analogIn[0]                     ", Color.yellow);
+        append("|\n", Color.red);
+        append("define label = digitalIn[0]                    ", Color.yellow);
+        append("|\n", Color.red);
+        append("define label = digitalOut[0]                   ", Color.yellow);
+        append("|\n", Color.red);
+        append("define label = motor[0]                        ", Color.yellow);
+        append("|\n", Color.red);
+        append("define label = servo[0]                        ", Color.yellow);
+        append("|\n", Color.red);
+        append("                                               |\n", Color.red);
         append("var x = 1     ", Color.yellow);
-        append("declare a new variable x and set it equal to 1\n", Color.green);
+        append(" declare a new variable x        ", Color.green);
+        append("|\n", Color.red);
+        append("               and set it equal to 1           ", Color.green);
+        append("|\n", Color.red);
         append("var x[10] = 1 ", Color.yellow);
-        append("declare an array of 10 elements with each element set to 1\n", Color.green);
+        append(" declare an array of 10 elements ", Color.green);
+        append("|\n", Color.red);
+        append("               with each element set to 1      ", Color.green);
+        append("|\n", Color.red);
         append("when start {} ", Color.yellow);
         append("first block to run in the program\n", Color.green);
         append("repeat {}     ", Color.yellow);
@@ -391,18 +426,21 @@ implements ActionListener, EBComponent, BumblebeeActions,
         append("repeat (condition) {} ", Color.yellow);
         append("repeat while condition is true\n", Color.green);
         append("\n", Color.yellow);
-        append("\n", Color.yellow);
         append("if x < 5 {}        ", Color.yellow);
         append("if x is less than 5, then run block\n", Color.green);
-        append("\n", Color.yellow);
         append("\n", Color.yellow);
         append("func f1 () {}      ", Color.yellow);
         append("function f1 with no parameters\n", Color.green);
         append("func f1 (var x) {} ", Color.yellow);
         append("function f1 with 1 parameter x\n", Color.green);
         append("\n", Color.yellow);
-        append("\n", Color.yellow);
-        append("sleep(500)         ", Color.yellow);
+        append("set cursor 1 3     ", Color.yellow);
+        append("set cursor to row 1, column 3\n", Color.green);
+        append("display \"word\"     ", Color.yellow);
+        append("show \"word\" on the LCD screen\n", Color.green);
+        append("clear              ", Color.yellow);
+        append("clear the LCD screen\n", Color.green);
+        append("sleep 500          ", Color.yellow);
         append("sleep 500 milliseconds\n", Color.green);
         append("set x 50           ", Color.yellow);
         append("set x to 50\n", Color.green);

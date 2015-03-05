@@ -6,3 +6,6 @@ all: *.java ast/*.java parser/*.java visitor/*.java
 
 clean:
 	rm $(JAVA_CLASSES)
+
+jar:
+	jar cvf I.jar *.class visitor/*.class parser/*.class ast/*.class

@@ -534,7 +534,15 @@ public class Parser
       if (_currentToken.code() != TokenCode.TK_LBRACE)
       {
          repeatTimes = parseExpression();
-         match(TokenCode.TK_TIMES);
+         if (_currentToken.code() == TokenCode.TK_TIMES)
+         {
+            match(TokenCode.TK_TIMES);
+            return new RepeatStatement(repeatTimes, parseBlockStatement());
+         }
+         else
+         {
+            return new WhileStatement(repeatTimes, parseBlockStatement());
+         }
       }
       return new RepeatStatement(repeatTimes, parseBlockStatement());
    }

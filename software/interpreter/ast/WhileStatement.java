@@ -7,9 +7,9 @@ public class WhileStatement
    extends Statement
 {
    private Expression _guard;
-   private Statement _body;
+   private Statement _body[];
 
-   public WhileStatement(Expression guard, Statement body)
+   public WhileStatement(Expression guard, Statement[] body)
    {
       _guard = guard;
       _body = body;
@@ -20,7 +20,7 @@ public class WhileStatement
       return _guard;
    }
 
-   public Statement getBody()
+   public Statement[] getBody()
    {
       return _body;
    }

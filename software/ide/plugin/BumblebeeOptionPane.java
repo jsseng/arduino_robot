@@ -22,6 +22,7 @@ ActionListener {
   private FontSelector font;
   private JTextField gccPath, libPath, progPath;
   private JButton gccPickPath, libPickPath, progPickPath;
+  private JCheckBox debugBox;
 
   public BumblebeeOptionPane() {
     super(BumblebeePlugin.NAME);
@@ -78,10 +79,17 @@ ActionListener {
     font = new FontSelector(makeFont());
     addComponent(jEdit.getProperty(BumblebeePlugin.OPTION_PREFIX
           + "choose-font"), font);
+
+    //check box for debugging mode
+    debugBox = new JCheckBox("Debug Mode");
+    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "debugging-mode", "false");
+    addComponent(debugBox);
   }
 
   //Set properties of fields
   public void _save() {
+    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "debugging-mode",
+        String.valueOf(debugBox.isSelected()));
     jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "gcc-filepath",
         gccPath.getText());
     jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "library-filepath",
@@ -95,8 +103,8 @@ ActionListener {
         .valueOf(_font.getSize()));
     jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "fontstyle",
         String.valueOf(_font.getStyle()));
-    jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "show-filepath",
-        String.valueOf(showPath.isSelected()));
+    //jEdit.setProperty(BumblebeePlugin.OPTION_PREFIX + "show-filepath",
+    //    String.valueOf(showPath.isSelected()));
   }
 
 

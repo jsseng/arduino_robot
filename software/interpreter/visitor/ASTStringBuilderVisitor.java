@@ -38,12 +38,10 @@ extends ASTVisitor<StringBuilder>
 
       buf.append(String.format("#define BUFFER_LEN %d\n\n", 128));
 
-
-      buf.append("int _arrayCheck(int size, int index) { if (index >= size) { fprintf(stderr, \"Index out of bounds\\n\"); exit(0); } return index; }\n");
-
       buf.append(visit(t.getDeclarations()));
       buf.append(String.format("int chng_temp;\n"));
       buf.append(String.format("char _printBuffer[64];\n"));
+      buf.append("int _arrayCheck(int size, int index) { if (index >= size) { clear_screen(); print_string(\"Array In\"); lcd_cursor(0,1); print_string(\"Error\"); exit(0); } return index; }\n");
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
@@ -332,6 +330,21 @@ extends ASTVisitor<StringBuilder>
       }
       return buf;
    }
+   public StringBuilder visit(WhileStatement t)
+   {
+      lineNum = t.getLineNum();
+      StringBuilder buf = new StringBuilder();
+      Expression guard = t.getGuard();
+      if (!isConditional(guard))
+      {
+         System.err.println(String.format("WARNING: while expects a conditional expression at [Line %d]", lineNum));
+      }
+      buf.append("while (" + guard.visit(this) + ")\n");
+      buf.append("{\n");
+      buf.append(visit(t.getBody()));
+      buf.append("}\n");
+      return buf;
+   }
    public StringBuilder visit(IfStatement t)
    {
       lineNum = t.getLineNum();
@@ -599,7 +612,7 @@ extends ASTVisitor<StringBuilder>
          formatStr.append(typeToFormatStr(numberType(e)));
          args.append("," + e.visit(this));
       }
-      formatStr.append("\\n\"");
+      formatStr.append("\"");
       formatStr.append(args + ");\n");
       formatStr.append("print_string(_printBuffer);\n");
       return formatStr;
@@ -743,16 +756,6 @@ extends ASTVisitor<StringBuilder>
    {
       return new StringBuilder("unit");
    }
-   public StringBuilder visit(WhileStatement t)
-   {
-      lineNum = t.getLineNum();
-      StringBuilder buf = new StringBuilder();
-      buf.append("while (");
-      buf.append(t.getGuard().visit(this));
-      buf.append(")\n");
-      buf.append(t.getBody().visit(this));
-      return buf;
-   }
    public StringBuilder visit(ClearScreenStatement t)
    {
       StringBuilder buf = new StringBuilder();
@@ -877,6 +880,47 @@ extends ASTVisitor<StringBuilder>
          return false;
       }
       return true;
+   }
+
+   private boolean isConditional(Expression e)
+   {
+      if (e instanceof OrExpression)
+      {
+         return true;
+      }
+      if (e instanceof AndExpression)
+      {
+         return true;
+      }
+      if (e instanceof EqualExpression)
+      {
+         return true;
+      }
+      if (e instanceof NotEqualExpression)
+      {
+         return true;
+      }
+      if (e instanceof LessThanExpression)
+      {
+         return true;
+      }
+      if (e instanceof LessEqualExpression)
+      {
+         return true;
+      }
+      if (e instanceof GreaterThanExpression)
+      {
+         return true;
+      }
+      if (e instanceof GreaterEqualExpression)
+      {
+         return true;
+      }
+      if (e instanceof NotExpression)
+      {
+         return true;
+      }
+      return false;
    }
 
    private String typeToFormatStr(Expression e)
