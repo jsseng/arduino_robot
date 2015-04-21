@@ -86,6 +86,7 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(AssignmentStatement t)
    {
+      lineNum = t.getLineNum();
       StringBuilder buf = new StringBuilder();
       String id = t.getTarget().getIdentifier();
       Visitable type = currentEnvir.get(id);
