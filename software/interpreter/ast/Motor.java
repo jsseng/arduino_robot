@@ -23,6 +23,20 @@ public class Motor extends Machinery implements Settable {
    {
       return guest.visit(this);
    }
+
+   public boolean equals(Object o)
+   {
+      if (o == null)
+      {
+         return false;
+      }
+      if (o instanceof Motor)
+      {
+         Motor other = (Motor)o;
+         return other._motorNum == this._motorNum;
+      }
+      return false;
+   }
 }
 
 

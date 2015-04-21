@@ -30,4 +30,18 @@ public class AnalogPin extends Machinery implements Gettable {
    {
       return guest.visit(this);
    }
+
+   public boolean equals(Object o)
+   {
+      if (o == null)
+      {
+         return false;
+      }
+      if (o instanceof AnalogPin)
+      {
+         AnalogPin other = (AnalogPin)o;
+         return other._pin == this._pin;
+      }
+      return false;
+   }
 }

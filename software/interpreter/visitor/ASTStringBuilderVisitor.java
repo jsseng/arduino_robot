@@ -21,10 +21,11 @@ extends ASTVisitor<StringBuilder>
 
    public StringBuilder visit(Program t) {
       currentEnvir = new Environment();
-      /* Initialize with 2 pieces of machinery */
+      /* Initialize with 4 pieces of machinery */
       currentEnvir.put("button", new Button());
       currentEnvir.put("led0", new LED(0));
       currentEnvir.put("led1", new LED(1));
+      currentEnvir.put("ir", new IR());
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n");
@@ -62,9 +63,16 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(Declaration t)
    {
+      lineNum = t.getLineNum();
       String id = t.getIdentifier();
       uniqueID(id);
       Machinery m = t.getMachinery();
+
+      if (currentEnvir.containsValue(m))
+      {
+         expected(String.format("Cannot reassign machinery %s to %s", m.getTypeString(), id));
+      }
+      
       currentEnvir.put(id, m);
       StringBuilder buf = new StringBuilder();
       id = id;

@@ -14,7 +14,6 @@ public class LED extends Machinery implements Settable
    public String toSetString(CharSequence seq)
    {
       return String.format("led(%d, %s)", LEDnum, seq.toString());
-      //return String.format("led1(%s)", seq);
    }
 
    public int getMachineNumber()
@@ -25,6 +24,20 @@ public class LED extends Machinery implements Settable
    public <T> T visit(ASTVisitor<T> guest)
    {
       return guest.visit(this);
+   }
+
+   public boolean equals(Object o)
+   {
+      if (o == null)
+      {
+         return false;
+      }
+      if (o instanceof LED)
+      {
+         LED other = (LED)o;
+         return other.LEDnum == this.LEDnum;
+      }
+      return false;
    }
 }
 

@@ -179,11 +179,12 @@ public class Parser
       List<Declaration> decls = new ArrayList<Declaration>();
       while (_currentToken.equals(TokenCode.TK_DEFINE))
       {
+         int lineNum = _currentToken.getLine();
          match(TokenCode.TK_DEFINE);
          String id = matchIdentifier();
          match(TokenCode.TK_ASSIGN);
          Machinery machine = parseMachinery(id);
-         decls.add(new Declaration(id, machine));
+         decls.add(new Declaration(id, machine, lineNum));
       }
       return decls;
    }
@@ -234,7 +235,7 @@ public class Parser
             {
                expected("'X' | 'Y' | 'Z' for accelerometer axis", t);
             }
-            return new Gyroscope(id, s);
+            return new Accelerometer(id, s);
          case TK_MOTOR:
             match(TokenCode.TK_MOTOR);
             match(TokenCode.TK_LBRACKET);
@@ -453,6 +454,7 @@ public class Parser
 				match(TokenCode.TK_GET);
 				//String id = matchIdentifier();
             if (_currentToken.code() == TokenCode.TK_ID ||
+                _currentToken.code() == TokenCode.TK_IR ||
                 _currentToken.code() == TokenCode.TK_BUTTON)
             {
                String id = _currentToken.toString();
@@ -461,7 +463,7 @@ public class Parser
             }
             else
             {
-               expected("an identifier or button", _currentToken);
+               expected("an identifier or button or ir", _currentToken);
                return null;
             }
 
