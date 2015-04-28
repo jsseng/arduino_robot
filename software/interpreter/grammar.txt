@@ -1,0 +1,49 @@
+program -> SourceElement*
+SourceElement -> Statement | MachineDeclaration | WhenStatement | Function
+
+Function -> func id (Parameters opt) Block
+Parameters -> var id {, var id}* opt
+Block -> { Statement* }
+
+MachineDeclaration -> define id = Machinery
+Machinery -> analogPin[number] | digitalOut[number] | digitalIn[number] | servo[number] | motor[number]
+
+WhenStatement -> when {start | WhenCondition} Block
+WhenCondition -> WhenOrExpression
+WhenOrExpression -> WhenAndExpression { or WhenAndExpression} opt
+WhenAndExpression -> EventExpression { and EventExpression } opt
+EventExpression -> ChangesExpression | BetweenExpression | EqualityWhenExpression
+
+ChangesExpression -> id changes
+BetweenExpression -> Expression between Expression and Expression
+EqualityWhenExpression -> EqualityExpression
+
+Statement -> VariableDeclaration | DisplayStatement | SetStatement | SleepStatement | IfStatement | RepeatStatement | AssignmentStatement
+
+VariableDeclaration -> var id = AssignmentExpression
+DisplayStatement -> display Expression
+SetStatement -> set { id | led0 | led1 } Expression
+SleepStatement -> sleep Expression
+IfStatement -> if Expression Block {else Block} opt
+RepeatStatement -> Repeat { Expression times } opt Block
+AssignmentStatement -> id = Expression
+
+Expression -> ConditionalExpression
+ConditionalExpression -> LogitalORExpression
+LogicalORExpression -> LogicalANDExpression { or LogicalANDExpression } opt
+LogicalANDExpression -> EqualityExpression { and EqualityExpression } p[t
+EqualityExpression -> RelationalExpression { eqOp RelationalExpression} opt
+RelationalExpression -> AdditiveExpression { relOp AdditiveExpression } opt
+AdditiveExpression -> MultiplicativeExpression { addOp MultiplicativeExpression }opt
+MultiplicativeExpression -> UnaryExpression { multOp UnaryExpression } opt
+UnaryExpression -> { unaryOp } opt LeftHandSideExpression
+LeftHandSideExpression -> CallExpression
+CallExpression -> GetExpression | PrimaryExpression
+GetExpression -> get id
+PrimaryExpression -> ( Expression ) | string | number | id
+
+eqOp -> eq | equals | noteq | notequals
+relOp -> < | > | <= | >=
+addOp -> + | -
+multOp -> * | /
+unaryOp -> not
