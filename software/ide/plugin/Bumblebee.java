@@ -324,6 +324,7 @@ implements ActionListener, EBComponent, BumblebeeActions,
         //scroll the area
         console_area.setCaretPosition (console_area.getDocument().getLength());
      } else if (src == compileButton) { //check if compile clicked
+	 saveFile();
         try {
            int error_line=0;
            ByteArrayOutputStream baos = new ByteArrayOutputStream();
