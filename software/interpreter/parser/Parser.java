@@ -231,7 +231,7 @@ public class Parser
             Token t = _currentToken;
             String s = matchIdentifier();
             match(TokenCode.TK_RBRACKET);
-            if (!Arrays.asList(new String[]{"X", "Y", "Z"}).contains(s))
+            if (!Arrays.asList(new String[]{"X", "x", "Y", "y", "Z", "z"}).contains(s))
             {
                expected("'X' | 'Y' | 'Z' for accelerometer axis", t);
             }
@@ -251,7 +251,7 @@ public class Parser
             match(TokenCode.TK_RBRACKET);
             return new Servo(id, num);
          default:
-            expected("'analogIn | digitalOut | digitalIn | servo | motor'", _currentToken);
+            expected("'analogIn | digitalOut | digitalIn | servo | motor | accel'", _currentToken);
             return null;
       }
    }

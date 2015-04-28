@@ -3,21 +3,22 @@ import visitor.*;
 
 public class Accelerometer extends Machinery implements Gettable {
 
-   private int _accelerometerNum;
+   private String _accelAxis;
 
    public Accelerometer(String id, String axis) {
       super(id);
-      _accelerometerNum = Character.toUpperCase(axis.charAt(0)) - 'X';
+      _accelAxis = String.valueOf(Character.toLowerCase(axis.charAt(0)));
    }
 
    public int getMachineNumber()
    {
-      return _accelerometerNum;
+      return 0;
+      //throw new UnsupportedOperationException();
    }
 
    public String toGetString()
    {
-      return "accelerometer(" + getIdentifier() + ")";
+      return "get_accel_" + _accelAxis + "()";
    }
 
    public <T> T visit(ASTVisitor<T> guest)
@@ -34,7 +35,7 @@ public class Accelerometer extends Machinery implements Gettable {
       if (o instanceof Accelerometer)
       {
          Accelerometer other = (Accelerometer)o;
-         return other._accelerometerNum == this._accelerometerNum;
+         return other._accelAxis.equals(this._accelAxis);
       }
       return false;
    }
