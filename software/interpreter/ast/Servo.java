@@ -23,5 +23,19 @@ public class Servo extends Machinery implements Settable {
    {
       return "set_servo(" + getIdentifier() + ", " + seq + ")";
    }
+
+   public boolean equals(Object o)
+   {
+      if (o == null)
+      {
+         return false;
+      }
+      if (o instanceof Servo)
+      {
+         Servo other = (Servo)o;
+         return other._servoNum == this._servoNum;
+      }
+      return false;
+   }
 }
 

@@ -21,10 +21,11 @@ extends ASTVisitor<StringBuilder>
 
    public StringBuilder visit(Program t) {
       currentEnvir = new Environment();
-      /* Initialize with 2 pieces of machinery */
+      /* Initialize with 4 pieces of machinery */
       currentEnvir.put("button", new Button());
       currentEnvir.put("led0", new LED(0));
       currentEnvir.put("led1", new LED(1));
+      currentEnvir.put("ir", new IR());
       List<SourceElement> elems = t.getBody();
       StringBuilder buf = new StringBuilder();
       buf.append("#include <stdio.h>\n");
@@ -42,6 +43,7 @@ extends ASTVisitor<StringBuilder>
       buf.append(String.format("int chng_temp;\n"));
       buf.append(String.format("char _printBuffer[64];\n"));
       buf.append("int _arrayCheck(int size, int index) { if (index >= size) { clear_screen(); print_string(\"Array In\"); lcd_cursor(0,1); print_string(\"Error\"); exit(0); } return index; }\n");
+      buf.append("void _setCursor(int row, int col) { if (row >= 0 && row <= 1 && col >= 0 && col <= 7) lcd_cursor(row, col); else { clear_screen(); print_string(\"Cursor\"); lcd_cursor(0,1); print_string(\"Error\"); exit(0); }}\n");
       buf.append(visitGlobalVars(elems));
       buf.append(visitFunctions(elems));
       buf.append(visitStart(elems));
@@ -62,9 +64,16 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(Declaration t)
    {
+      lineNum = t.getLineNum();
       String id = t.getIdentifier();
       uniqueID(id);
       Machinery m = t.getMachinery();
+
+      if (currentEnvir.containsValue(m))
+      {
+         expected(String.format("Cannot reassign machinery %s to %s", m.getTypeString(), id));
+      }
+      
       currentEnvir.put(id, m);
       StringBuilder buf = new StringBuilder();
       id = id;
@@ -77,6 +86,7 @@ extends ASTVisitor<StringBuilder>
    }
    public StringBuilder visit(AssignmentStatement t)
    {
+      lineNum = t.getLineNum();
       StringBuilder buf = new StringBuilder();
       String id = t.getTarget().getIdentifier();
       Visitable type = currentEnvir.get(id);
@@ -766,7 +776,7 @@ extends ASTVisitor<StringBuilder>
    public StringBuilder visit(SetCursorStatement t)
    {
       StringBuilder buf = new StringBuilder();
-      buf.append(String.format("lcd_cursor(%s, %s);\n", t.getRow().visit(this), t.getCol().visit(this)));
+      buf.append(String.format("_setCursor(%s, %s);\n", t.getRow().visit(this), t.getCol().visit(this)));
       return buf;
    }
 

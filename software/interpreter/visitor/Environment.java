@@ -33,6 +33,16 @@ public class Environment
          return false;
    }
 
+   public boolean containsValue(Visitable v)
+   {
+      if (idToType.containsValue(v))
+         return true;
+      else if (next != null)
+         return next.containsValue(v);
+      else
+         return false;
+   }
+
    public Visitable get(String id)
    {
       if (idToType.containsKey(id))
@@ -74,15 +84,25 @@ public class Environment
       else
          return 0;
    }
-   public void put(String id, Visitable v)
+   public boolean put(String id, Visitable v)
    {
+      if (idToType.containsValue(v))
+      {
+         return false;
+      }
       idToType.put(id, v);
       _isArray.put(id, new ArrayType(false, 0));
+      return true;
    }
 
-   public void put(String id, Visitable v, boolean v_isArray, int v_size)
+   public boolean put(String id, Visitable v, boolean v_isArray, int v_size)
    {
+      if (idToType.containsValue(v))
+      {
+         return false;
+      }
       idToType.put(id, v);
       _isArray.put(id, new ArrayType(v_isArray, v_size));
+      return true;
    }
 }

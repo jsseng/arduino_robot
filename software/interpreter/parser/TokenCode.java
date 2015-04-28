@@ -16,6 +16,7 @@ public enum TokenCode
    TK_DIGITALOUT("digitalOut"),
    TK_DIGITALIN("digitalIn"),
    TK_ACCELEROMETER("accel"),
+   TK_IR("ir"),
    TK_SERVO("servo"),
    TK_BUTTON("button"),
    TK_LED0U("LED0"),

@@ -16,6 +16,10 @@ public class DigitalPin extends Machinery implements Settable, Gettable {
       return _isOut;
    }
 
+   public boolean getIsInPin() {
+      return !_isOut;
+   }
+
    public int getPin() {
       return _pin;
    }
@@ -38,5 +42,19 @@ public class DigitalPin extends Machinery implements Settable, Gettable {
    public String toSetString(CharSequence seq)
    {
       return "digitalWrite(" + getIdentifier() + ", " + seq + ")";
+   }
+
+   public boolean equals(Object o)
+   {
+      if (o == null)
+      {
+         return false;
+      }
+      if (o instanceof DigitalPin)
+      {
+         DigitalPin other = (DigitalPin)o;
+         return other._pin == this._pin;
+      }
+      return false;
    }
 }

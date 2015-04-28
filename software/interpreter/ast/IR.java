@@ -1,22 +1,20 @@
 package ast;
-
 import visitor.*;
 
-public class Button extends Machinery implements Gettable
-{
-   public Button()
-   {
-      super("");
-   }
+public class IR extends Machinery implements Gettable {
 
-   public String toGetString()
-   {
-      return "get_sw()";
+   public IR() {
+      super("");
    }
 
    public int getMachineNumber()
    {
       throw new UnsupportedOperationException();
+   }
+
+   public String toGetString()
+   {
+      return "ir()";
    }
 
    public <T> T visit(ASTVisitor<T> guest)
@@ -30,6 +28,8 @@ public class Button extends Machinery implements Gettable
       {
          return false;
       }
-      return o instanceof Button;
+      return o instanceof AnalogPin;
    }
 }
+
+
