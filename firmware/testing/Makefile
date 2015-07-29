@@ -33,8 +33,8 @@ tap_test: tap_test.c $(wildcard $(BOARD_LIB)/*.c)
 	avr-objcopy -O ihex main.elf main.hex
 	avr-size main.elf
 
-program: main 
-	/Users/jseng/trunk/avrdude/avrdude -F -pm645 -cusbtiny -E noreset -U flash:w:main.hex
+program: 
+	avrdude -F -pm645 -Pcom4 -carduino -u -U flash:w:main.hex
 
 #edit the device to match the device on your computer
 MAC_DEVICE = `ls /dev/cu*serial*`
