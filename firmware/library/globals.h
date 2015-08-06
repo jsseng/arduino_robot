@@ -88,6 +88,8 @@ void led_off(u08 num);
 void led(u08 num, u08 state);
 void init(void);
 void clear_screen(void);
+void set_digital_dir(u08 num, u08 dir);
+void set_digital_out(u08 num, u08 out);
 
 void init_adc();
 void init_lcd();
