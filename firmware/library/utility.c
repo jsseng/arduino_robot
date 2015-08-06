@@ -3,7 +3,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
-u08 get_sw(void) {
+u08 get_btn(void) {
    if (PINE & _BV(SW1_PIN))
       return 0;
    return 1;

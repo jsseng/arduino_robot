@@ -82,7 +82,7 @@ void send_address(u08 addr, u08 reg, u08 read);
 void write_register(u08* data, u08 num);
 void read_register(u08 addr, u08* data, u08 num);
 
-u08 get_sw(void);
+u08 get_btn(void);
 void led_on(u08 num);
 void led_off(u08 num);
 void led(u08 num, u08 state);
