@@ -57,7 +57,7 @@ u08 digital(u08 num) {
 #ifndef BOOTLOADER
 
 //set the direction for a digital pin
-void set_digital_dir(u08 num, u08 dir) {
+void digital_dir(u08 num, u08 dir) {
    switch(num) {
    case 0:
    case 1:
@@ -127,7 +127,7 @@ void set_digital_dir(u08 num, u08 dir) {
 }
 
 //set the output value for a digital pin
-void set_digital_out(u08 num, u08 out) {
+void digital_out(u08 num, u08 out) {
    switch(num) {
    case 0:
    case 1:
