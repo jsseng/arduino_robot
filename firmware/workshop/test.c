@@ -9,13 +9,13 @@ int main(void) {
 
    /* Type your new code here */
 
-   set_digital_dir(0,1); //set pin 0 to output
+   digital_dir(0,1); //set pin 0 to output
 
    while(1) {
-      set_digital_out(0,0); //set pin 0 to low
+      digital_out(0,0); //set pin 0 to low
       _delay_ms(500);
 
-      set_digital_out(0,1); //set pin 0 to high
+      digital_out(0,1); //set pin 0 to high
       _delay_ms(500);
    }
 
