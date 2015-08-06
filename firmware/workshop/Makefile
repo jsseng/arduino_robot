@@ -3,13 +3,8 @@ BOARD_LIB = $(SELF_DIR)../library
 SOURCE_LIB = $(wildcard $(BOARD_LIB)/*.c)
 CLOCK_RATE = 16000000L
 
-lib: $(wildcard $(BOARD_LIB)/*.c)
-	$(foreach var,$(SOURCE_LIB), \
-        avr-gcc -I$(BOARD_LIB) -DF_CPU=$(CLOCK_RATE) -Wall -mmcu=atmega645a -O2 -c -o $(var:.c=.o) $(var); )
-
-ide: .test.c $(wildcard $(BOARD_LIB)/*.c)
-	echo $(SELF_DIR)
-	avr-gcc -I$(BOARD_LIB) -DF_CPU=$(CLOCK_RATE) -Wall -mmcu=atmega645a -O2 -o main.elf .test.c $(wildcard $(BOARD_LIB)/*.c)
+test: test.c $(wildcard $(BOARD_LIB)/*.c)
+	avr-gcc -I$(BOARD_LIB) -DF_CPU=$(CLOCK_RATE) -Wall -mmcu=atmega645a -O2 -o main.elf test.c $(wildcard $(BOARD_LIB)/*.c)
 	avr-objcopy -O ihex main.elf main.hex
 	avr-size main.elf
 
@@ -18,10 +13,9 @@ ir_test: ir_test.c $(wildcard $(BOARD_LIB)/*.c)
 	avr-objcopy -O ihex main.elf main.hex
 	avr-size main.elf
 
-test: test.c $(wildcard $(BOARD_LIB)/*.c)
-	avr-gcc -I$(BOARD_LIB) -DF_CPU=$(CLOCK_RATE) -Wall -mmcu=atmega645a -O2 -o main.elf test.c $(wildcard $(BOARD_LIB)/*.c)
-	avr-objcopy -O ihex main.elf main.hex
-	avr-size main.elf
+lib: $(wildcard $(BOARD_LIB)/*.c)
+	$(foreach var,$(SOURCE_LIB), \
+        avr-gcc -I$(BOARD_LIB) -DF_CPU=$(CLOCK_RATE) -Wall -mmcu=atmega645a -O2 -c -o $(var:.c=.o) $(var); )
 
 wprogram: 
 	avrdude -F -pm645 -Pcom4 -carduino -u -U flash:w:main.hex
