@@ -1,0 +1,7 @@
+For Linux, add the following line to the file (/etc/udev/rules.d/10-local.rules):
+
+ACTION=="add", ATTRS{idVendor}=="04b4", ATTRS{idProduct}=="0003", SYMLINK+="bumb
+lebee"
+
+This will make the Bumblebee appear under /dev/bumblebee
+
