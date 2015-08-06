@@ -27,7 +27,7 @@ program: main.elf
 	#/Users/jseng/trunk/avrdude/avrdude -C /Users/jseng/trunk/avrdude/avrdude.conf -pm645 -P /dev/cu.usbserial-A603XFXR -c arduino -F -u -U flash:w:main.hex
 
 programl: main.elf
-	avrdude -pm645 -P /dev/ttyACM0 -c arduino -F -u -U flash:w:main.hex
+	avrdude -pm645 -P /dev/bumblebee -c arduino -F -u -U flash:w:main.hex
 
 clean:
 	rm -fr *.elf *.hex *.o
