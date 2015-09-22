@@ -250,8 +250,8 @@ void init(void) {
 
    //initialize the accelerometer
 #ifndef BOOTLOADER
-//   i2c_regwrite(0x2A,0x1);  //change to WAKE mode
-//   _delay_ms(100);
-//   unlock_bus();
+   i2c_regwrite(0x1C,0x2A,0x1);  //change to WAKE mode
+   _delay_ms(100);
+   unlock_bus();
 #endif
 }
