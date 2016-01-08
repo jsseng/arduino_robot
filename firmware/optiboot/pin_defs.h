@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------ */
-#if defined(__AVR_ATmega325PA__)
+#if defined(__AVR_ATmega645A__)
 /*------------------------------------------------------------------------ */
 
 /* Onboard LED is connected to pin PB5 in Arduino NG, Diecimila, and Duemilanove

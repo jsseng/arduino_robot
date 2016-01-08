@@ -258,8 +258,8 @@ void debug_mode();
  * RAMSTART should be self-explanatory.  It's bigger on parts with a
  * lot of peripheral registers.
  */
-#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega32__) || defined(__AVR_ATmega325PA__)
-#define NRWWSTART (0x7000)
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega32__) || defined(__AVR_ATmega645A__)
+#define NRWWSTART (0xE000)
 #endif
 
 /* C zero initializes all global variables. However, that requires */
@@ -324,7 +324,7 @@ int main(void) {
 #endif
 
   init();
-  if(get_sw()) {
+  if(get_btn()) {
      /* Get MCUCR*/ 
      temp = MCUCR; 
      /* Enable change of Interrupt Vectors */ 
@@ -665,6 +665,7 @@ void appStart(uint8_t rstFlags) {
 void debug_mode() {
    u08 data[2];
    u08 x_reading;
+   u08 oldx_reading=128;
    u08 option,i;
    u08 speed;
    unsigned long int battery;
@@ -676,45 +677,61 @@ void debug_mode() {
 
    //initialize the accelerometer
    data[0] = 0x1; //change to WAKE mode
-   send_address(0x2A,0);
+   send_address(MMA8453_ADDR, 0x2A,0);
    write_register(&data[0], 1);
    _delay_ms(100);
    unlock_bus();
 
-   while(get_sw()) {}
+   while(get_btn()) {}
+
+   send_address(MMA8453_ADDR,0x1,1);
+   read_register(MMA8453_ADDR, &x_reading, 1);
+   oldx_reading = x_reading;
    
    while(1) {
+      lcd_cursor(5,0);
+      //print_num(x_reading);
       lcd_cursor(0,1);
-      send_address(0x1,1);
-      read_register(&x_reading, 1);
+      send_address(MMA8453_ADDR,0x1,1);
+      read_register(MMA8453_ADDR, &x_reading, 1);
 
-      option = (x_reading / 10) % 7;
+      if (x_reading < 6)
+         oldx_reading = 6;
+      if (x_reading > 250)
+         oldx_reading = 250;
+
+      oldx_reading = .9*oldx_reading + .1*x_reading;
+
+      option = (oldx_reading / 10) % 8;
 
       switch(option) {
       case 0:
-         print_string("Digital");
+         print_string("Digital ");
          break;
       case 1:
-         print_string("Analog ");
+         print_string("Analog  ");
          break;
       case 2:
-         print_string("Motor  ");
+         print_string("Motor   ");
          break;
       case 3:
-         print_string("Servo  ");
+         print_string("Servo   ");
          break;
       case 4:
-         print_string("Accel  ");
+         print_string("Accel   ");
          break;
       case 5:
-         print_string("Battery");
+         print_string("Battery ");
          break;
       case 6:
-         print_string("IR Test");
+         print_string("IR Test ");
+         break;
+      case 7:
+         print_string("Mtr+Srvo");
          break;
       }
 
-      if (get_sw())
+      if (get_btn())
          break;
 
       _delay_ms(50);
@@ -739,9 +756,9 @@ void debug_mode() {
    case 1: //analog
       test_motor = 0;
       while(1) {
-         if(get_sw()) {
+         if(get_btn()) {
             test_motor ^= 1;
-            while(get_sw()) {}
+            while(get_btn()) {}
          }
          clear_screen();
 
@@ -766,8 +783,8 @@ void debug_mode() {
       clear_screen();
       print_string("Motor ");
       while(1) {
-         send_address(0x1,1);
-         read_register(&x_reading, 1);
+         send_address(MMA8453_ADDR,0x1,1);
+         read_register(MMA8453_ADDR, &x_reading, 1);
          if (x_reading > 100)
             x_reading = 255 - x_reading;
          speed = x_reading * 100 / 64;
@@ -787,9 +804,9 @@ void debug_mode() {
          print_num(speed);
          print_string(" ");
 
-         if (get_sw()) {
+         if (get_btn()) {
             test_motor ^= 1;
-            while(get_sw()) {}
+            while(get_btn()) {}
          }
 
          _delay_ms(50);
@@ -797,8 +814,8 @@ void debug_mode() {
       break;
    case 3:  //servo
       while(1) {
-         send_address(0x1,1);
-         read_register(&x_reading, 1);
+         send_address(MMA8453_ADDR,0x1,1);
+         read_register(MMA8453_ADDR, &x_reading, 1);
          if (x_reading > 100)
             x_reading = 255 - x_reading;
          speed = x_reading * 255 / 64;
@@ -858,6 +875,25 @@ void debug_mode() {
          _delay_us(100);
       }
       break;
-
+   case 7:
+      clear_screen();
+      print_string("All mtr");
+      lcd_cursor(0,1);
+      print_string("All srvo");
+      OCR2A = 255;
+      OCR0A = 255;
+      while(1) {
+         set_servo(0,0);
+         set_servo(1,0);
+         set_servo(2,0);
+         set_servo(3,0);
+         _delay_ms(750);
+         set_servo(0,200);
+         set_servo(1,200);
+         set_servo(2,200);
+         set_servo(3,200);
+         _delay_ms(750);
+      }
+      break;
    }
 }

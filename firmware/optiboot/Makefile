@@ -202,22 +202,22 @@ endif
 # Virtual boot block test
 
 VPATH = .:../library
-atmega325pa: TARGET = atmega325pa
-atmega325pa: MCU_TARGET = atmega325pa
-atmega325pa: CFLAGS += -I$(BOARD_LIB) -Wall $(COMMON_OPTIONS) -DSOFT_UART=1 -DBOOTLOADER
-atmega325pa: AVR_FREQ ?= 20000000L
-atmega325pa: LDSECTIONS  = -Wl,--section-start=.text=0x7000 -Wl,--section-start=.version=0x7ffe
-atmega325pa: $(PROGRAM)_atmega325pa.hex
-atmega325pa: $(PROGRAM)_atmega325pa.lst
+atmega645a: TARGET = atmega645a
+atmega645a: MCU_TARGET = atmega645a
+atmega645a: CFLAGS += -I$(BOARD_LIB) -Wall $(COMMON_OPTIONS) -DSOFT_UART=1 -DBOOTLOADER
+atmega645a: AVR_FREQ ?= 16000000L
+atmega645a: LDSECTIONS  = -Wl,--section-start=.text=0xE000 -Wl,--section-start=.version=0xfffe
+atmega645a: $(PROGRAM)_atmega645a.hex
+atmega645a: $(PROGRAM)_atmega645a.lst
 
 fuse:
-	avrdude -F -pm325 -cusbtiny -E noreset -U efuse:w:0xfb:m #
-	avrdude -F -pm325 -cusbtiny -E noreset -U lfuse:w:0xff:m #65ms startup delay
-	#avrdude -F -pm325 -cusbtiny -E noreset -U lfuse:w:0xef:m #no startup delay
-	avrdude -F -pm325 -cusbtiny -E noreset -U hfuse:w:0xd8:m #use bootloader
+	avrdude -F -pm645 -cusbtiny -E noreset -U efuse:w:0xfb:m #
+	avrdude -F -pm645 -cusbtiny -E noreset -U lfuse:w:0xff:m #65ms startup delay
+	#avrdude -F -pm645 -cusbtiny -E noreset -U lfuse:w:0xef:m #no startup delay
+	avrdude -F -pm645 -cusbtiny -E noreset -U hfuse:w:0xd8:m #use bootloader
 
 program:
-	avrdude -F -pm325 -cusbtiny -E noreset -U flash:w:optiboot_atmega325pa.hex
+	avrdude -F -pm645 -cusbtiny -E noreset -U flash:w:optiboot_atmega645a.hex
 
 
 FORCE:
