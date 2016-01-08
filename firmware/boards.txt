@@ -1,0 +1,40 @@
+# See: http://code.google.com/p/arduino/wiki/Platforms
+
+menu.cpu=Processor
+
+##############################################################
+
+bumblebee.name=Bumblebee Robot Controller
+bumblebee.vid.0=0x2341
+bumblebee.pid.0=0x0036
+bumblebee.vid.1=0x2341
+bumblebee.pid.1=0x8036
+bumblebee.upload.tool=avrdude
+bumblebee.upload.protocol=usbtiny
+bumblebee.upload.maximum_size=62000
+bumblebee.upload.maximum_data_size=3800
+bumblebee.upload.speed=57600
+bumblebee.upload.disable_flushing=true
+bumblebee.upload.use_1200bps_touch=true
+bumblebee.upload.wait_for_upload_port=true
+
+bumblebee.bootloader.tool=avrdude
+bumblebee.bootloader.low_fuses=0xff
+bumblebee.bootloader.high_fuses=0xd8
+bumblebee.bootloader.extended_fuses=0xfb
+bumblebee.bootloader.file=optiboot_atmega645a.hex
+bumblebee.bootloader.unlock_bits=0x3F
+bumblebee.bootloader.lock_bits=0x2F
+
+bumblebee.build.mcu=atmega645a
+bumblebee.build.f_cpu=16000000L
+bumblebee.build.vid=0x2341
+bumblebee.build.pid=0x8036
+bumblebee.build.board=AVR_LEONARDO
+bumblebee.build.core=arcore
+bumblebee.build.variant=arduino:bumblebee
+bumblebee.build.usb_product="Bumblebee"
+bumblebee.build.usb_manufacturer="Cal Poly"
+bumblebee.build.extra_flags={build.usb_flags}
+
+##############################################################
